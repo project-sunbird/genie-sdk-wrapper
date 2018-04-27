@@ -22,9 +22,7 @@ export class OAuthService {
         let that = this;
         return new Promise(function(resolve, reject) {
 
-            (<any>window).cordova.plugins.browsertab.isAvailable(function(result) {
-                if (!result) {
-                    let browserRef = (<any>window).cordova.InAppBrowser.open(that.auth_url);
+            let browserRef = (<any>window).cordova.InAppBrowser.open(that.auth_url);
                     browserRef.addEventListener("loadstart", (event) => {
                         if ((event.url).indexOf(that.redirect_url) === 0) {
                             browserRef.removeEventListener("exit", (event) => {});
@@ -40,42 +38,61 @@ export class OAuthService {
                     browserRef.addEventListener("exit", function(event) {
                         reject("The Sunbird sign in flow was canceled");
                     });
-                } else {
-                    // that.authService.oauthstepone(token => {
-                    //     resolve(token);
-                    // });
-                    (<any>window).handleOpenURL = function (url) {
-                        if ((url).indexOf(that.redirect_url) === 0) {
-                            let responseParameters = (((url).split("?")[1]).split("="))[1];
-                            if (responseParameters !== undefined) {
-                                resolve(responseParameters);
-                            } else {
-                                reject("Problem authenticating with Sunbird");
-                            }
-                        }
-                    };
-                    (<any>window).cordova.plugins.browsertab.openUrl(
-                        that.auth_url);
-                }
-              },
-              function(isAvailableError) {
-                let browserRef = (<any>window).cordova.InAppBrowser.open(that.auth_url);
-                    browserRef.addEventListener("loadstart", (event) => {
-                        if ((event.url).indexOf(that.redirect_url) === 0) {
-                            browserRef.removeEventListener("exit", (event) => {});
-                            browserRef.close();
-                            let responseParameters = (((event.url).split("?")[1]).split("="))[1];
-                            if (responseParameters !== undefined) {
-                                resolve(responseParameters);
-                            } else {
-                                reject("Problem authenticating with Sunbird");
-                            }
-                        }
-                    });
-                    browserRef.addEventListener("exit", function(event) {
-                        reject("The Sunbird sign in flow was canceled");
-                    });
-              });
+
+            // (<any>window).cordova.plugins.browsertab.isAvailable(function(result) {
+            //     if (!result) {
+            //         let browserRef = (<any>window).cordova.InAppBrowser.open(that.auth_url);
+            //         browserRef.addEventListener("loadstart", (event) => {
+            //             if ((event.url).indexOf(that.redirect_url) === 0) {
+            //                 browserRef.removeEventListener("exit", (event) => {});
+            //                 browserRef.close();
+            //                 let responseParameters = (((event.url).split("?")[1]).split("="))[1];
+            //                 if (responseParameters !== undefined) {
+            //                     resolve(responseParameters);
+            //                 } else {
+            //                     reject("Problem authenticating with Sunbird");
+            //                 }
+            //             }
+            //         });
+            //         browserRef.addEventListener("exit", function(event) {
+            //             reject("The Sunbird sign in flow was canceled");
+            //         });
+            //     } else {
+            //         // that.authService.oauthstepone(token => {
+            //         //     resolve(token);
+            //         // });
+            //         (<any>window).handleOpenURL = function (url) {
+            //             if ((url).indexOf(that.redirect_url) === 0) {
+            //                 let responseParameters = (((url).split("?")[1]).split("="))[1];
+            //                 if (responseParameters !== undefined) {
+            //                     resolve(responseParameters);
+            //                 } else {
+            //                     reject("Problem authenticating with Sunbird");
+            //                 }
+            //             }
+            //         };
+            //         (<any>window).cordova.plugins.browsertab.openUrl(
+            //             that.auth_url);
+            //     }
+            //   },
+            //   function(isAvailableError) {
+            //     let browserRef = (<any>window).cordova.InAppBrowser.open(that.auth_url);
+            //         browserRef.addEventListener("loadstart", (event) => {
+            //             if ((event.url).indexOf(that.redirect_url) === 0) {
+            //                 browserRef.removeEventListener("exit", (event) => {});
+            //                 browserRef.close();
+            //                 let responseParameters = (((event.url).split("?")[1]).split("="))[1];
+            //                 if (responseParameters !== undefined) {
+            //                     resolve(responseParameters);
+            //                 } else {
+            //                     reject("Problem authenticating with Sunbird");
+            //                 }
+            //             }
+            //         });
+            //         browserRef.addEventListener("exit", function(event) {
+            //             reject("The Sunbird sign in flow was canceled");
+            //         });
+            //   });
             });
     }
 

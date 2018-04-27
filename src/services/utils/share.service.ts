@@ -12,4 +12,8 @@ export class ShareUtil {
         this.factory.getShareService().exportEcar(contentId, onSuccess, onError);
     }
 
+    exportTelemetry(onSuccess: (path: string) => void, onError: (path: string) => void) {
+        this.factory.getShareService().exportTelemetry(onSuccess, onError);
+    }
+
 }
