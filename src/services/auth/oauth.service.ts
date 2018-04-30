@@ -1,7 +1,5 @@
 import { Injectable } from "@angular/core";
 import { Platform } from "ionic-angular";
-import { HTTP } from "@ionic-native/http";
-
 import { AuthService } from "./auth.service";
 
 @Injectable()
@@ -13,7 +11,7 @@ export class OAuthService {
 
     auth_url: string;
 
-    constructor(private platform: Platform, private http: HTTP, private authService: AuthService) {
+    constructor(private platform: Platform, private authService: AuthService) {
         var paramkeyArray=["auth_url","logout_url","auth_redirect_url"];
         (<any>window).CustomConfigParameters.get(configData => {
             this.auth_url = configData.auth_url;
