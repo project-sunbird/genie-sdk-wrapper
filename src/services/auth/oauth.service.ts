@@ -7,28 +7,15 @@ import { AuthService } from "./auth.service";
 @Injectable()
 export class OAuthService {
 
-    redirect_url: string;
+    redirect_url = "https://staging.open-sunbird.org/oauth2callback";
 
-    logout_url: string;
+    logout_url = "https://staging.open-sunbird.org/auth/realms/sunbird/protocol/openid-connect/logout?redirect_uri=https://staging.open-sunbird.org/oauth2callback";
 
-    auth_url: string;
+    auth_url= "https://staging.open-sunbird.org/auth/realms/sunbird/protocol/openid-connect/auth?redirect_uri=${R}&response_type=code&scope=offline_access&client_id=${CID}";
 
     constructor(private platform: Platform, private http: HTTP, private authService: AuthService) {
-
-        var paramkeyArray=["auth_url","logout_url","auth_redirect_url"];
-        (<any>window).CustomConfigParameters.get(configData => {
-            this.auth_url = configData.auth_url;
-            this.redirect_url = configData.auth_redirect_url;
-            this.logout_url = configData.logout_url;
-            this.auth_url = this.auth_url.replace("${CID}", this.platform.is("android")?"android":"ios");
-        },
-        
-        err => {
-
-        },
-        
-        paramkeyArray);
-
+        this.auth_url = this.auth_url.replace("${CID}", this.platform.is("android")?"android":"ios");
+        this.auth_url = this.auth_url.replace("${R}", this.redirect_url);
     }
 
     doOAuthStepOne(): Promise<any> {

@@ -3,7 +3,6 @@
 		"cordova-plugin-file",
 		"cordova-plugin-browsertab",
 		"cordova-plugin-inappbrowser",
-		"https://github.com/project-sunbird/cordova-plugin-genie-sdk.git",
-		"cordova-plugin-customconfigparameters"
+		"https://github.com/project-sunbird/cordova-plugin-genie-sdk.git"
 	]
 }
