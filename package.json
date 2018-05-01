@@ -4,8 +4,7 @@
 	"description": "Framework for Sunbird",
 	"scripts": {
 		"profile": "webpack --profile --json > stats.json",
-		"build": "ng-packagr -p package.json && cp -R scripts dist/scripts && cp dependencies.json dist/",
-		"postinstall": "node ./scripts/postinstall.js"
+		"build": "ng-packagr -p package.json && cp -R scripts dist/scripts && cp dependencies.json dist/"
 	},
 	"author": "EkStep",
 	"license": "ISC",
