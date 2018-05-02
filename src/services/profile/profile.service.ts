@@ -20,8 +20,8 @@ export class ProfileService {
         (<any>window).GenieSDK.profile.getCurrentUser(onSuccess, onError);
     }
 
-    setCurrentProfile(isGuestMode: boolean, request: string, onSuccess, onError) {
-        (<any>window).GenieSDK.profile.setCurrentProfile(request, onSuccess, onError);
+    setCurrentProfile(isGuestMode: boolean, request: Profile, onSuccess, onError) {
+        (<any>window).GenieSDK.profile.setCurrentProfile(JSON.stringify(request), onSuccess, onError);
     }
 
     setAnonymousUser(onSuccess, onError) {
