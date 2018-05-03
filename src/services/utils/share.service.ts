@@ -16,4 +16,8 @@ export class ShareUtil {
         this.factory.getShareService().exportTelemetry(onSuccess, onError);
     }
 
+    exportApk(onSuccess: (path: string) => void, onError: (error: string) => void) {
+        this.factory.getShareService().exportApk(onSuccess, onError);
+    }
+
 }
