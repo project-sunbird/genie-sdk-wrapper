@@ -9,9 +9,7 @@ import { ServiceProvider } from "../factory";
 @Injectable()
 export class ContentService {
 
-
   constructor(private factory: ServiceProvider) {
-
   }
 
   getContentDetail(request: ContentDetailRequest,
@@ -119,6 +117,15 @@ export class ContentService {
     errorCallback: (response: string) => void) {
     try {
       this.factory.getContentService().getDownloadState(successCallback, errorCallback);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  getSearchCriteriaFromRequest(successCallback: (response: string) => void,
+    errorCallback: (response: string) => void) {
+    try {
+      this.factory.getContentService().getSearchCriteriaFromRequest(successCallback, errorCallback);
     } catch (error) {
       console.log(error);
     }
