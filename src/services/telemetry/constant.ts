@@ -98,7 +98,7 @@ export class InteractSubtype {
     public static readonly SECTION_VIEWED = "section-viewed";
     public static readonly CONTENT_CLICKED = "content-clicked";
     public static readonly CANCEL = "cancel";
-    public static readonly SEARCH_BUTTON_CLICKED = "search-buttonclicked";
+    public static readonly SEARCH_BUTTON_CLICKED = "search-button-clicked";
     public static readonly FILTER_BUTTON_CLICKED = "filter-button-clicked";
     public static readonly VIEWALL_CLICKED = "view-all-clicked";
     public static readonly SHARE_COURSE_INITIATED = "share-course-initiated";

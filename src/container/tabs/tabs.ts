@@ -22,7 +22,7 @@ export class TabsPage {
     setTimeout(() => {
       let tabIndex = 0;
       if (this.navParams.get('loginMode') == 'guest') {
-        tabIndex = 1;
+        tabIndex = 0;
       }
       this.tabRef.select(tabIndex);
     }, 300);
