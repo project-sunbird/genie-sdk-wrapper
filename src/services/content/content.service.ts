@@ -73,7 +73,7 @@ export class ContentService {
     }
   }
 
-  getImportStatus(request: Array<String>,
+  getImportStatus(request: Array<string>,
     successCallback: (response: string) => void,
     errorCallback: (response: string) => void) {
     try {
@@ -83,7 +83,7 @@ export class ContentService {
     }
   }
 
-  cancelDownload(request: String,
+  cancelDownload(request: string,
     successCallback: (response: string) => void,
     errorCallback: (response: string) => void) {
     try {
@@ -122,7 +122,8 @@ export class ContentService {
     }
   }
 
-  getSearchCriteriaFromRequest(successCallback: (response: string) => void,
+  getSearchCriteriaFromRequest(request: string,
+    successCallback: (response: string) => void,
     errorCallback: (response: string) => void) {
     try {
       this.factory.getContentService().getSearchCriteriaFromRequest(successCallback, errorCallback);
