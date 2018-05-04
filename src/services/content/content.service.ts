@@ -126,7 +126,7 @@ export class ContentService {
     successCallback: (response: string) => void,
     errorCallback: (response: string) => void) {
     try {
-      this.factory.getContentService().getSearchCriteriaFromRequest(successCallback, errorCallback);
+      this.factory.getContentService().getSearchCriteriaFromRequest(request, successCallback, errorCallback);
     } catch (error) {
       console.log(error);
     }
