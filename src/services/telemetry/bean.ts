@@ -4,6 +4,11 @@ export interface SyncStat {
   syncedFileSize: String;
 }
 
+export interface TelemetryStat {
+  unSyncedEventCount: Number;
+  syncTime: Number;
+}
+
 export class Actor {
   static readonly TYPE_SYSTEM = "System";
   static readonly TYPE_USER = "User";

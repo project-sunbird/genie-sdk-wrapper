@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Impression, Start, Audit, End, ExData, Feedback, Interact, Interrupt, Log, Search, Share, SyncStat } from './bean';
+import { Impression, Start, Audit, End, ExData, Feedback, Interact, Interrupt, Log, Search, Share, SyncStat, TelemetryStat } from './bean';
 import { ServiceProvider } from "../factory";
 import { GenieResponse } from "../service.bean";
 
@@ -118,5 +118,14 @@ export class TelemetryService {
       console.log(error);
     }
   }
+
+  getTelemetryStat(successCallback: (response: GenieResponse<TelemetryStat>) => void,
+  errorCallback: (error: GenieResponse<TelemetryStat>) => void) {
+  try {
+    this.factory.getTelemteryService().getTelemetryStat(successCallback, errorCallback);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 }
