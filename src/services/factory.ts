@@ -49,4 +49,8 @@ export class ServiceProvider {
     getShareService(): any {
         
     }
+
+    getBuildParamService(): any {
+        
+    }
 }

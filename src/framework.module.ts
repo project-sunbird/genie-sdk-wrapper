@@ -21,6 +21,7 @@ import { ConnectionInfoService } from "./services/utils/connection.service";
 import { DeviceInfoService } from "./services/utils/device.service";
 import { LocationInfoService } from "./services/utils/location.service";
 import { ShareUtil } from "./services/utils/share.service";
+import { BuildParamService } from "./services/utils/buildparam.service";
 
 @NgModule({
     declarations: [
@@ -46,6 +47,7 @@ import { ShareUtil } from "./services/utils/share.service";
         ConnectionInfoService,
         DeviceInfoService,
         LocationInfoService,
+        BuildParamService,
         QRScanner,
         ShareUtil
     ],
