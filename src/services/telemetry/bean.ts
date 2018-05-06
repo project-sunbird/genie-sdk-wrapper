@@ -6,7 +6,7 @@ export interface SyncStat {
 
 export interface TelemetryStat {
   unSyncedEventCount: Number;
-  syncTime: Number;
+  lastSyncTime: Number;
 }
 
 export class Actor {
