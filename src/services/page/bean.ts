@@ -1,14 +1,16 @@
 export class PageAssembleFilter {
     subject?: Array<string>;
+    board?: Array<string>;
+    domain?: Array<string>;
     medium?: Array<string>;
-    grade?: Array<string>;
+    gradeLevel?: Array<string>;
     language?: Array<string>;
     concepts?: Array<string>;
     contentType?: Array<string>;
     ageGroup?: Array<string>;
     ownership?: Array<string>;
     status?: Array<string>;
- }
+}
 
 
 export class PageAssembleCriteria {
