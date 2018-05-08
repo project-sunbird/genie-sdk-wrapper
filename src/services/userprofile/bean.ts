@@ -2,6 +2,7 @@ export class UserProfileDetailsRequest {
     userId: string;
     requiredFields: Array<string>;
     refreshUserProfileDetails: boolean;
+    returnRefreshedUserProfileDetails: boolean;
 }
 
 export class TenantInfoRequest {
