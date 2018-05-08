@@ -40,6 +40,8 @@ export enum SearchType {
 
 export class ContentSearchCriteria {
   query?: string;
+  exists?: Array<string>;
+  offset?: number;
   limit?: number;
   mode?: string;
   age?: number;
@@ -56,6 +58,7 @@ export class ContentSearchCriteria {
   contentTypes?: Array<string>;
   keywords?: Array<string>;
   dialCodes?: Array<string>;
+  language?: Array<string>;
   facetFilters?: Array<ContentSearchFilter>;
   impliedFilters?: Array<ContentSearchFilter>;
   sortCriteria?: Array<ContentSearchFilter>;
