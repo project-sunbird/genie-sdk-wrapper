@@ -13,6 +13,7 @@ import { CourseService } from "./services/course/course.service"
 import { UserProfileService } from "./services/userprofile/userprofile.service";
 import { PageAssembleService } from "./services/page/page.service";
 import { PermissionService } from "./services/permission.sevice";
+import { AttachmentService } from "./services/attachment.service";
 import { QRScanner } from "./services/qrscanner.service";
 import { FrameworkService } from "./services/framework/framework.service";
 import { FileUtil } from "./services/utils/file.service";
@@ -42,6 +43,7 @@ import { BuildParamService } from "./services/utils/buildparam.service";
         TelemetryService,
         PageAssembleService,
         PermissionService,
+        AttachmentService,
         FileUtil,
         SharedPreferences,
         ConnectionInfoService,

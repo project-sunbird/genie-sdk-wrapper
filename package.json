@@ -75,5 +75,10 @@
 				"ionic-angular": "ionicBundle"
 			}
 		}
+	},
+	"dependencies": {
+		"@ionic-native/file": "^4.7.0",
+		"@ionic-native/file-opener": "^4.7.0",
+		"@ionic-native/file-transfer": "^4.7.0"
 	}
 }

@@ -27,6 +27,8 @@ export * from "./services/page/page.service";
 
 export * from "./services/permission.sevice";
 
+export * from "./services/attachment.service";
+
 export * from "./services/userprofile/bean";
 export * from "./services/userprofile/userprofile.service";
 
