@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Platform } from "ionic-angular";
 import { AuthService } from "./auth.service";
-import { BuildParamService } from "../..";
+import { BuildParamService } from "../utils/buildparam.service"
 
 @Injectable()
 export class OAuthService {
