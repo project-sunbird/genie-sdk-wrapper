@@ -10,4 +10,13 @@ export class BuildParamService {
     }
 
 
+    getBuildConfigParam(param : string,successCallback: (response: string) => void,
+        errorCallback: (error: string) => void) {
+        try {
+          this.factory.getDeviceService().getBuildConfigParam(param , successCallback, errorCallback);
+        } catch (error) {
+          console.log(error);
+        }
+    }
+    
 }

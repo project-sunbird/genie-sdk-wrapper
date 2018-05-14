@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Platform } from "ionic-angular";
 import { AuthService } from "./auth.service";
+import { BuildParamService } from "../utils/buildparam.service"
 
 @Injectable()
 export class OAuthService {
@@ -11,30 +12,32 @@ export class OAuthService {
 
     auth_url: string;
 
-    constructor(private platform: Platform, private authService: AuthService) {
-        var paramkeyArray=["auth_url","logout_url","auth_redirect_url"];
-        (<any>window).CustomConfigParameters.get(configData => {
-            this.auth_url = configData.auth_url;
-            this.redirect_url = configData.auth_redirect_url;
-            this.logout_url = configData.logout_url;
-            this.auth_url = this.auth_url.replace("${CID}", this.platform.is("android")?"android":"ios");
-        },
-        
-        err => {
+    constructor(private platform: Platform, private authService: AuthService,
+        private buildParamService: BuildParamService) {
 
-        },
-        
-        paramkeyArray);
+        this.buildParamService.getBuildConfigParam("BASE_URL", (response: any) => {
+            this.redirect_url = response + "/oauth2callback";
+            this.auth_url = response + "/auth/realms/sunbird/protocol/openid-connect/auth?redirect_uri=" +
+                this.redirect_url + "&response_type=code&scope=offline_access&client_id=${CID}";
+            this.auth_url = this.auth_url.replace("${CID}", this.platform.is("android") ? "android" : "ios");
+            this.logout_url = response + "/auth/realms/sunbird/protocol/openid-connect/logout?redirect_uri=" +
+                this.redirect_url;
+
+            return response;
+        }, (error) => {
+            return "";
+        });
+
     }
 
     doOAuthStepOne(): Promise<any> {
         let that = this;
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
 
             let browserRef = (<any>window).cordova.InAppBrowser.open(that.auth_url);
             browserRef.addEventListener("loadstart", (event) => {
                 if ((event.url).indexOf(that.redirect_url) === 0) {
-                    browserRef.removeEventListener("exit", (event) => {});
+                    browserRef.removeEventListener("exit", (event) => { });
                     browserRef.close();
                     let responseParameters = (((event.url).split("?")[1]).split("="))[1];
                     if (responseParameters !== undefined) {
@@ -44,11 +47,11 @@ export class OAuthService {
                     }
                 }
             });
-            browserRef.addEventListener("exit", function(event) {
+            browserRef.addEventListener("exit", function (event) {
                 reject("The Sunbird sign in flow was canceled");
             });
 
-            
+
         });
     }
 
@@ -56,12 +59,12 @@ export class OAuthService {
 
         let that = this;
 
-        return new Promise(function(resolve, reject) {
-              that.authService.createSession(token,(response)=>{
+        return new Promise(function (resolve, reject) {
+            that.authService.createSession(token, (response) => {
                 try {
                     let dataJson = JSON.parse(response);
                     let refreshToken = dataJson["refresh_token"];
-                
+
                     let accessToken: string = dataJson["access_token"];
 
                     let value = accessToken.substring(accessToken.indexOf('.') + 1, accessToken.lastIndexOf('.'));
@@ -72,14 +75,14 @@ export class OAuthService {
                     that.authService.startSession(accessToken, refreshToken, userToken);
 
                     resolve();
-                    
+
                 } catch (error) {
                     reject(error);
                 }
-            },(error)=>{
-                
+            }, (error) => {
+
             });
-               
+
         });
     }
 
@@ -89,13 +92,13 @@ export class OAuthService {
             let browserRef = (<any>window).cordova.InAppBrowser.open(that.logout_url);
             browserRef.addEventListener("loadstart", (event) => {
                 if ((event.url).indexOf(that.redirect_url) === 0) {
-                    browserRef.removeEventListener("exit", (event) => {});
+                    browserRef.removeEventListener("exit", (event) => { });
                     browserRef.close();
                     that.authService.endSession();
                     resolve();
                 }
             });
-        }) 
+        })
     }
 
 
