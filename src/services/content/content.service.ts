@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 
 import {
   ContentDetailRequest, ContentImportRequest, ContentSearchCriteria, ContentFilterCriteria, ChildContentRequest, ContentDeleteRequest,
-  ContentExportRequest, DownloadAction
+  ContentExportRequest, DownloadAction, FlagContentRequest, ContentFeedback
 } from "./bean";
 import { ServiceProvider } from "../factory";
 
@@ -68,6 +68,26 @@ export class ContentService {
     errorCallback: (response: string) => void) {
     try {
       this.factory.getContentService().deleteContent(JSON.stringify(request), successCallback, errorCallback);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  flagContent(request: FlagContentRequest,
+    successCallback: (response: string) => void,
+    errorCallback: (response: string) => void) {
+    try {
+      this.factory.getContentService().flagContent(JSON.stringify(request), successCallback, errorCallback);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  sendFeedback(request: ContentFeedback,
+    successCallback: (response: string) => void,
+    errorCallback: (response: string) => void) {
+    try {
+      this.factory.getContentService().sendFeedback(JSON.stringify(request), successCallback, errorCallback);
     } catch (error) {
       console.log(error);
     }

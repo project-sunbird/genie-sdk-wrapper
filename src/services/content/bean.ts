@@ -119,6 +119,21 @@ export class ContentDelete {
   isChildContent: Boolean
 }
 
+export class FlagContentRequest {
+  contentId: string;
+  flagReasons: Array<string>;
+  flaggedBy: string;
+  versionKey: string;
+  flags: Array<string>;
+}
+
+export class ContentFeedback {
+  contentId: string;
+  rating: number;
+  comments?: string;
+  contentVersion: string;
+}
+
 export class ContentExportRequest {
   contentIds?: Array<String>;
   destinationFolder: String;
