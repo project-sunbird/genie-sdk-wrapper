@@ -34,10 +34,14 @@ export class OAuthService {
         let that = this;
         return new Promise(function (resolve, reject) {
 
-            let browserRef = (<any>window).cordova.InAppBrowser.open(that.auth_url);
+            let closeCallback = function (event) {
+                reject("The Sunbird sign in flow was canceled");
+            };
+
+            let browserRef = (<any>window).cordova.InAppBrowser.open(that.auth_url, "_blank");
             browserRef.addEventListener("loadstart", (event) => {
                 if ((event.url).indexOf(that.redirect_url) === 0) {
-                    browserRef.removeEventListener("exit", (event) => { });
+                    browserRef.removeEventListener("exit", closeCallback);
                     browserRef.close();
                     let responseParameters = (((event.url).split("?")[1]).split("="))[1];
                     if (responseParameters !== undefined) {
@@ -47,11 +51,7 @@ export class OAuthService {
                     }
                 }
             });
-            browserRef.addEventListener("exit", function (event) {
-                reject("The Sunbird sign in flow was canceled");
-            });
-
-
+            browserRef.addEventListener("exit", closeCallback);
         });
     }
 
