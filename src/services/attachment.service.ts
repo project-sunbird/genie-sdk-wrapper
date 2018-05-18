@@ -5,14 +5,16 @@ import { FileOpener } from '@ionic-native/file-opener';
 
 @Injectable()
 export class AttachmentService {
-    constructor(private fileTransfer: FileTransfer, private fileOpener: FileOpener) {
 
+    transfer: FileTransferObject;
+
+    constructor(private fileTransfer: FileTransfer, private fileOpener: FileOpener) {
+        this.transfer = this.fileTransfer.create();
     }
 
     downloadAttachment(attachmentServerUrl: string, destinationPath: string) {
-        let transfer: FileTransferObject = this.fileTransfer.create();
 
-        transfer.download(attachmentServerUrl, destinationPath).then(
+        this.transfer.download(attachmentServerUrl, destinationPath).then(
             (success) => {
                 console.log('download complete: ' + success);
                 this.checkExtensionAndOpenFile(destinationPath);
@@ -31,6 +33,10 @@ export class AttachmentService {
         } else if (destinationPath.indexOf(".pdf") !== -1) {
             this.openFile(destinationPath, "application/pdf");
         }
+    }
+
+    listenDownloadProgress(eventListener: (event: ProgressEvent) => any) {
+        this.transfer.onProgress(eventListener);
     }
 
     openFile(resourcePath: string, applicationType: string) {
