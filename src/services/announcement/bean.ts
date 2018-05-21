@@ -13,6 +13,6 @@ export class UpdateAnnouncementStateRequest {
 }
 
 export enum AnnouncementStatus {
-    RECEIVED = "received",
-    READ = "read",
+    RECEIVED = "RECEIVED",
+    READ = "READ",
 }
