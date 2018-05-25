@@ -63,7 +63,10 @@
 		"tsickle": "^0.27.2",
 		"typescript": "^2.4.2",
 		"webpack": "^3.11.0",
-		"zone.js": "0.8.18"
+		"zone.js": "0.8.18",
+		"@ionic-native/file": "^4.7.0",
+		"@ionic-native/file-opener": "^4.7.0",
+		"@ionic-native/file-transfer": "^4.7.0"
 	},
 	"ngPackage": {
 		"$schema": "./node_modules/ng-packagr/ng-package.schema.json",
