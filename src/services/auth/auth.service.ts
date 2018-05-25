@@ -26,7 +26,7 @@ export class AuthService {
     }
 
     startSession(accessToken, refreshToken, userToken) {
-        let sessionJson = {accessToken: accessToken, refreshToken: refreshToken, userToken: userToken};
+        let sessionJson = {access_token: accessToken, refresh_token: refreshToken, user_token: userToken};
         (<any>window).GenieSDK.auth.startSession(JSON.stringify(sessionJson));
     }
 
