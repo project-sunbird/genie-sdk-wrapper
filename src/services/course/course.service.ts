@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 
-import { EnrolledCoursesRequest, EnrollCourseRequest, UpdateContentStateRequest, CourseBatchesRequest } from "./bean"
+import { EnrolledCoursesRequest, EnrollCourseRequest, UpdateContentStateRequest, CourseBatchesRequest, BatchDetailsRequest } from "./bean"
 import { ServiceProvider } from "../factory";
 import { GenieResponse } from "../service.bean";
 
@@ -46,6 +46,16 @@ export class CourseService {
         errorCallback: (error: String) => void) {
         try {
             this.factory.getCourseService().getCourseBatches(JSON.stringify(requestObject), successCallback, errorCallback);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    getBatchDetails(requestObject: BatchDetailsRequest,
+        successCallback: (response: String) => void,
+        errorCallback: (error: String) => void) {
+        try {
+            this.factory.getCourseService().getBatchDetails(JSON.stringify(requestObject), successCallback, errorCallback);
         } catch (error) {
             console.log(error);
         }

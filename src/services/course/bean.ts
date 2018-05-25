@@ -1,27 +1,31 @@
 export class EnrolledCoursesRequest {
-    userId: String;
-    refreshEnrolledCourses?: Boolean;
+    userId: string;
+    refreshEnrolledCourses?: boolean;
 }
 
 export class EnrollCourseRequest {
-    userId: String;
-    courseId: String;
-    contentId: String;
-    batchId: String;
+    userId: string;
+    courseId: string;
+    contentId: string;
+    batchId: string;
 }
 
 export class UpdateContentStateRequest {
-    userId: String;
-    courseId: String;
-    contentId: String;
+    userId: string;
+    courseId: string;
+    contentId: string;
     batchId: String;
     status?: Number;
     progress?: Number;
-    result?: String;
-    grade?: String;
-    score?: String;
+    result?: string;
+    grade?: string;
+    score?: string;
 }
 
 export class CourseBatchesRequest {
-    courseIds: String[];
+    courseIds: string[];
+}
+
+export class BatchDetailsRequest {
+    batchId: string;
 }
