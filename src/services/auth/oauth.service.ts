@@ -15,7 +15,7 @@ export class OAuthService {
 
     base_url: string;
 
-    constructor(private platform: Platform, 
+    constructor(private platform: Platform,
         private authService: AuthService,
         private buildParamService: BuildParamService,
         private http: Http) {
@@ -74,16 +74,21 @@ export class OAuthService {
                     let accessToken: string = dataJson["access_token"];
 
                     let value = accessToken.substring(accessToken.indexOf('.') + 1, accessToken.lastIndexOf('.'));
-                    value = atob(value);
-                    let json = JSON.parse(value);
-                    let userToken = json["sub"];
+                    (<any>window).GenieSDK.
+                        genieSdkUtil.decode(value, 8, decoded => {
+                            let json = JSON.parse(decoded);
+                            let userToken = json["sub"];
 
-                    that.authService.startSession(accessToken, refreshToken, userToken);
+                            that.authService.startSession(accessToken, refreshToken, userToken);
 
-                    //ignore response or error
-                    that.updateLoginTime(accessToken, userToken);
+                            //ignore response or error
+                            that.updateLoginTime(accessToken, userToken);
 
-                    resolve();
+                            resolve();
+                        }, error => {
+                            reject();
+                        });
+
 
                 } catch (error) {
                     reject(error);
@@ -110,19 +115,19 @@ export class OAuthService {
                     method: RequestMethod.Patch
                 });
                 let body = {
-                    params: { },
-                       request: {  
-                            userId: userToken 
-                       }
-                   }
+                    params: {},
+                    request: {
+                        userId: userToken
+                    }
+                }
                 that.http.patch(that.base_url + "/api/user/v1/update/logintime", body, options)
-                .toPromise()
-                .then(response => {
-                    resolve();
-                })
-                .catch(error => {
-                    reject(error);
-                });
+                    .toPromise()
+                    .then(response => {
+                        resolve();
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
             }, error => {
                 reject(error);
             });
