@@ -23,7 +23,10 @@
 		"ionicons": "3.0.0",
 		"rxjs": "5.5.2",
 		"sw-toolbox": "3.6.0",
-		"zone.js": "0.8.18"
+		"zone.js": "0.8.18",
+		"@ionic-native/file": "^4.7.0",
+		"@ionic-native/file-opener": "^4.7.0",
+		"@ionic-native/file-transfer": "^4.7.0"
 	},
 	"devDependencies": {
 		"@angular/common": "5.0.3",
@@ -75,10 +78,5 @@
 				"ionic-angular": "ionicBundle"
 			}
 		}
-	},
-	"dependencies": {
-		"@ionic-native/file": "^4.7.0",
-		"@ionic-native/file-opener": "^4.7.0",
-		"@ionic-native/file-transfer": "^4.7.0"
 	}
 }
