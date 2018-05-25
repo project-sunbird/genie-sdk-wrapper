@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Http, Headers, RequestOptions, RequestMethod } from "@angular/http";
 import { Platform } from "ionic-angular";
 import { AuthService } from "./auth.service";
 import { BuildParamService } from "../utils/buildparam.service"
@@ -12,10 +13,15 @@ export class OAuthService {
 
     auth_url: string;
 
-    constructor(private platform: Platform, private authService: AuthService,
-        private buildParamService: BuildParamService) {
+    base_url: string;
+
+    constructor(private platform: Platform, 
+        private authService: AuthService,
+        private buildParamService: BuildParamService,
+        private http: Http) {
 
         this.buildParamService.getBuildConfigParam("BASE_URL", (response: any) => {
+            this.base_url = response;
             this.redirect_url = response + "/oauth2callback";
             this.auth_url = response + "/auth/realms/sunbird/protocol/openid-connect/auth?redirect_uri=" +
                 this.redirect_url + "&response_type=code&scope=offline_access&client_id=${CID}";
@@ -74,6 +80,9 @@ export class OAuthService {
 
                     that.authService.startSession(accessToken, refreshToken, userToken);
 
+                    //ignore response or error
+                    that.updateLoginTime(accessToken, userToken);
+
                     resolve();
 
                 } catch (error) {
@@ -83,6 +92,40 @@ export class OAuthService {
 
             });
 
+        });
+    }
+
+    updateLoginTime(accessToken: string, userToken: string): Promise<any> {
+        let that = this;
+        return new Promise((resolve, reject) => {
+            that.authService.getBearerToken(token => {
+                let headers = new Headers({
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-Authenticated-User-Token': accessToken,
+                    'Authorization': "Bearer " + token
+                });
+                let options = new RequestOptions({
+                    headers: headers,
+                    method: RequestMethod.Patch
+                });
+                let body = {
+                    params: { },
+                       request: {  
+                            userId: userToken 
+                       }
+                   }
+                that.http.patch(that.base_url + "/api/user/v1/update/logintime", body, options)
+                .toPromise()
+                .then(response => {
+                    resolve();
+                })
+                .catch(error => {
+                    reject(error);
+                });
+            }, error => {
+                reject(error);
+            });
         });
     }
 

@@ -1,4 +1,5 @@
 import { NgModule } from "@angular/core";
+import { HttpModule } from "@angular/http";
 import { ContainerService } from "./container/container.services";
 import { ContentService } from "./services/content/content.service";
 import { EventService } from "./services/event/event.service";
@@ -27,6 +28,7 @@ import { BuildParamService } from "./services/utils/buildparam.service";
     declarations: [
     ],
     imports: [
+        HttpModule
     ],
     providers: [
         ContainerService,
