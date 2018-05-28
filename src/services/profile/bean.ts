@@ -16,7 +16,14 @@ export class Profile {
     grade?: string[];
     createdAt?: string;
 }
-
+export class ContentAccess {
+    status?: number;
+    contentId: string;
+    contentLearnerState: ContentLearnerState;
+}
+export class ContentLearnerState {
+    learnerState: { [index: string]: string };
+}
 
 export enum ProfileType {
     STUDENT = "STUDENT",

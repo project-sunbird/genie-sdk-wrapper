@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Profile } from "./bean"
+import { Profile, ContentAccess } from "./bean"
 
 @Injectable()
 export class ProfileService {
@@ -26,6 +26,10 @@ export class ProfileService {
 
     setAnonymousUser(onSuccess, onError) {
         (<any>window).GenieSDK.profile.setAnonymousUser(onSuccess, onError);
+    }
+
+    addContentAccess(cotentAccess: ContentAccess, onSuccess, onError) {
+        (<any>window).GenieSDK.profile.addContentAccess(JSON.stringify(cotentAccess), onSuccess, onError);
     }
 
 }
