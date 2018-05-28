@@ -19,6 +19,6 @@ export class Profile {
 
 
 export enum ProfileType {
-    STUDENT = "student",
-    TEACHER = "teacher",
+    STUDENT = "STUDENT",
+    TEACHER = "TEACHER",
 }
