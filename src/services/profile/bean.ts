@@ -27,5 +27,5 @@ export class ContentLearnerState {
 
 export enum ProfileType {
     STUDENT = "STUDENT",
-    TEACHER = "TEACHER",
+    TEACHER = "TEACHER"
 }
