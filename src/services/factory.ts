@@ -53,4 +53,8 @@ export class ServiceProvider {
     getBuildParamService(): any {
         
     }
+
+    getFormService(): any {
+        
+    }
 }

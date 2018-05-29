@@ -52,4 +52,8 @@ export class GenieSDKServiceProvider extends ServiceProvider {
         return (<any>window).GenieSDK.share;
     }
 
+    getFormService(): any {
+        return (<any>window).GenieSDK.form;
+    }
+
 }

@@ -24,6 +24,7 @@ import { DeviceInfoService } from "./services/utils/device.service";
 import { LocationInfoService } from "./services/utils/location.service";
 import { ShareUtil } from "./services/utils/share.service";
 import { BuildParamService } from "./services/utils/buildparam.service";
+import { FormService } from "./services/form/form.service";
 
 @NgModule({
     declarations: [
@@ -52,6 +53,7 @@ import { BuildParamService } from "./services/utils/buildparam.service";
         DeviceInfoService,
         LocationInfoService,
         BuildParamService,
+        FormService,
         QRScanner,
         ShareUtil
     ],

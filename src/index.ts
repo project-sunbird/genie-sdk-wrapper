@@ -49,5 +49,6 @@ export * from "./services/utils/preferences.service";
 
 export * from "./services/utils/share.service";
 export * from "./services/utils/buildparam.service";
+export * from "./services/form/form.service";
 
 export * from "./framework.module";
