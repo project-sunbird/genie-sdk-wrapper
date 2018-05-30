@@ -15,6 +15,7 @@ export class Profile {
     subject?: string[];
     grade?: string[];
     createdAt?: string;
+    syllabus?: string[];
 }
 export class ContentAccess {
     status?: number;
