@@ -58,6 +58,7 @@ export class End {
   objVer: string;
   rollup: Rollup;
   summaryList: Array<{ [index: string]: any }>;
+  correlationData: Array<CorrelationData>;
 }
 
 export class Error {
@@ -195,6 +196,7 @@ export class Start {
   objType: string;
   objVer: string;
   rollup: Rollup;
+  correlationData: Array<CorrelationData>;
 }
 
 export class TelemetryObject {
