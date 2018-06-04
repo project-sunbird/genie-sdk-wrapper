@@ -16,5 +16,6 @@ export class PageAssembleFilter {
 export class PageAssembleCriteria {
     name: string;
     source?: string;
+    mode?: string;
     filters?: PageAssembleFilter;
 }
