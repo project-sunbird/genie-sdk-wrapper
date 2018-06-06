@@ -44,7 +44,7 @@ export class OAuthService {
                 reject("The Sunbird sign in flow was canceled");
             };
 
-            let browserRef = (<any>window).cordova.InAppBrowser.open(that.auth_url, "_blank");
+            let browserRef = (<any>window).cordova.InAppBrowser.open(that.auth_url, "_blank", "zoom=no");
             browserRef.addEventListener("loadstart", (event) => {
                 if ((event.url).indexOf(that.redirect_url) === 0) {
                     browserRef.removeEventListener("exit", closeCallback);
