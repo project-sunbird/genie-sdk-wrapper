@@ -3,6 +3,7 @@ import { Http, Headers, RequestOptions, RequestMethod } from "@angular/http";
 import { Platform } from "ionic-angular";
 import { AuthService } from "./auth.service";
 import { BuildParamService } from "../utils/buildparam.service"
+import { UserProfileService, UserProfileDetailsRequest } from "../..";
 
 @Injectable()
 export class OAuthService {
@@ -17,6 +18,7 @@ export class OAuthService {
 
     constructor(private platform: Platform,
         private authService: AuthService,
+        private userProfileService: UserProfileService,
         private buildParamService: BuildParamService,
         private http: Http) {
 
@@ -81,10 +83,25 @@ export class OAuthService {
 
                             that.authService.startSession(accessToken, refreshToken, userToken);
 
-                            //ignore response or error
-                            that.updateLoginTime(accessToken, userToken);
+                            let userProfileRequest: UserProfileDetailsRequest = {
+                                userId: userToken,
+                                requiredFields: ['completeness', 'missingFields', 'lastLoginTime', 'topics']
+                            }
 
-                            resolve();
+                            that.userProfileService.getUserProfileDetails(userProfileRequest, success => {
+                                //ignore response or error
+                                that.updateLoginTime(accessToken, userToken);
+
+                                resolve();
+                            }, error => {
+
+                                // SB-3496 Fix : We need to recosider how to handle the error  
+                                //ignore response or error
+                                that.updateLoginTime(accessToken, userToken);
+
+                                resolve();
+                            });
+
                         }, error => {
                             reject();
                         });
