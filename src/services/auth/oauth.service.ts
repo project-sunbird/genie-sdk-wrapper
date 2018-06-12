@@ -3,7 +3,8 @@ import { Http, Headers, RequestOptions, RequestMethod } from "@angular/http";
 import { Platform } from "ionic-angular";
 import { AuthService } from "./auth.service";
 import { BuildParamService } from "../utils/buildparam.service"
-import { UserProfileService, UserProfileDetailsRequest } from "../..";
+import { UserProfileService } from "../userprofile/userprofile.service";
+import { UserProfileDetailsRequest } from "../userprofile/bean";
 
 @Injectable()
 export class OAuthService {
