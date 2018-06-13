@@ -19,11 +19,15 @@ export class TabsPage {
   ionViewWillEnter() {
     this.tabs = this.container.getAllTabs();
 
-    setTimeout(() => {
-      let tabIndex = 0;
-      if (this.navParams.get('loginMode') == 'guest') {
-        tabIndex = 0;
+    let tabIndex = 0;
+
+    this.tabs.forEach((tab, index) => {
+      if (tab.isSelected === true) {
+        tabIndex = index;
       }
+    })
+
+    setTimeout(() => {
       this.tabRef.select(tabIndex);
     }, 300);
 

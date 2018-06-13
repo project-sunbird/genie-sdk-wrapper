@@ -6,6 +6,7 @@ export interface TabOptions {
   label?: string;
   index?: number;
   tabsHideOnSubPages?: boolean;
+  isSelected?: boolean;
 }
 
 @Injectable()
