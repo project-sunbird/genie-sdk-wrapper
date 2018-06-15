@@ -1,6 +1,6 @@
 export class CategoryRequest {
     frameworkId?: string;
-    currentCategory: string;
+    currentCategory?: string;
     prevCategory?: string;
     selectedCode?: Array<string>;
 }
