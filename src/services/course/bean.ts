@@ -1,6 +1,7 @@
 export class EnrolledCoursesRequest {
     userId: string;
     refreshEnrolledCourses?: boolean;
+    returnRefreshedEnrolledCourses?: boolean
 }
 
 export class EnrollCourseRequest {
