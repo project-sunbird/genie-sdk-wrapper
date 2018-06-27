@@ -7,5 +7,5 @@ export class CategoryRequest {
 export class FrameworkDetailsRequest {
     frameworkId?: string;
     refreshFrameworkDetails?: boolean = false;
-    defaultFrameworkDetails: boolean = true;
+    defaultFrameworkDetails: boolean = false;
 }
