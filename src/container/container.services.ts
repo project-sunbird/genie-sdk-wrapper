@@ -12,23 +12,23 @@ export interface TabOptions {
 @Injectable()
 export class ContainerService {
 
-    private tabs:Array<TabOptions> = [];
+  private tabs: Array<TabOptions> = [];
 
-    addTab(tab: TabOptions) {
-      this.tabs.push(tab);
-    }
+  addTab(tab: TabOptions) {
+    this.tabs.push(tab);
+  }
 
-    getAllTabs(): Array<any> {
-        return this.tabs.sort((prev, next) => {
-          if (prev.index < next.index) return -1;
-          if (prev.index > next.index) return 1;
-          return 0;
-        });
-    }
+  getAllTabs(): Array<any> {
+    return this.tabs.sort((prev, next) => {
+      if (prev.index < next.index) return -1;
+      if (prev.index > next.index) return 1;
+      return 0;
+    });
+  }
 
-    removeAllTabs() {
-      this.tabs = [];
-    }
+  removeAllTabs() {
+    this.tabs = [];
+  }
 
 }
 
