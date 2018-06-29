@@ -74,6 +74,29 @@ export class FrameworkService {
     successCallback: (response: string) => void,
     errorCallback: (error: string) => void) {
 
+    if (this.updatedFrameworkResponseBody.result == undefined
+      || request.frameworkId !== this.updatedFrameworkResponseBody.result.framework.identifier) {
+      let fr = new FrameworkDetailsRequest();
+      if (request.frameworkId !== undefined
+        && request.frameworkId !== "") {
+        fr.frameworkId = request.frameworkId;
+      } else {
+        fr.defaultFrameworkDetails = true;
+      }
+      this.getFrameworkDetails(fr, r => {
+        this.getCategory(request, successCallback, errorCallback);
+      }, e => {
+        //ignore as of now
+        errorCallback(e);
+      })
+    } else {
+      this.getCategory(request, successCallback, errorCallback);
+    }
+  }
+
+  private getCategory(request: CategoryRequest,
+    successCallback: (response: string) => void,
+    errorCallback: (error: string) => void) {
     if (request.prevCategory && request.selectedCode) {
       let filteredCategory = this.currentCategories.filter(c => {
         return c.code === request.prevCategory;
@@ -84,7 +107,7 @@ export class FrameworkService {
         }
         return request.selectedCode!.some(check);
       });
-      
+
       let check2 = function (element) {
         return element.associations !== undefined;
       }
@@ -100,7 +123,7 @@ export class FrameworkService {
         successCallback(JSON.stringify(Array.from(map.values())));
         return;
       }
-      
+
     }
 
     let nextCategories = this.currentCategories.filter(c => {
