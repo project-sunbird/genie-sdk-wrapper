@@ -83,8 +83,5 @@
 				"ionic-angular": "ionicBundle"
 			}
 		}
-	},
-	"dependencies": {
-		"@ionic/storage": "^2.1.3"
 	}
 }
