@@ -56,4 +56,8 @@ export class GenieSDKServiceProvider extends ServiceProvider {
         return (<any>window).GenieSDK.form;
     }
 
+    getDialCodeService(): any {
+        return (<any>window).GenieSDK.dialcode;
+    }
+
 }

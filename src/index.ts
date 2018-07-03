@@ -51,5 +51,7 @@ export * from "./services/utils/share.service";
 export * from "./services/utils/buildparam.service";
 export * from "./services/form/bean";
 export * from "./services/form/form.service";
+export * from "./services/dialcode/bean";
+export * from "./services/dialcode/dialcode.service";
 
 export * from "./framework.module";

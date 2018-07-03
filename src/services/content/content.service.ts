@@ -34,16 +34,18 @@ export class ContentService {
 
   searchContent(request: ContentSearchCriteria,
     isFilterApplied: boolean,
+    isDialCodeSearch: boolean ,
+    isGuestUser: boolean,
     successCallback: (response: string) => void,
     errorCallback: (error: string) => void) {
     try {
-      this.factory.getContentService().searchContent(JSON.stringify(request), isFilterApplied, successCallback, errorCallback);
+      this.factory.getContentService().searchContent(JSON.stringify(request), isFilterApplied, isDialCodeSearch , isGuestUser, successCallback, errorCallback);
     } catch (error) {
       console.log(error);
     }
   }
 
-   getAllLocalContents(request: ContentFilterCriteria,
+  getAllLocalContents(request: ContentFilterCriteria,
     successCallback: (response: string) => void,
     errorCallback: (response: string) => void) {
     try {
