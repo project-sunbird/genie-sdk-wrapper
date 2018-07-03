@@ -2,13 +2,15 @@ import { Injectable } from "@angular/core";
 import { Group } from "./bean";
 import { Storage } from '@ionic/storage';
 import { ServiceProvider } from "../factory";
+import { StorageService } from "../storage/storage.service";
+import { UUID } from "angular2-uuid";
 
 @Injectable()
-export class GroupService {
+export class GroupService extends StorageService<Group> {
 
-    constructor(private storage: Storage, private factory: ServiceProvider) {
-        storage.ready().then(() => {
-        });
+
+    constructor(storage: Storage, private factory: ServiceProvider) {
+        super(storage, "group");
     }
 
     /**
@@ -18,13 +20,13 @@ export class GroupService {
         // TODO:
 
         try {
-            let value = await this.storage.set('name', request);
+            let value = await this.save(request);
             // create succes response
-            let genieResponse = {};
+            let genieResponse = { result: value };
             return await genieResponse;
         } catch (error) {
             // create genie error response
-            return await {};
+            return await { error: error };
         }
 
     }
@@ -35,7 +37,15 @@ export class GroupService {
      */
     async updateGroup(request: Group) {
         // TODO:
-        this.createGroup({}).
+        try {
+            let value = await this.update(request);
+            // create succes response
+            let genieResponse = { result: value };
+            return await genieResponse;
+        } catch (error) {
+            // create genie error response
+            return await { error: error };
+        }
     }
 
     setCurrentGroup(gid: string) {
@@ -53,7 +63,14 @@ export class GroupService {
      * This api returns the list of all groups.
      */
     async getAllGroup() {
-        // TODO: 
+        try {
+            let value = await this.getAll();
+            // create succes response
+            let genieResponse = { result: value };
+            return await genieResponse;
+        } catch (error) {
+            return await { error: error };
+        } 
     }
 
     /**
@@ -61,15 +78,32 @@ export class GroupService {
      * @param gid 
      */
     async deleteGroup(gid: string) {
-        // TODO: 
+        try {
+            let value = await this.delete(gid);
+            // create succes response
+            let genieResponse = { result: value };
+            return await genieResponse;
+        } catch (error) {
+            return await { error: error };
+        }
     }
+
 
     /**
      * This API is used to 
      * @param request {@link UsersAndGroups}
      */
-    async mapUserAndGroup(request: UsersAndGroups) {
+    // async mapUserAndGroup(request: UsersAndGroups) {
 
+    // }
+
+    getUniqueKeyFromObject(object: Group): string {
+        if (object.gid) {
+            return object.gid
+        } else {
+            object.gid = UUID.UUID() // Return Random UUID 
+            return object.gid; 
+        }
     }
 
 }

@@ -7,7 +7,6 @@ import { TelemetryService } from "./services/telemetry/telemetry.service";
 import { ServiceProvider } from "./services/factory";
 import { GenieSDKServiceProvider } from "./services/geniesdk.service";
 import { OAuthService } from "./services/auth/oauth.service";
-import { TabsPage } from "./container/tabs/tabs";
 import { AuthService } from "./services/auth/auth.service";
 import { ProfileService } from "./services/profile/profile.service";
 import { CourseService } from "./services/course/course.service"
@@ -25,6 +24,7 @@ import { LocationInfoService } from "./services/utils/location.service";
 import { ShareUtil } from "./services/utils/share.service";
 import { BuildParamService } from "./services/utils/buildparam.service";
 import { FormService } from "./services/form/form.service";
+import { GroupService } from "./services/group/group.service";
 
 @NgModule({
     declarations: [
@@ -55,7 +55,8 @@ import { FormService } from "./services/form/form.service";
         BuildParamService,
         FormService,
         QRScanner,
-        ShareUtil
+        ShareUtil,
+        GroupService
     ],
     exports: [
     ]
