@@ -56,3 +56,6 @@ export * from "./services/form/bean";
 export * from "./services/form/form.service";
 
 export * from "./framework.module";
+
+export * from "./services/migration/bean"
+export * from "./services/migration/migration.service"

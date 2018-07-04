@@ -25,6 +25,7 @@ import { ShareUtil } from "./services/utils/share.service";
 import { BuildParamService } from "./services/utils/buildparam.service";
 import { FormService } from "./services/form/form.service";
 import { GroupService } from "./services/group/group.service";
+import { MigrationService } from "./services/migration/migration.service";
 
 @NgModule({
     declarations: [
@@ -56,7 +57,8 @@ import { GroupService } from "./services/group/group.service";
         FormService,
         QRScanner,
         ShareUtil,
-        GroupService
+        GroupService,
+        MigrationService
     ],
     exports: [
     ]

@@ -75,17 +75,17 @@ export class ProfileService {
      * @param onError 
      */
     getAllUserProfile(onSuccess, onError) {
-        // TODO: 
+        this.factory.getProfileService().getAllUserProfile(onSuccess, onError);
     }
 
     /**
      * This api is used to delete a existing user with a specific uid
-     * @param uid 
+     * @param request 
      * @param onSuccess 
      * @param onError 
      */
-    deleteUser(uid: string, onSuccess, onError) {
-        // TODO: 
+    deleteUser(request: string, onSuccess, onError) {
+        this.factory.getProfileService().deleteUser(request, onSuccess, onError);
     }
 
 }
