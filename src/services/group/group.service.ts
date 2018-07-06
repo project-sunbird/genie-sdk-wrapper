@@ -1,16 +1,36 @@
 import { Injectable } from "@angular/core";
 import { Group } from "./bean";
-import { Storage } from '@ionic/storage';
 import { ServiceProvider } from "../factory";
 import { StorageService } from "../storage/storage.service";
 import { UUID } from "angular2-uuid";
+import { SQLite } from "@ionic-native/sqlite";
 
 @Injectable()
 export class GroupService extends StorageService<Group> {
 
 
-    constructor(storage: Storage, private factory: ServiceProvider) {
-        super(storage, "group");
+    constructor(sqlite: SQLite, private factory: ServiceProvider) {
+        super(sqlite, "groups");
+    }
+
+
+    async createGroups(request: Array<Group>) {
+        try {
+            let value = await this.saveAll(request);
+            // create succes response
+            let genieResponse = { result: value };
+            return await genieResponse;
+
+            // let allPromise: Array<Promise<any>> = [];
+
+            // request.forEach(req => {
+            //     allPromise.push(this.save(req));
+            // })
+
+            // return Promise.all(allPromise);
+        } catch (error) {
+            return await { error: error };
+        }
     }
 
     /**
@@ -70,7 +90,7 @@ export class GroupService extends StorageService<Group> {
             return await genieResponse;
         } catch (error) {
             return await { error: error };
-        } 
+        }
     }
 
     /**
@@ -102,7 +122,7 @@ export class GroupService extends StorageService<Group> {
             return object.gid
         } else {
             object.gid = UUID.UUID() // Return Random UUID 
-            return object.gid; 
+            return object.gid;
         }
     }
 

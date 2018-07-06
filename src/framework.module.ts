@@ -26,6 +26,7 @@ import { BuildParamService } from "./services/utils/buildparam.service";
 import { FormService } from "./services/form/form.service";
 import { GroupService } from "./services/group/group.service";
 import { MigrationService } from "./services/migration/migration.service";
+import { SQLite } from "@ionic-native/sqlite";
 
 @NgModule({
     declarations: [
@@ -58,7 +59,8 @@ import { MigrationService } from "./services/migration/migration.service";
         QRScanner,
         ShareUtil,
         GroupService,
-        MigrationService
+        MigrationService,
+        SQLite
     ],
     exports: [
     ]

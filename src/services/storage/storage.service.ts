@@ -1,11 +1,23 @@
 import { Storage } from "@ionic/storage";
+import { SQLite, SQLiteObject } from "@ionic-native/sqlite";
 
 
 export abstract class StorageService<S> {
 
+    protected db: SQLiteObject | any;
 
-    constructor(private storage: Storage, private keyPrefix: string, private listKey: string = "list") {
-        storage.ready().then(() => {
+    constructor(private sqlite: SQLite, private keyPrefix: string, private listKey: string = "list") {
+        sqlite.create({
+            name: "sunbird-mobile.db",
+            location: "default"
+        }).then((db: SQLiteObject) => {
+            this.db = db;
+            console.log("CREATE TABLE IF NOT EXISTS " + keyPrefix + " (key TEXT, value TEXT)");
+            return this.db.executeSql("CREATE TABLE IF NOT EXISTS " + keyPrefix + " (key TEXT UNIQUE, value TEXT)", {})
+        }).then(val => {
+            console.log("Table Created : " + val);
+        }).catch(error => {
+            console.log("Not able to create the db");
         });
     }
 
@@ -16,8 +28,17 @@ export abstract class StorageService<S> {
      */
     async save(object: S): Promise<any> {
         let key = this.getKeyForObject(object);
-        let savedObject = await this.storage.set(key, object);
-        return await this.storeKeyInList(this.getUniqueKeyFromObject(object));
+        return this.db.executeSql("INSERT INTO " + this.keyPrefix + " VALUES (?, ?)", [key, JSON.stringify(object)]);
+    }
+
+
+    async saveAll(objects: Array<S>): Promise<any> {
+        return this.db.transaction(() => {
+            objects.forEach(object => {
+                let key = this.getKeyForObject(object);
+                this.db.executeSql("INSERT INTO " + this.keyPrefix + " VALUES (?, ?)", [key, JSON.stringify(object)]);
+            });
+        });
     }
 
     /**
@@ -26,8 +47,7 @@ export abstract class StorageService<S> {
      */
     async update(object: S): Promise<any> {
         let key = this.getKeyForObject(object);
-        let savedObject = await this.storage.set(key, object);
-        return await this.storeKeyInList(this.getUniqueKeyFromObject(object));
+        return this.db.executeSql("UPDATE " + this.keyPrefix + " SET value = ? WHERE key = ?", [JSON.stringify(object), key]);
     }
 
     /**
@@ -35,15 +55,8 @@ export abstract class StorageService<S> {
      * @param object It can be type of ´S´ or string (Unqiue Id of the object)
      */
     async delete(object: S | string): Promise<any> {
-        let objectKey = this.getKeyForObject(object);
-        let listKey;
-        if (typeof object === "string") {
-            listKey = object;
-        } else {
-            listKey = this.getUniqueKeyFromObject(object);
-        }
-        let removedObject = await this.storage.remove(objectKey);
-        return await this.removeKeyInList(listKey);
+        let key = this.getKeyForObject(object);
+        return this.db.executeSql("DELETE FROM " + this.keyPrefix + " WHERE key = ?", [key]);
     }
 
     /**
@@ -52,7 +65,7 @@ export abstract class StorageService<S> {
      */
     async get(object: S | string): Promise<any> {
         let key = this.getKeyForObject(object);
-        return this.storage.get(key);
+        return this.db.executeSql("SELECT value FROM " + this.keyPrefix + " WHERE key = ?", [key]);
     }
 
 
@@ -60,57 +73,9 @@ export abstract class StorageService<S> {
      * Get all the values stored in the Ionic Storage
      */
     async getAll(): Promise<any> {
-        let listKey = this.getKeyForList();
-        let allKeys = await this.storage.get(listKey);
-
-        if (!allKeys) {
-            allKeys = [];
-        }
-
-        let values: Array<S> = []
-
-        for (const key of allKeys) {
-            let value = await this.get((<string>key));
-
-            if (value) {
-                values.push(value);
-            }
-        }
-
-        return values;
+        return this.db.executeSql("SELECT value FROM " + this.keyPrefix, []);
     }
 
-    private async storeKeyInList(key: string): Promise<string> {
-        let listKey = this.getKeyForList();
-
-        let allKeys = await this.storage.get(listKey);
-
-        if (!allKeys) {
-            allKeys = [];
-        }
-
-        if (allKeys.indexOf(key) == -1) {
-            allKeys.push(key)
-        }
-
-        return this.storage.set(listKey, allKeys);
-    }
-
-    private async removeKeyInList(key: string): Promise<any> {
-        let listKey = this.getKeyForList();
-        let allKeys = await this.storage.get(listKey);
-
-        if (!allKeys) {
-            allKeys = [];
-        }
-
-        if (allKeys.indexOf(key) > -1) {
-            let index = allKeys.indexOf(key);
-            allKeys.splice(index, 1);
-        }
-
-        return this.storage.set(listKey, allKeys);
-    }
 
     private getKeyForObject(object: S | string): string {
         let key;
