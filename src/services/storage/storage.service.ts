@@ -6,14 +6,14 @@ export abstract class StorageService<S> {
 
     protected db: SQLiteObject | any;
 
-    constructor(private sqlite: SQLite, private keyPrefix: string, private listKey: string = "list") {
+    constructor(private sqlite: SQLite, private tableName: string) {
         sqlite.create({
             name: "sunbird-mobile.db",
             location: "default"
         }).then((db: SQLiteObject) => {
             this.db = db;
-            console.log("CREATE TABLE IF NOT EXISTS " + keyPrefix + " (key TEXT, value TEXT)");
-            return this.db.executeSql("CREATE TABLE IF NOT EXISTS " + keyPrefix + " (key TEXT UNIQUE, value TEXT)", {})
+            console.log("CREATE TABLE IF NOT EXISTS " + tableName + " (key TEXT, value TEXT)");
+            return this.db.executeSql("CREATE TABLE IF NOT EXISTS " + tableName + " (key TEXT UNIQUE, value TEXT)", {})
         }).then(val => {
             console.log("Table Created : " + val);
         }).catch(error => {
@@ -28,7 +28,7 @@ export abstract class StorageService<S> {
      */
     async save(object: S): Promise<any> {
         let key = this.getKeyForObject(object);
-        return this.db.executeSql("INSERT INTO " + this.keyPrefix + " VALUES (?, ?)", [key, JSON.stringify(object)]);
+        return this.db.executeSql("INSERT INTO " + this.tableName + " VALUES (?, ?)", [key, JSON.stringify(object)]);
     }
 
 
@@ -36,7 +36,7 @@ export abstract class StorageService<S> {
         return this.db.transaction(() => {
             objects.forEach(object => {
                 let key = this.getKeyForObject(object);
-                this.db.executeSql("INSERT INTO " + this.keyPrefix + " VALUES (?, ?)", [key, JSON.stringify(object)]);
+                this.db.executeSql("INSERT INTO " + this.tableName + " VALUES (?, ?)", [key, JSON.stringify(object)]);
             });
         });
     }
@@ -47,7 +47,7 @@ export abstract class StorageService<S> {
      */
     async update(object: S): Promise<any> {
         let key = this.getKeyForObject(object);
-        return this.db.executeSql("UPDATE " + this.keyPrefix + " SET value = ? WHERE key = ?", [JSON.stringify(object), key]);
+        return this.db.executeSql("UPDATE " + this.tableName + " SET value = ? WHERE key = ?", [JSON.stringify(object), key]);
     }
 
     /**
@@ -56,7 +56,7 @@ export abstract class StorageService<S> {
      */
     async delete(object: S | string): Promise<any> {
         let key = this.getKeyForObject(object);
-        return this.db.executeSql("DELETE FROM " + this.keyPrefix + " WHERE key = ?", [key]);
+        return this.db.executeSql("DELETE FROM " + this.tableName + " WHERE key = ?", [key]);
     }
 
     /**
@@ -65,7 +65,7 @@ export abstract class StorageService<S> {
      */
     async get(object: S | string): Promise<any> {
         let key = this.getKeyForObject(object);
-        return this.db.executeSql("SELECT value FROM " + this.keyPrefix + " WHERE key = ?", [key]);
+        return this.db.executeSql("SELECT value FROM " + this.tableName + " WHERE key = ?", [key]);
     }
 
 
@@ -73,7 +73,7 @@ export abstract class StorageService<S> {
      * Get all the values stored in the Ionic Storage
      */
     async getAll(): Promise<any> {
-        return this.db.executeSql("SELECT value FROM " + this.keyPrefix, []);
+        return this.db.executeSql("SELECT value FROM " + this.tableName, []);
     }
 
 
@@ -86,12 +86,7 @@ export abstract class StorageService<S> {
             key = this.getUniqueKeyFromObject(object);
         }
 
-        return this.keyPrefix.concat("_", key);
-    }
-
-
-    protected getKeyForList(): string {
-        return this.keyPrefix.concat("_", this.listKey)
+        return key;
     }
 
     /**
