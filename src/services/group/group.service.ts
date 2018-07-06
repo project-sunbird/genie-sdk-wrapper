@@ -5,7 +5,6 @@ import { StorageService } from "../storage/storage.service";
 import { UUID } from "angular2-uuid";
 import { SQLite } from "@ionic-native/sqlite";
 import { UserGroupMapService } from "./user-group-map.service";
-import { group } from "@angular/core/src/animation/dsl";
 
 @Injectable()
 export class GroupService extends StorageService<Group> {
@@ -85,14 +84,10 @@ export class GroupService extends StorageService<Group> {
 
         if (result.rows.length && result.rows.length > 0) {
             for (let i = 0; i < result.rows.length; i++) {
-                console.log("Hello 1: " + result.rows.item(i).value);
-                console.log("Hello 2: " + JSON.parse(result.rows.item(i).value));
                 let data = JSON.parse(result.rows.item(i).value);
-                console.log("Hello 3: " + JSON.parse(result.rows.item(i).value));
                 let gid = data.gid;
-                console.log("Hello 4: Gid : " + gid);
-                // data.uids = await this.userGroupService.getAllUserForGroup(gid);
-                console.log("Hello : " + JSON.parse(data.uids));
+                let values = await this.userGroupService.getAllUserForGroup(gid);
+                data.uids = values;
                 groups.push(data);
             }
         }

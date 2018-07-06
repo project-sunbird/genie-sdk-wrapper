@@ -57,16 +57,16 @@ export class UserGroupMapService {
             gid = group.gid;
         }
 
-        let result = await this.db.executeSql("SELECT uid FROM " + this.tableName + " WHERE gid = ?", [gid]);
+        let result = await this.db.executeSql("SELECT * FROM " + this.tableName + " WHERE gid = ?", [gid]);
         let addedUids: any = [];
 
-        if (result.rows.length && result.rows.items.length) {
+        if (result.rows.length) {
             for (let i = 0; i < result.rows.length; i++) {
-                let value = result.rows.item(i).value;
+                let value = result.rows.item(i).uid;
                 addedUids.push(value);
             }
         }
-
+        
         return addedUids;
     }
 
