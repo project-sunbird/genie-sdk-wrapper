@@ -4,12 +4,14 @@ import { ServiceProvider } from "../factory";
 import { StorageService } from "../storage/storage.service";
 import { UUID } from "angular2-uuid";
 import { SQLite } from "@ionic-native/sqlite";
+import { UserGroupMapService } from "./user-group-map.service";
+import { group } from "@angular/core/src/animation/dsl";
 
 @Injectable()
 export class GroupService extends StorageService<Group> {
 
 
-    constructor(sqlite: SQLite, private factory: ServiceProvider) {
+    constructor(sqlite: SQLite, private userGroupService: UserGroupMapService, private factory: ServiceProvider) {
         super(sqlite, "groups");
     }
 
@@ -18,16 +20,8 @@ export class GroupService extends StorageService<Group> {
         try {
             let value = await this.saveAll(request);
             // create succes response
-            let genieResponse = { result: value };
+            let genieResponse = { result: request };
             return await genieResponse;
-
-            // let allPromise: Array<Promise<any>> = [];
-
-            // request.forEach(req => {
-            //     allPromise.push(this.save(req));
-            // })
-
-            // return Promise.all(allPromise);
         } catch (error) {
             return await { error: error };
         }
@@ -41,8 +35,9 @@ export class GroupService extends StorageService<Group> {
 
         try {
             let value = await this.save(request);
+            let userGroupMap = await this.userGroupService.save(request);
             // create succes response
-            let genieResponse = { result: value };
+            let genieResponse = { result: request };
             return await genieResponse;
         } catch (error) {
             // create genie error response
@@ -59,8 +54,9 @@ export class GroupService extends StorageService<Group> {
         // TODO:
         try {
             let value = await this.update(request);
+            let userGroupMap = await this.userGroupService.save(request);
             // create succes response
-            let genieResponse = { result: value };
+            let genieResponse = { result: request };
             return await genieResponse;
         } catch (error) {
             // create genie error response
@@ -83,14 +79,26 @@ export class GroupService extends StorageService<Group> {
      * This api returns the list of all groups.
      */
     async getAllGroup() {
-        try {
-            let value = await this.getAll();
-            // create succes response
-            let genieResponse = { result: value };
-            return await genieResponse;
-        } catch (error) {
-            return await { error: error };
+        let result = await this.getAll();
+
+        let groups: any = [];
+
+        if (result.rows.length && result.rows.length > 0) {
+            for (let i = 0; i < result.rows.length; i++) {
+                console.log("Hello 1: " + result.rows.item(i).value);
+                console.log("Hello 2: " + JSON.parse(result.rows.item(i).value));
+                let data = JSON.parse(result.rows.item(i).value);
+                console.log("Hello 3: " + JSON.parse(result.rows.item(i).value));
+                let gid = data.gid;
+                console.log("Hello 4: Gid : " + gid);
+                // data.uids = await this.userGroupService.getAllUserForGroup(gid);
+                console.log("Hello : " + JSON.parse(data.uids));
+                groups.push(data);
+            }
         }
+        // create succes response
+        let genieResponse = { result: groups };
+        return await genieResponse;
     }
 
     /**

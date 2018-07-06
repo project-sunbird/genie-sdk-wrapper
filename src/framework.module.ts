@@ -27,6 +27,7 @@ import { FormService } from "./services/form/form.service";
 import { GroupService } from "./services/group/group.service";
 import { MigrationService } from "./services/migration/migration.service";
 import { SQLite } from "@ionic-native/sqlite";
+import { UserGroupMapService } from "./services/group/user-group-map.service";
 
 @NgModule({
     declarations: [
@@ -59,6 +60,7 @@ import { SQLite } from "@ionic-native/sqlite";
         QRScanner,
         ShareUtil,
         GroupService,
+        UserGroupMapService,
         MigrationService,
         SQLite
     ],
