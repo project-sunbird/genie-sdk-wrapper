@@ -2,15 +2,14 @@ import { Injectable } from "@angular/core";
 import { ServiceProvider } from "../factory";
 import { OldProfile } from "./bean";
 import { Profile, ProfileType } from "../profile/bean";
-import { StorageService } from "../storage/storage.service";
-import { SQLite } from "@ionic-native/sqlite";
-import { resolve } from "path";
+import { NoSQLService } from "../storage/nosql.service";
+import { DatabaseService } from "../storage/db.service";
 
 @Injectable()
-export class MigrationService extends StorageService<Profile> {
+export class MigrationService extends NoSQLService<Profile> {
 
-    constructor(sqlite: SQLite, private factory: ServiceProvider) {
-        super(sqlite, "users");
+    constructor(db: DatabaseService, private factory: ServiceProvider) {
+        super(db, "users");
     }
 
     migrateProfiles(): Promise<any> {

@@ -1,66 +1,67 @@
 import { Injectable } from "@angular/core";
 import { Group } from "./bean";
 import { ServiceProvider } from "../factory";
-import { StorageService } from "../storage/storage.service";
 import { UUID } from "angular2-uuid";
-import { SQLite } from "@ionic-native/sqlite";
 import { UserGroupMapService } from "./user-group-map.service";
+import { DatabaseService } from "../storage/db.service";
+import * as GroupEntry from "../storage/contract/group.entry";
 
 @Injectable()
-export class GroupService extends StorageService<Group> {
+export class GroupService {
 
 
-    constructor(sqlite: SQLite, private userGroupService: UserGroupMapService, private factory: ServiceProvider) {
-        super(sqlite, "groups");
+    constructor(private database: DatabaseService, private userGroupService: UserGroupMapService, private factory: ServiceProvider) {
     }
 
-
-    async createGroups(request: Array<Group>) {
-        try {
-            let value = await this.saveAll(request);
-            // create succes response
-            let genieResponse = { result: request };
-            return await genieResponse;
-        } catch (error) {
-            return await { error: error };
-        }
-    }
 
     /**
-     * @param request This api is used to create a new group with specific {@link Group}
+     * @param group This api is used to create a new group with specific {@link Group}
      */
-    async createGroup(request: Group) {
-        // TODO:
+    async createGroup(group: Group) {
+        let gid = this.getKeyForObject(group);
+        let insertQuery = "INSERT INTO " + GroupEntry.TABLE + " VALUES (?, ?, ?)";
 
-        try {
-            let value = await this.save(request);
-            let userGroupMap = await this.userGroupService.save(request);
-            // create succes response
-            let genieResponse = { result: request };
-            return await genieResponse;
-        } catch (error) {
-            // create genie error response
-            return await { error: error };
+        let value = await this.database.getDatabase()
+            .executeSql(insertQuery, [gid, JSON.stringify(group), group.name])
+
+        if (value) {
+            console.log("Inserted Id : " + value.insertId);
+            console.log("Rows Affected : " + value.rowsAffected);
+
+            if (value.rowsAffected == 1) {
+                let map = await this.userGroupService.save(group);
+                return await { result: group };
+            }
         }
 
+        return await { error: "Something wrong" }
     }
 
     /**
      * This api updates the specific group that is passed to it.
-     * @param request 
+     * @param group 
      */
-    async updateGroup(request: Group) {
-        // TODO:
-        try {
-            let value = await this.update(request);
-            let userGroupMap = await this.userGroupService.save(request);
-            // create succes response
-            let genieResponse = { result: request };
-            return await genieResponse;
-        } catch (error) {
-            // create genie error response
-            return await { error: error };
+    async updateGroup(group: Group) {
+        let gid = this.getKeyForObject(group);
+        let updateQuery = "UPDATE " + GroupEntry.TABLE + " SET "
+            + GroupEntry.COLUMN_GROUP_VALUE + " = ?, "
+            + GroupEntry.COLUMN_GROUP_NAME + " = ? WHERE "
+            + GroupEntry.COLUMN_GID + " = ?";
+
+        let value = await this.database.getDatabase()
+            .executeSql(updateQuery, [JSON.stringify(group), group.name, gid]);
+
+        if (value) {
+            console.log("Inserted Id : " + value.insertId);
+            console.log("Rows Affected : " + value.rowsAffected);
+
+            if (value.rowsAffected == 1) {
+                let map = await this.userGroupService.save(group);
+                return await { result: group };
+            }
         }
+
+        return await { error: "Something wrong" }
     }
 
     setCurrentGroup(gid: string) {
@@ -78,7 +79,8 @@ export class GroupService extends StorageService<Group> {
      * This api returns the list of all groups.
      */
     async getAllGroup() {
-        let result = await this.getAll();
+        let selectQuery = "SELECT * FROM " + GroupEntry.TABLE;
+        let result = await this.database.getDatabase().executeSql(selectQuery, []);
 
         let groups: any = [];
 
@@ -101,26 +103,36 @@ export class GroupService extends StorageService<Group> {
      * @param gid 
      */
     async deleteGroup(gid: string) {
-        try {
-            let value = await this.delete(gid);
-            // create succes response
-            let genieResponse = { result: value };
-            return await genieResponse;
-        } catch (error) {
-            return await { error: error };
+        let deleteQuery = "DELETE FROM " + GroupEntry.TABLE + " WHERE " + GroupEntry.COLUMN_GID + " = ?";
+        let value = await this.database.getDatabase().executeSql(deleteQuery, [gid]);
+
+
+        if (value) {
+            console.log("Inserted Id : " + value.insertId);
+            console.log("Rows Affected : " + value.rowsAffected);
+
+            if (value.rowsAffected == 1) {
+                let map = await this.userGroupService.deleteAllUserForGroup(gid);
+                return await { result: gid };
+            }
         }
+
+        return await { error: "Something wrong" }
     }
 
+    private getKeyForObject(object: Group | string): string {
+        let key;
 
-    /**
-     * This API is used to 
-     * @param request {@link UsersAndGroups}
-     */
-    // async mapUserAndGroup(request: UsersAndGroups) {
+        if (typeof object === "string") {
+            key = object;
+        } else {
+            key = this.getUniqueKeyFromObject(object);
+        }
 
-    // }
+        return key;
+    }
 
-    getUniqueKeyFromObject(object: Group): string {
+    private getUniqueKeyFromObject(object: Group): string {
         if (object.gid) {
             return object.gid
         } else {

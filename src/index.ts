@@ -55,6 +55,8 @@ export * from "./services/utils/buildparam.service";
 export * from "./services/form/bean";
 export * from "./services/form/form.service";
 
+export * from "./services/storage/db.service";
+
 export * from "./framework.module";
 
 export * from "./services/migration/bean"
