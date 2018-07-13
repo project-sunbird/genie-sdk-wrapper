@@ -27,6 +27,7 @@ import { FormService } from "./services/form/form.service";
 import { GroupService } from "./services/group/group.service";
 import { SQLite } from "@ionic-native/sqlite";
 import { UserGroupMapService } from "./services/group/user-group-map.service";
+import { DialCodeService } from "./services/dialcode/dialcode.service";
 
 @NgModule({
     declarations: [
@@ -56,6 +57,7 @@ import { UserGroupMapService } from "./services/group/user-group-map.service";
         LocationInfoService,
         BuildParamService,
         FormService,
+        DialCodeService,
         QRScanner,
         ShareUtil,
         GroupService,
