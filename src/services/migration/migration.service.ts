@@ -51,7 +51,7 @@ export class MigrationService extends StorageService<Profile> {
 
                             //name
                             if (oldProfile.handle !== undefined) {
-                                newProfile.name = oldProfile.handle;
+                                newProfile.handle = oldProfile.handle;
                             }
 
                             //syllabus
@@ -71,7 +71,7 @@ export class MigrationService extends StorageService<Profile> {
 
                             //class
                             if (oldProfile.grade !== undefined && oldProfile.grade.length > 0) {
-                                newProfile.class = oldProfile.grade
+                                newProfile.grade = oldProfile.grade
                             }
 
                             //Subject
@@ -84,12 +84,12 @@ export class MigrationService extends StorageService<Profile> {
                                 newProfile.createdAt = oldProfile.createdAt
                             }
 
-                            //updatedAt
-                            let time = new Date();
-                            newProfile.updatedAt = time.getTime().toString();
+                            // //updatedAt
+                            // let time = new Date();
+                            // newProfile.updatedAt = time.getTime().toString();
 
-                            //gids
-                            newProfile.gids = [];
+                            // //gids
+                            // newProfile.gids = [];
 
                             this.createProfile(newProfile).
                                 then((response) => {
