@@ -57,4 +57,8 @@ export class ServiceProvider {
     getFormService(): any {
         
     }
+
+    getReportService(): any {
+        
+    }
 }

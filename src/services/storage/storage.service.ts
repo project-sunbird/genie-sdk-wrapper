@@ -1,4 +1,3 @@
-import { Storage } from "@ionic/storage";
 import { SQLite, SQLiteObject } from "@ionic-native/sqlite";
 
 

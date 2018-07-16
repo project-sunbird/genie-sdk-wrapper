@@ -28,6 +28,7 @@ import { GroupService } from "./services/group/group.service";
 import { MigrationService } from "./services/migration/migration.service";
 import { SQLite } from "@ionic-native/sqlite";
 import { UserGroupMapService } from "./services/group/user-group-map.service";
+import { ReportService } from "./services/report/report.service";
 
 @NgModule({
     declarations: [
@@ -62,7 +63,8 @@ import { UserGroupMapService } from "./services/group/user-group-map.service";
         GroupService,
         UserGroupMapService,
         MigrationService,
-        SQLite
+        SQLite,
+        ReportService
     ],
     exports: [
     ]
