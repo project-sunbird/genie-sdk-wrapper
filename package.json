@@ -27,7 +27,6 @@
 		"@ionic-native/file": "^4.7.0",
 		"@ionic-native/file-opener": "^4.7.0",
 		"@ionic-native/file-transfer": "^4.7.0",
-		"@ionic/storage": "^2.1.3",
 		"angular2-uuid": "^1.1.1",
 		"@ionic-native/sqlite": "^4.9.0"
 	},
