@@ -1,15 +1,32 @@
 export class Profile {
     uid?: string;
-    profileType: ProfileType;
-    name: string;
+    handle: string;
+    avatar?: string;
+    gender?: string;
+    age?: number;
+    day?: number;
+    month?: number;
+    standard?: number;
+    language?: string;
     syllabus?: string[];
     board?: string[];
     medium?: string[];
-    class?: string[];
+    grade?: string[];
     subject?: string[];
+    isGroupUser?: boolean;
     createdAt?: string;
-    updatedAt?: string;
-    gids?: string[];
+    profileType: ProfileType;
+
+    constructor() {
+        this.avatar = "avatar";
+        this.gender = "";
+        this.age = -1;
+        this.day = -1;
+        this.month = -1;
+        this.standard = -1;
+        this.language = "en";
+        this.isGroupUser = false;
+    }
 }
 
 export class ContentAccess {

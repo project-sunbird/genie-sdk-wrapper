@@ -56,8 +56,13 @@ export class GenieSDKServiceProvider extends ServiceProvider {
         return (<any>window).GenieSDK.form;
     }
 
+<<<<<<< HEAD
     getReportService(): any {
         return (<any>window).GenieSDK.report;
+=======
+    getDialCodeService(): any {
+        return (<any>window).GenieSDK.dialcode;
+>>>>>>> a71761b74d9fa278c52934e94ddf0a592e680c0c
     }
 
 }

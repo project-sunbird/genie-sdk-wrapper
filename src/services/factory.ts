@@ -59,6 +59,9 @@ export class ServiceProvider {
     }
 
     getReportService(): any {
+    }
+    
+    getDialCodeService(): any {
         
     }
 }
