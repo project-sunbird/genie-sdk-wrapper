@@ -4,7 +4,10 @@
 	"description": "Framework for Sunbird",
 	"scripts": {
 		"profile": "webpack --profile --json > stats.json",
-		"build": "ng-packagr -p package.json && cp -R scripts dist/scripts && cp dependencies.json dist/"
+		"build": "ng-packagr -p package.json && cp -R scripts dist/scripts && cp dependencies.json dist/",
+		"test": "karma start ./test-config/karma.conf.js",
+		"test-ci": "karma start ./test-config/karma.conf.js --single-run",
+		"test-coverage": "karma start ./test-config/karma.conf.js --coverage"
 	},
 	"author": "EkStep",
 	"license": "ISC",
@@ -71,7 +74,20 @@
 		"tsickle": "^0.27.2",
 		"typescript": "^2.4.2",
 		"webpack": "^3.11.0",
-		"zone.js": "0.8.18"
+		"zone.js": "0.8.18",
+		"ionic-mocks": "^1.3.0",
+		"istanbul-instrumenter-loader": "^3.0.0",
+		"jasmine": "^2.9.1",
+		"jasmine-spec-reporter": "^4.2.1",
+		"karma": "^2.0.0",
+		"karma-chrome-launcher": "^2.2.0",
+		"karma-coverage-istanbul-reporter": "^1.4.1",
+		"karma-jasmine": "^1.1.1",
+		"karma-jasmine-html-reporter": "^0.2.2",
+		"karma-sourcemap-loader": "^0.3.7",
+		"karma-webpack": "^2.0.9",
+		"protractor": "^5.3.0",
+		"@types/jasmine": "^2.8.6"
 	},
 	"ngPackage": {
 		"$schema": "./node_modules/ng-packagr/ng-package.schema.json",

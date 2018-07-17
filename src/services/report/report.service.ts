@@ -39,7 +39,7 @@ export class ReportService {
         });
     }
 
-    private mapReportDetailPerUser(reportDetails: Array<ReportDetail>): Map<string, ReportDetailPerUser> {
+    mapReportDetailPerUser(reportDetails: Array<ReportDetail>): Map<string, ReportDetailPerUser> {
         let map = new Map<string, ReportDetailPerUser>();
         reportDetails.forEach(detail => {
             let reportPerUser: ReportDetailPerUser = map.get(detail.uid)!;
