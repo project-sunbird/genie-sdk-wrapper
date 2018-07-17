@@ -1,14 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Profile, ContentAccess } from "./bean";
-import { Storage } from '@ionic/storage';
 import { ServiceProvider } from "../factory";
 
 @Injectable()
 export class ProfileService {
 
-    constructor(private storage: Storage, private factory: ServiceProvider) {
-        storage.ready().then(() => {
-        });
+    constructor(private factory: ServiceProvider) {
+    
     }
 
     /**
