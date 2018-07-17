@@ -1,48 +1,25 @@
 import { Injectable } from "@angular/core";
 import { Group } from "./bean";
 import { ServiceProvider } from "../factory";
-import { StorageService } from "../storage/storage.service";
-import { UUID } from "angular2-uuid";
-import { SQLite } from "@ionic-native/sqlite";
-import { UserGroupMapService } from "./user-group-map.service";
+import { GenieResponse } from "../service.bean";
 
 @Injectable()
-export class GroupService extends StorageService<Group> {
+export class GroupService {
 
-
-    constructor(sqlite: SQLite, private userGroupService: UserGroupMapService, private factory: ServiceProvider) {
-        super(sqlite, "groups");
-    }
-
-
-    async createGroups(request: Array<Group>) {
-        try {
-            let value = await this.saveAll(request);
-            // create succes response
-            let genieResponse = { result: request };
-            return await genieResponse;
-        } catch (error) {
-            return await { error: error };
-        }
+    constructor(private factory: ServiceProvider) {
     }
 
     /**
      * @param request This api is used to create a new group with specific {@link Group}
      */
     async createGroup(request: Group) {
-        // TODO:
-
-        try {
-            let value = await this.save(request);
-            let userGroupMap = await this.userGroupService.save(request);
-            // create succes response
-            let genieResponse = { result: request };
-            return await genieResponse;
-        } catch (error) {
-            // create genie error response
-            return await { error: error };
-        }
-
+        return new Promise<GenieResponse<Group>>((resolve, reject) => {
+            this.factory.getGroupService().createGroup(JSON.stringify(request), (success) => {
+                resolve(JSON.parse(success));
+            }, (error) => {
+                reject(JSON.parse(error));
+            });
+        });
     }
 
     /**
@@ -50,50 +27,49 @@ export class GroupService extends StorageService<Group> {
      * @param request 
      */
     async updateGroup(request: Group) {
-        // TODO:
-        try {
-            let value = await this.update(request);
-            let userGroupMap = await this.userGroupService.save(request);
-            // create succes response
-            let genieResponse = { result: request };
-            return await genieResponse;
-        } catch (error) {
-            // create genie error response
-            return await { error: error };
-        }
+        return new Promise<GenieResponse<Group>>((resolve, reject) => {
+            this.factory.getGroupService().updateGroup(JSON.stringify(request), (success) => {
+                resolve(JSON.parse(success));
+            }, (error) => {
+                reject(JSON.parse(error));
+            });
+        });
     }
 
-    setCurrentGroup(gid: string) {
-        window.sessionStorage.setItem('current_group', gid);
+    async setCurrentGroup(gid: string) {
+        return new Promise<GenieResponse<any>>((resolve, reject) => {
+            this.factory.getGroupService().setCurrentGroup(gid, (success) => {
+                resolve(JSON.parse(success));
+            }, (error) => {
+                reject(JSON.parse(error));
+            });
+        });
     }
 
     /**
      * This api gets the current active group.
      */
-    getCurrentGroup(): string {
-        return window.sessionStorage.getItem('current_group')!;
+    async getCurrentGroup() {
+        return new Promise<GenieResponse<Group>>((resolve, reject) => {
+            this.factory.getGroupService().getCurrentGroup((success) => {
+                resolve(JSON.parse(success));
+            }, (error) => {
+                reject(JSON.parse(error));
+            });
+        });
     }
 
     /**
      * This api returns the list of all groups.
      */
     async getAllGroup() {
-        let result = await this.getAll();
-
-        let groups: any = [];
-
-        if (result.rows.length && result.rows.length > 0) {
-            for (let i = 0; i < result.rows.length; i++) {
-                let data = JSON.parse(result.rows.item(i).value);
-                let gid = data.gid;
-                let values = await this.userGroupService.getAllUserForGroup(gid);
-                data.uids = values;
-                groups.push(data);
-            }
-        }
-        // create succes response
-        let genieResponse = { result: groups };
-        return await genieResponse;
+        return new Promise<GenieResponse<Array<Group>>>((resolve, reject) => {
+            this.factory.getGroupService().getAllGroup((success) => {
+                resolve(JSON.parse(success));
+            }, (error) => {
+                reject(JSON.parse(error));
+            });
+        });
     }
 
     /**
@@ -101,32 +77,12 @@ export class GroupService extends StorageService<Group> {
      * @param gid 
      */
     async deleteGroup(gid: string) {
-        try {
-            let value = await this.delete(gid);
-            // create succes response
-            let genieResponse = { result: value };
-            return await genieResponse;
-        } catch (error) {
-            return await { error: error };
-        }
+        return new Promise<GenieResponse<any>>((resolve, reject) => {
+            this.factory.getGroupService().deleteGroup(gid, (success) => {
+                resolve(JSON.parse(success));
+            }, (error) => {
+                reject(JSON.parse(error));
+            });
+        });
     }
-
-
-    /**
-     * This API is used to 
-     * @param request {@link UsersAndGroups}
-     */
-    // async mapUserAndGroup(request: UsersAndGroups) {
-
-    // }
-
-    getUniqueKeyFromObject(object: Group): string {
-        if (object.gid) {
-            return object.gid
-        } else {
-            object.gid = UUID.UUID() // Return Random UUID 
-            return object.gid;
-        }
-    }
-
 }

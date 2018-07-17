@@ -64,4 +64,7 @@ export class GenieSDKServiceProvider extends ServiceProvider {
         return (<any>window).GenieSDK.dialcode;
     }
 
+    getGroupService(): any {
+        return (<any>window).GenieSDK.group;
+    }
 }

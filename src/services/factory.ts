@@ -64,4 +64,8 @@ export class ServiceProvider {
     getDialCodeService(): any {
         
     }
+
+    getGroupService(): any {
+        
+    }
 }

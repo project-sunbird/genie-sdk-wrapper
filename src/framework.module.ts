@@ -25,8 +25,6 @@ import { ShareUtil } from "./services/utils/share.service";
 import { BuildParamService } from "./services/utils/buildparam.service";
 import { FormService } from "./services/form/form.service";
 import { GroupService } from "./services/group/group.service";
-import { SQLite } from "@ionic-native/sqlite";
-import { UserGroupMapService } from "./services/group/user-group-map.service";
 import { ReportService } from "./services/report/report.service";
 import { DialCodeService } from "./services/dialcode/dialcode.service";
 
@@ -62,10 +60,7 @@ import { DialCodeService } from "./services/dialcode/dialcode.service";
         QRScanner,
         ShareUtil,
         GroupService,
-        UserGroupMapService,
-        SQLite,
-        ReportService,
-        SQLite
+        ReportService
     ],
     exports: [
     ]
