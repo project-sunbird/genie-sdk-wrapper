@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Profile, ContentAccess } from "./bean";
+import { Profile, ContentAccess, ProfileRequest } from "./bean";
 import { ServiceProvider } from "../factory";
 
 @Injectable()
@@ -72,8 +72,8 @@ export class ProfileService {
      * @param onSuccess 
      * @param onError 
      */
-    getAllUserProfile(onSuccess, onError) {
-        this.factory.getProfileService().getAllUserProfile(onSuccess, onError);
+    getAllUserProfile(profileRequest: ProfileRequest, onSuccess, onError) {
+        this.factory.getProfileService().getAllUserProfile(JSON.stringify(profileRequest), onSuccess, onError);
     }
 
     /**

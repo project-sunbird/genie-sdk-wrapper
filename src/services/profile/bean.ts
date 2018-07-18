@@ -42,3 +42,9 @@ export enum ProfileType {
     STUDENT = "STUDENT",
     TEACHER = "TEACHER"
 }
+
+export class ProfileRequest {
+    local?: boolean;
+    server?: boolean;
+    gid?: string;
+}
