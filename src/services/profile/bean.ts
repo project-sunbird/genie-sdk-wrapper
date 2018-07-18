@@ -16,6 +16,7 @@ export class Profile {
     isGroupUser?: boolean;
     createdAt?: string;
     profileType: ProfileType;
+    source: UserSource;
 
     constructor() {
         this.avatar = "avatar";
@@ -41,6 +42,11 @@ export class ContentLearnerState {
 export enum ProfileType {
     STUDENT = "STUDENT",
     TEACHER = "TEACHER"
+}
+
+export enum UserSource {
+    LOCAL = "LOCAL",
+    SERVER = "SERVER"
 }
 
 export class ProfileRequest {
