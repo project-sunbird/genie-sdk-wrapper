@@ -6,7 +6,7 @@ import { ServiceProvider } from "../factory";
 export class ProfileService {
 
     constructor(private factory: ServiceProvider) {
-    
+
     }
 
     /**
@@ -72,8 +72,15 @@ export class ProfileService {
      * @param onSuccess 
      * @param onError 
      */
-    getAllUserProfile(profileRequest: ProfileRequest, onSuccess, onError) {
-        this.factory.getProfileService().getAllUserProfile(JSON.stringify(profileRequest), onSuccess, onError);
+    async getAllUserProfile(profileRequest: ProfileRequest) {
+        return new Promise<any>((resolve, reject) => {
+            this.factory.getProfileService().getAllUserProfile(JSON.stringify(profileRequest),
+                (result) => {
+                    resolve(result);
+                }, (error) => {
+                    reject(error);
+                });
+        });
     }
 
     /**
