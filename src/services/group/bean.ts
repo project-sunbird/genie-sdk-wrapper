@@ -7,3 +7,8 @@ export class Group {
     updatedAt?: string;
     uids?: string[];
 }
+
+export class AddUpdateProfilesRequest{
+    groupId: string;
+    uidList: string[];
+}

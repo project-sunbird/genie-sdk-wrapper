@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Group } from "./bean";
+import { Group, AddUpdateProfilesRequest } from "./bean";
 import { ServiceProvider } from "../factory";
 import { GenieResponse } from "../service.bean";
 
@@ -85,4 +85,21 @@ export class GroupService {
             });
         });
     }
+
+
+    /**
+     * This api adds/updates all the profiles to the group.
+     * @param addUpdateProfilesToGroup 
+     */
+    async addUpdateProfilesToGroup(addUpdateProfilesRequest: AddUpdateProfilesRequest) {
+        return new Promise<GenieResponse<any>>((resolve, reject) => {
+            this.factory.getGroupService().addUpdateProfilesToGroup(addUpdateProfilesRequest, (success) => {
+                resolve(JSON.parse(success));
+            }, (error) => {
+                reject(JSON.parse(error));
+            });
+        });
+    }
+
+
 }
