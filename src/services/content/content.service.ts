@@ -2,12 +2,14 @@ import { Injectable } from "@angular/core";
 
 import {
   ContentDetailRequest, ContentImportRequest, ContentSearchCriteria, ContentFilterCriteria, ChildContentRequest, ContentDeleteRequest,
-  ContentExportRequest, DownloadAction, FlagContentRequest, ContentFeedback
+  ContentExportRequest, DownloadAction, FlagContentRequest, ContentFeedback, ContentCache
 } from "./bean";
 import { ServiceProvider } from "../factory";
 
 @Injectable()
 export class ContentService {
+
+  contentMap: Map<string, ContentCache> = new Map();
 
   constructor(private factory: ServiceProvider) {
   }
@@ -45,14 +47,34 @@ export class ContentService {
     }
   }
 
-  getAllLocalContents(request: ContentFilterCriteria,
-    successCallback: (response: string) => void,
-    errorCallback: (response: string) => void) {
-    try {
-      this.factory.getContentService().getAllLocalContents(JSON.stringify(request), successCallback, errorCallback);
-    } catch (error) {
-      console.log(error);
-    }
+  getContentMap(): Map<string, any> {
+    return this.contentMap;
+  }
+
+  getAllLocalContents(request: ContentFilterCriteria) {
+
+      return new Promise<any>((resolve, reject) => {
+        this.factory.getContentService().getAllLocalContents(
+          JSON.stringify(request), 
+          res => {
+            let data = JSON.parse(res);
+            let result = data.result;
+            if (result) {
+              result.forEach(element => {
+                let cacheContent = new ContentCache();
+                cacheContent.name = element.contentData.name;
+                cacheContent.lastUsedTime = element.lastUsedTime;
+                cacheContent.identifier = element.identifier;
+                this.contentMap.set(element.identifier, cacheContent);
+              });
+              resolve(result);
+            } else {
+              reject();
+            }
+          }, err => {
+            reject(err);
+          });
+      });
   }
 
   getChildContents(request: ChildContentRequest,

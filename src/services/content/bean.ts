@@ -143,3 +143,9 @@ export enum DownloadAction {
   RESUME = 0,
   PAUSE = 1,
 }
+
+export class ContentCache {
+  lastUsedTime: number;
+  name: string;
+  identifier: string;
+}

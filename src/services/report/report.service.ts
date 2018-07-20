@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
 import { ServiceProvider } from "../factory";
 import { ReportSummary, ReportDetail, ReportDetailPerUser } from "./bean";
+import { ContentService } from "../content/content.service";
 
 @Injectable()
 export class ReportService {
     
-    constructor(private factory: ServiceProvider) {
+    constructor(private factory: ServiceProvider, private contentService: ContentService) {
         
     }
 
@@ -15,7 +16,16 @@ export class ReportService {
             that.factory.getReportService()
             .getListOfReports(JSON.stringify(uids), 
             list => {
-                resolve(JSON.parse(list));
+                let reportList = JSON.parse(list);
+                reportList = reportList.map(element => {
+                    let cache = that.contentService.contentMap.get(element.contentId)!;
+                    let newElement = {};
+                    Object.assign(newElement, element);
+                    newElement["name"] = cache.name;
+                    newElement["lastUsedTime"] = cache.lastUsedTime;
+                    return newElement;
+                });
+                resolve();
             },
             error => {
                 reject(error);

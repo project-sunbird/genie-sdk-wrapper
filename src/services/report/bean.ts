@@ -1,6 +1,8 @@
 export class ReportSummary {
     uid: string;
     contentId: string;
+    name: string;
+    lastUsedTime: number;
     noOfQuestions: number;
     correctAnswers: number;
     totalTimespent: number;
@@ -9,6 +11,7 @@ export class ReportSummary {
 
 export class ReportDetail {
     uid: string;
+    name: string;
     contentId: string;
     qid: string;
     qindex: string;
