@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Profile, ContentAccess, ProfileRequest } from "./bean";
+import { Profile, ContentAccess, ProfileRequest, ProfileImportRequest, ProfileExportRequest } from "./bean";
 import { ServiceProvider } from "../factory";
 
 @Injectable()
@@ -91,6 +91,26 @@ export class ProfileService {
      */
     deleteUser(request: string, onSuccess, onError) {
         this.factory.getProfileService().deleteUser(request, onSuccess, onError);
+    }
+
+    /**
+     * This api is used to import profile/group
+     * @param request 
+     * @param onSuccess 
+     * @param onError 
+     */
+    importProfile(request: ProfileImportRequest, onSuccess, onError) {
+        this.factory.getProfileService().importProfile(request, onSuccess, onError);
+    }
+
+    /**
+     * This api is used to export profile/group
+     * @param request  
+     * @param onSuccess 
+     * @param onError 
+     */
+    exportProfile(request: ProfileExportRequest, onSuccess, onError) {
+        this.factory.getProfileService().exportProfile(request, onSuccess, onError);
     }
 
 }

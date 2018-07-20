@@ -54,3 +54,13 @@ export class ProfileRequest {
     server?: boolean;
     gid?: string;
 }
+
+export class ProfileImportRequest {
+    sourceFilePath: string;
+}
+
+export class ProfileExportRequest {
+    userIds?: Array<string>
+    groupIds?: Array<string>
+    destinationFolder: string;
+}
