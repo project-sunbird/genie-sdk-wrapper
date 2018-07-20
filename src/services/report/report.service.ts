@@ -25,7 +25,7 @@ export class ReportService {
                     newElement["lastUsedTime"] = cache.lastUsedTime;
                     return newElement;
                 });
-                resolve();
+                resolve(reportList);
             },
             error => {
                 reject(error);
