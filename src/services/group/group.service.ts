@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Group, AddUpdateProfilesRequest } from "./bean";
+import { Group, AddUpdateProfilesRequest, GroupRequest } from "./bean";
 import { ServiceProvider } from "../factory";
 import { GenieResponse } from "../service.bean";
 
@@ -62,9 +62,9 @@ export class GroupService {
     /**
      * This api returns the list of all groups.
      */
-    async getAllGroup() {
+    async getAllGroup(groupRequest: GroupRequest) {
         return new Promise<GenieResponse<Array<Group>>>((resolve, reject) => {
-            this.factory.getGroupService().getAllGroup((success) => {
+            this.factory.getGroupService().getAllGroup(groupRequest, (success) => {
                 resolve(JSON.parse(success));
             }, (error) => {
                 reject(JSON.parse(error));

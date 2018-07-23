@@ -13,3 +13,7 @@ export class AddUpdateProfilesRequest{
     groupId: string;
     uidList: string[];
 }
+
+export class GroupRequest{
+    uid?: string;
+}
