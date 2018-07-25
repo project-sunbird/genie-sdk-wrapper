@@ -42,3 +42,9 @@ export class ReportDetailPerQuestion {
     accuracy: string;
     reportDetail: ReportDetailPerUser;
 }
+
+export class SummaryRequest {
+    uids: Array<string>;
+    contentId: string;
+    hierarchyData: string;
+}

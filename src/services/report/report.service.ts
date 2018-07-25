@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ServiceProvider } from "../factory";
-import { ReportSummary, ReportDetail, ReportDetailPerUser } from "./bean";
+import { ReportSummary, ReportDetail, ReportDetailPerUser, SummaryRequest } from "./bean";
 import { ContentService } from "../content/content.service";
 
 @Injectable()
@@ -64,5 +64,25 @@ export class ReportService {
             map.set(detail.uid, reportPerUser);
         })
         return map;
+    }
+
+    getReportsByUser(requestObject: SummaryRequest,
+        successCallback: (response: String) => void,
+        errorCallback: (error: String) => void) {
+        try {
+            this.factory.getReportService().getReportsByUser(JSON.stringify(requestObject), successCallback, errorCallback);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    getReportsByQuestion(requestObject: SummaryRequest,
+        successCallback: (response: String) => void,
+        errorCallback: (error: String) => void) {
+        try {
+            this.factory.getReportService().getReportsByQuestion(JSON.stringify(requestObject), successCallback, errorCallback);
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
