@@ -12,6 +12,7 @@ export class Profile {
     board?: string[];
     medium?: string[];
     grade?: string[];
+    gradeValueMap?: { [index: string]: any };
     subject?: string[];
     isGroupUser?: boolean;
     createdAt?: string;

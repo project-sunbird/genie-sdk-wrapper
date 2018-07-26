@@ -86,7 +86,6 @@ export class GroupService {
         });
     }
 
-
     /**
      * This api adds/updates all the profiles to the group.
      * @param addUpdateProfilesToGroup 
@@ -100,6 +99,5 @@ export class GroupService {
             });
         });
     }
-
 
 }

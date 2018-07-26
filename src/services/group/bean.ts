@@ -3,16 +3,17 @@ export class Group {
     name: string;
     syllabus?: string[];
     grade?: string[];
+    gradeValueMap?: { [index: string]: any };
     profilesCount?: number;
     createdAt?: string;
     updatedAt?: string;
 }
 
-export class AddUpdateProfilesRequest{
+export class AddUpdateProfilesRequest {
     groupId: string;
     uidList: string[];
 }
 
-export class GroupRequest{
+export class GroupRequest {
     uid?: string;
 }
