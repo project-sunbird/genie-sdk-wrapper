@@ -85,4 +85,14 @@ export class ReportService {
             console.log(error);
         }
     }
+
+    getDetailsPerQuestion(requestObject: SummaryRequest,
+        successCallback: (response: String) => void,
+        errorCallback: (error: String) => void) {
+        try {
+            this.factory.getReportService().getDetailsPerQuestion(JSON.stringify(requestObject), successCallback, errorCallback);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }

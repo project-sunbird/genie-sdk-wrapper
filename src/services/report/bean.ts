@@ -44,6 +44,7 @@ export class ReportDetailPerQuestion {
 }
 
 export class SummaryRequest {
+    qId: string;
     uids: Array<string>;
     contentId: string;
     hierarchyData: string;
