@@ -6,7 +6,6 @@ export class Group {
     profilesCount?: number;
     createdAt?: string;
     updatedAt?: string;
-    uids?: string[];
 }
 
 export class AddUpdateProfilesRequest{

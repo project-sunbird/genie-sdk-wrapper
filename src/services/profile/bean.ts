@@ -52,7 +52,7 @@ export enum UserSource {
 export class ProfileRequest {
     local?: boolean;
     server?: boolean;
-    gid?: string;
+    groupId?: string;
 }
 
 export class ProfileImportRequest {
