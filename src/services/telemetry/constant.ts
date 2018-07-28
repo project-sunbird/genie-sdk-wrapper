@@ -12,6 +12,8 @@ export class Environment {
 }
 export class ObjectType {
     public static readonly NOTIFICATION = "notification";
+    public static readonly USER = "user";
+    public static readonly GROUP = "group";
 }
 export class Mode {
     public static readonly PLAY = "play";
@@ -49,8 +51,18 @@ export class PageId {
     public static readonly SETTINGS_DATASYNC = "settings-datasync";
     public static readonly SETTINGS_DEVICE_TAGS = "settings-device-tags";
     public static readonly SETTINGS_SUPPORTS = "settings-supports";
-    public static readonly SETTINGS_ABOUT_US = "settings-abour-us";
+    public static readonly SETTINGS_ABOUT_US = "settings-about-us";
     public static readonly ABOUT_APP = "about-app";
+    public static readonly USERS = "users";
+    public static readonly CREATE_USER = "create-user";
+    public static readonly CREATE_GROUP = "create-group";
+    public static readonly GROUP_DETAIL = "group-detail";
+    public static readonly EDIT_USER = "edit-user";
+    public static readonly EDIT_GROUP = "edit-group";
+    public static readonly ADD_GROUP_SYLLABUS_CLASS = "add-group-syllabusclass";
+    public static readonly ADD_GROUP_USER_SELECTION = "add-group-userselection";
+    public static readonly REMOVE_USERS_FROM_GROUP = "remove-users-from-group";
+    public static readonly SHARE_USER_GROUP = "share-user-group";
 }
 
 export class LogType {
@@ -129,4 +141,22 @@ export class InteractSubtype {
     public static readonly MANUALSYNC_SUCCESS = "manualsync-success"; 
     public static readonly RATING_CLICKED = "rating-clicked";
     public static readonly RATING_SUBMITTED = "rating-submitted";
+    public static readonly CREATE_USER_CLICKED = "create-user-clicked";
+    public static readonly CREATE_USER_INITIATED = "create-user-initated";
+    public static readonly EDIT_USER_INITIATED = "edit-user-initated";
+    public static readonly CREATE_USER_SUCCESS = "create-user-success";
+    public static readonly EDIT_USER_SUCCESS = "edit-user-success";
+    public static readonly CREATE_GROUP_CLICKED = "create-group-clicked";
+    public static readonly CREATE_GROUP_INITIATED = "create-group-initated";
+    public static readonly CREATE_GROUP_SUCCESS = "create-group-success";
+    public static readonly EDIT_GROUP_INITIATED = "edit-group-initated";
+    public static readonly EDIT_GROUP_SUCCESS = "edit-group-success";
+    public static readonly SWITCH_USER_CLICKED = "switch-user-clicked";
+    public static readonly SWITCH_USER_INITIATE = "switch-user-initiate";
+    public static readonly SWITCH_USER_SUCCESS = "switch-user-success";
+    public static readonly DELETE_USER_INITIATE = "delete-user-initiate";
+    public static readonly DELETE_GROUP_INITIATE = "delete-group-initiate";
+    public static readonly SHARE_USER_GROUP_INITIATE = "share-usergroup-initiate";
+    public static readonly SHARE_USER_GROUP_SUCCESS = "share-usergroup-success";
+
 }
