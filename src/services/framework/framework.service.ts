@@ -16,8 +16,8 @@ export class FrameworkService {
     successCallback: (response: any) => void,
     errorCallback: (error: string) => void) {
 
-    if (this.updatedFrameworkResponseBody.result !== undefined &&
-      this.updatedFrameworkResponseBody.result.framework.code === request.frameworkId) {
+    if (this.updatedFrameworkResponseBody.result !== undefined && 
+      this.updatedFrameworkResponseBody.result.framework.identifier === request.frameworkId) {
       successCallback(this.currentCategories);
     } else {
       try {
