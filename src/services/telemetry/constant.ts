@@ -56,6 +56,8 @@ export class PageId {
     public static readonly USERS = "users";
     public static readonly CREATE_USER = "create-user";
     public static readonly CREATE_GROUP = "create-group";
+    public static readonly CREATE_GROUP_SYLLABUS_CLASS = "create-group-syllabusclass";
+    public static readonly CREATE_GROUP_USER_SELECTION = "create-group-userselection";
     public static readonly GROUP_DETAIL = "group-detail";
     public static readonly EDIT_USER = "edit-user";
     public static readonly EDIT_GROUP = "edit-group";
@@ -158,5 +160,7 @@ export class InteractSubtype {
     public static readonly DELETE_GROUP_INITIATE = "delete-group-initiate";
     public static readonly SHARE_USER_GROUP_INITIATE = "share-usergroup-initiate";
     public static readonly SHARE_USER_GROUP_SUCCESS = "share-usergroup-success";
+    public static readonly USER_GROUP_CLICKED = "users-groups-clicked";
+    public static readonly REPORTS_CLICKED = "reports-clicked";
 
 }
