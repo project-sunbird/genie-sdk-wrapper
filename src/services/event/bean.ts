@@ -11,3 +11,7 @@ export class DownloadProgress {
   status: number = -1;
 }
 
+export class GenericEvent {
+  action: string;
+}
+
