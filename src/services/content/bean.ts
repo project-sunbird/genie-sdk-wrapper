@@ -149,3 +149,11 @@ export class ContentCache {
   name: string;
   identifier: string;
 }
+
+export class SummarizerContentFilterCriteria {
+  uids?: String[];
+  contentTypes?: String[]
+  attachFeedback?: Boolean;
+  attachContentAccess?: Boolean;
+  sortCriteria?: Array<ContentSortCriteria>;
+}

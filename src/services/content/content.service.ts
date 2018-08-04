@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 
 import {
   ContentDetailRequest, ContentImportRequest, ContentSearchCriteria, ContentFilterCriteria, ChildContentRequest, ContentDeleteRequest,
-  ContentExportRequest, DownloadAction, FlagContentRequest, ContentFeedback, ContentCache
+  ContentExportRequest, DownloadAction, FlagContentRequest, ContentFeedback, ContentCache, SummarizerContentFilterCriteria
 } from "./bean";
 import { ServiceProvider } from "../factory";
 
@@ -60,13 +60,13 @@ export class ContentService {
             let data = JSON.parse(res);
             let result = data.result;
             if (result) {
-              result.forEach(element => {
-                let cacheContent = new ContentCache();
-                cacheContent.name = element.contentData.name;
-                cacheContent.lastUsedTime = element.lastUsedTime;
-                cacheContent.identifier = element.identifier;
-                this.contentMap.set(element.identifier, cacheContent);
-              });
+              // result.forEach(element => {
+              //   let cacheContent = new ContentCache();
+              //   cacheContent.name = element.contentData.name;
+              //   cacheContent.lastUsedTime = element.lastUsedTime;
+              //   cacheContent.identifier = element.identifier;
+              //   this.contentMap.set(element.identifier, cacheContent);
+              // });
               resolve(result);
             } else {
               reject();
@@ -175,5 +175,32 @@ export class ContentService {
       console.log(error);
     }
   }
+
+  getLocalContents(request: SummarizerContentFilterCriteria) {
+
+    return new Promise<any>((resolve, reject) => {
+      this.factory.getContentService().getLocalContents(
+        JSON.stringify(request), 
+        res => {
+          let data = JSON.parse(res);
+          let result = data.result;
+          if (result) {
+            result.forEach(element => {
+              let cacheContent = new ContentCache();
+              cacheContent.name = element.contentData.name;
+              cacheContent.lastUsedTime = element.lastUsedTime;
+              cacheContent.identifier = element.identifier;
+              this.contentMap.set(element.identifier, cacheContent);
+            });
+            resolve(result);
+          } else {
+            reject();
+          }
+        }, err => {
+          reject(err);
+        });
+    });
+}
+
 
 }
