@@ -12,8 +12,10 @@ export class Environment {
 }
 export class ObjectType {
     public static readonly NOTIFICATION = "notification";
-    public static readonly USER = "user";
-    public static readonly GROUP = "group";
+    public static readonly USER = "User";
+    public static readonly GROUP = "Group";
+    public static readonly CONTENT = "Content";
+    public static readonly QUESTION = "Question";
 }
 export class Mode {
     public static readonly PLAY = "play";
@@ -53,7 +55,7 @@ export class PageId {
     public static readonly SETTINGS_SUPPORTS = "settings-supports";
     public static readonly SETTINGS_ABOUT_US = "settings-about-us";
     public static readonly ABOUT_APP = "about-app";
-    public static readonly USERS = "users";
+    public static readonly USERS_GROUPS = "users-groups";
     public static readonly CREATE_USER = "create-user";
     public static readonly CREATE_GROUP = "create-group";
     public static readonly CREATE_GROUP_SYLLABUS_CLASS = "create-group-syllabusclass";
@@ -65,6 +67,11 @@ export class PageId {
     public static readonly ADD_GROUP_USER_SELECTION = "add-group-userselection";
     public static readonly REMOVE_USERS_FROM_GROUP = "remove-users-from-group";
     public static readonly SHARE_USER_GROUP = "share-user-group";
+    public static readonly REPORTS_USER_GROUP = "reports-users-group";
+    public static readonly REPORTS_ASSESMENT_CONTENT_LIST = "assesment-content-list";
+    public static readonly REPORTS_USER_ASSESMENT_DETAILS = "user-assesment-details";
+    public static readonly REPORTS_GROUP_ASSESMENT_DETAILS = "group-assesment-details";
+    
 }
 
 export class LogType {
@@ -162,5 +169,20 @@ export class InteractSubtype {
     public static readonly SHARE_USER_GROUP_SUCCESS = "share-usergroup-success";
     public static readonly USER_GROUP_CLICKED = "users-groups-clicked";
     public static readonly REPORTS_CLICKED = "reports-clicked";
+    public static readonly USERS_TAB_CLICKED = "users-tab-clicked";
+    public static readonly GROUPS_TAB_CLICKED = "groups-tab-clicked";
+    public static readonly USER_CLICKED = "user-clicked";
+    public static readonly GROUP_CLICKED = "group-clicked";
+    public static readonly REPORTS_BY_USER_CLICKED = "byuser-tab-clicked";
+    public static readonly REPORTS_BY_QUESTION_CLICKED = "byquestion-tab-clicked";
+    public static readonly REPORTS_SORTBY_QUESTION_CLICKED = "sortby-question-clicked";
+    public static readonly REPORTS_SORTBY_TIME_CLICKED = "sortby-time-clicked";
+    public static readonly REPORTS_SORTBY_RESULT_CLICKED = "sortby-result-clicked";
+    public static readonly REPORTS_SORTBY_USER_CLICKED = "sortby-users-clicked";
+    public static readonly REPORTS_SORTBY_SCORE_CLICKED = "sortby-score-clicked";
+    public static readonly REPORTS_SORTBY_MARKS_CLICKED = "sortby-marks-clicked";
+    public static readonly REPORTS_SORTBY_ACCURACY_CLICKED = "sortby-accuracy-clicked";
+    public static readonly QUESTION_CLICKED = "question-clicked";
+
 
 }
