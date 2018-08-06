@@ -27,6 +27,10 @@ export class ReportService {
                                 return newElement;
                             }
                         });
+                        reportList =  reportList.filter(report => {
+                            if (report) return report
+                        });
+                       
                         resolve(reportList);
                     },
                     error => {
