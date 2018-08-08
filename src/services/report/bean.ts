@@ -7,6 +7,7 @@ export class ReportSummary {
     correctAnswers: number;
     totalTimespent: number;
     hierarchyData: string;
+    totalMaxScore: number;
 }
 
 export class ReportDetail {
