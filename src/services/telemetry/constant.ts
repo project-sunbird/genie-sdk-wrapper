@@ -56,11 +56,12 @@ export class PageId {
     public static readonly SETTINGS_ABOUT_US = "settings-about-us";
     public static readonly ABOUT_APP = "about-app";
     public static readonly USERS_GROUPS = "users-groups";
-    public static readonly CREATE_USER = "create-user";
+    public static readonly CREATE_USER = "create-profile";
     public static readonly CREATE_GROUP = "create-group";
     public static readonly CREATE_GROUP_SYLLABUS_CLASS = "create-group-syllabusclass";
     public static readonly CREATE_GROUP_USER_SELECTION = "create-group-userselection";
     public static readonly GROUP_DETAIL = "group-detail";
+    public static readonly GUEST_PROFILE = "guest-profile";
     public static readonly EDIT_USER = "edit-user";
     public static readonly EDIT_GROUP = "edit-group";
     public static readonly ADD_GROUP_SYLLABUS_CLASS = "add-group-syllabusclass";
@@ -71,6 +72,7 @@ export class PageId {
     public static readonly REPORTS_ASSESMENT_CONTENT_LIST = "assesment-content-list";
     public static readonly REPORTS_USER_ASSESMENT_DETAILS = "user-assesment-details";
     public static readonly REPORTS_GROUP_ASSESMENT_DETAILS = "group-assesment-details";
+    public static readonly ONBOARDING_LANGUAGE_SETTING = "onboarding-language-setting"
     
 }
 
@@ -183,6 +185,4 @@ export class InteractSubtype {
     public static readonly REPORTS_SORTBY_MARKS_CLICKED = "sortby-marks-clicked";
     public static readonly REPORTS_SORTBY_ACCURACY_CLICKED = "sortby-accuracy-clicked";
     public static readonly QUESTION_CLICKED = "question-clicked";
-
-
 }
