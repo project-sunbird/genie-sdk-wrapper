@@ -9,6 +9,7 @@ export class Environment {
     public static readonly LIBRARY = "library";
     public static readonly USER = "user";
     public static readonly SETTINGS = "settings";
+    public static readonly ONBOARDING = "onboarding";
 }
 export class ObjectType {
     public static readonly NOTIFICATION = "notification";
