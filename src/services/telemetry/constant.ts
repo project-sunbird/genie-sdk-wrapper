@@ -186,4 +186,5 @@ export class InteractSubtype {
     public static readonly REPORTS_SORTBY_MARKS_CLICKED = "sortby-marks-clicked";
     public static readonly REPORTS_SORTBY_ACCURACY_CLICKED = "sortby-accuracy-clicked";
     public static readonly QUESTION_CLICKED = "question-clicked";
+    public static readonly INITIAL_CONFIG = "initial-config";
 }
