@@ -4,5 +4,5 @@ export class FormRequest {
     action: string;
     rootOrgId?: string;
     framework?: string;
-    defaultFormPath: string;
+    defaultFormPath?: string;
 }
