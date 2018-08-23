@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ServiceProvider } from "../factory";
-import { FrameworkDetailsRequest, CategoryRequest } from "./bean";
+import { FrameworkDetailsRequest, CategoryRequest, ChannelDetailsRequest } from "./bean";
 
 @Injectable()
 export class FrameworkService {
@@ -12,24 +12,34 @@ export class FrameworkService {
 
   }
 
+  getChannelDetails(request: ChannelDetailsRequest,
+    successCallback: (response: string) => void,
+    errorCallback: (error: string) => void) {
+    try {
+      this.factory.getFrameworkService().getChannelDetails(JSON.stringify(request), successCallback, errorCallback);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   getFrameworkDetails(request: FrameworkDetailsRequest,
     successCallback: (response: any) => void,
     errorCallback: (error: string) => void) {
 
-    if (this.updatedFrameworkResponseBody.result !== undefined && 
+    if (this.updatedFrameworkResponseBody.result !== undefined &&
       this.updatedFrameworkResponseBody.result.framework.identifier === request.frameworkId) {
       successCallback(this.currentCategories);
     } else {
+      request.defaultFrameworkPath = 'data/framework/framework.json';
+
       try {
         let that = this;
         let success = function (response: string) {
           that.prepareFrameworkData(response);
           successCallback(that.currentCategories);
-          that.factory.getFrameworkService().persistFrameworkDetails(
-            JSON.stringify(that.updatedFrameworkResponseBody));
+          that.factory.getFrameworkService().persistFrameworkDetails(JSON.stringify(that.updatedFrameworkResponseBody));
         }
-        this.factory.getFrameworkService().getFrameworkDetails(
-          JSON.stringify(request), success, errorCallback);
+        this.factory.getFrameworkService().getFrameworkDetails(JSON.stringify(request), success, errorCallback);
       } catch (error) {
         console.log(error);
       }
