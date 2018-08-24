@@ -58,6 +58,7 @@ export class FrameworkService {
         description: c.description,
         index: c.index,
         status: c.status,
+        translations: c.translations,
         terms: c.terms ? c.terms.map(t => {
           return {
             identifier: t.identifier,
@@ -67,6 +68,7 @@ export class FrameworkService {
             index: t.index,
             category: t.category,
             status: t.status,
+            translations: t.translations,
             associations: t.associations ? t.associations.filter(a => {
               return (index >= allCategories.length - 1)
                 || (a.category === allCategories[index + 1].code);
@@ -131,11 +133,10 @@ export class FrameworkService {
             map.set(a.code, a);
           });
         });
-
+        console.log('values', Array.from(map.values()));
         successCallback(JSON.stringify(Array.from(map.values())));
         return;
       }
-
     }
 
     let nextCategories = this.currentCategories.filter(c => {
@@ -143,7 +144,26 @@ export class FrameworkService {
     });
 
     if (nextCategories !== undefined && nextCategories.length > 0) {
-      successCallback(JSON.stringify(nextCategories[0].terms));
+      console.log('next categories', nextCategories);
+      successCallback(this.getTranslatedCategories(nextCategories, request.selectedLanguage));
     }
+  }
+
+  getTranslatedCategories(nextCategories, selectedLanguage: string) {
+    nextCategories[0].terms.forEach((element, index) => {
+      if (Boolean(nextCategories[0].terms[index].translations)) {
+        if (!nextCategories[0].terms[index].hasOwnProperty('default')) {
+          nextCategories[0].terms[index].default = nextCategories[0].terms[index].name;
+        }
+        let currentTranslation = JSON.parse(nextCategories[0].terms[index].translations);
+        if (currentTranslation.hasOwnProperty(selectedLanguage)) {
+
+          nextCategories[0].terms[index].name = currentTranslation[selectedLanguage];
+        } else {
+          nextCategories[0].terms[index].name = nextCategories[0].terms[index].default;
+        }
+      }
+    });
+    return JSON.stringify(nextCategories[0].terms);
   }
 }

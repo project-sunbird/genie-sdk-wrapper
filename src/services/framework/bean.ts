@@ -16,6 +16,7 @@ export class CategoryRequest {
     currentCategory?: string;
     prevCategory?: string;
     selectedCode?: Array<string>;
+    selectedLanguage: string;
 }
 export class FrameworkDetailsRequest {
     frameworkId?: string;
