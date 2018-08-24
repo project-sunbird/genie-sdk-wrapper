@@ -145,25 +145,25 @@ export class FrameworkService {
 
     if (nextCategories !== undefined && nextCategories.length > 0) {
       console.log('next categories', nextCategories);
-      successCallback(this.getTranslatedCategories(nextCategories, request.selectedLanguage));
+      successCallback(this.getTranslatedCategories(nextCategories[0], request.selectedLanguage));
     }
   }
 
-  getTranslatedCategories(nextCategories, selectedLanguage: string) {
-    nextCategories[0].terms.forEach((element, index) => {
-      if (Boolean(nextCategories[0].terms[index].translations)) {
-        if (!nextCategories[0].terms[index].hasOwnProperty('default')) {
-          nextCategories[0].terms[index].default = nextCategories[0].terms[index].name;
+  getTranslatedCategories(categories, selectedLanguage: string) {
+    categories.terms.forEach((element, index) => {
+      if (Boolean(categories.terms[index].translations)) {
+        if (!categories.terms[index].hasOwnProperty('default')) {
+          categories.terms[index].default = categories.terms[index].name;
         }
-        let currentTranslation = JSON.parse(nextCategories[0].terms[index].translations);
+        let currentTranslation = JSON.parse(categories.terms[index].translations);
         if (currentTranslation.hasOwnProperty(selectedLanguage)) {
 
-          nextCategories[0].terms[index].name = currentTranslation[selectedLanguage];
+          categories.terms[index].name = currentTranslation[selectedLanguage];
         } else {
-          nextCategories[0].terms[index].name = nextCategories[0].terms[index].default;
+          categories.terms[index].name = categories.terms[index].default;
         }
       }
     });
-    return JSON.stringify(nextCategories[0].terms);
+    return JSON.stringify(categories.terms);
   }
 }
