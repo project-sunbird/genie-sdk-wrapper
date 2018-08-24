@@ -58,6 +58,7 @@ export class FrameworkService {
         description: c.description,
         index: c.index,
         status: c.status,
+        translations: c.translations,
         terms: c.terms ? c.terms.map(t => {
           return {
             identifier: t.identifier,
@@ -67,6 +68,7 @@ export class FrameworkService {
             index: t.index,
             category: t.category,
             status: t.status,
+            translations: t.translations,
             associations: t.associations ? t.associations.filter(a => {
               return (index >= allCategories.length - 1)
                 || (a.category === allCategories[index + 1].code);
@@ -131,11 +133,10 @@ export class FrameworkService {
             map.set(a.code, a);
           });
         });
-
+        console.log('values', Array.from(map.values()));
         successCallback(JSON.stringify(Array.from(map.values())));
         return;
       }
-
     }
 
     let nextCategories = this.currentCategories.filter(c => {
@@ -143,7 +144,26 @@ export class FrameworkService {
     });
 
     if (nextCategories !== undefined && nextCategories.length > 0) {
-      successCallback(JSON.stringify(nextCategories[0].terms));
+      console.log('next categories', nextCategories);
+      successCallback(this.getTranslatedCategories(nextCategories[0], request.selectedLanguage));
     }
+  }
+
+  getTranslatedCategories(categories, selectedLanguage: string) {
+    categories.terms.forEach((element, index) => {
+      if (Boolean(categories.terms[index].translations)) {
+        if (!categories.terms[index].hasOwnProperty('default')) {
+          categories.terms[index].default = categories.terms[index].name;
+        }
+        let currentTranslation = JSON.parse(categories.terms[index].translations);
+        if (currentTranslation.hasOwnProperty(selectedLanguage)) {
+
+          categories.terms[index].name = currentTranslation[selectedLanguage];
+        } else {
+          categories.terms[index].name = categories.terms[index].default;
+        }
+      }
+    });
+    return JSON.stringify(categories.terms);
   }
 }
