@@ -73,7 +73,7 @@ export class PageId {
     public static readonly REPORTS_ASSESMENT_CONTENT_LIST = "assesment-content-list";
     public static readonly REPORTS_USER_ASSESMENT_DETAILS = "user-assesment-details";
     public static readonly REPORTS_GROUP_ASSESMENT_DETAILS = "group-assesment-details";
-    public static readonly ONBOARDING_LANGUAGE_SETTING = "onboarding-language-setting"
+    public static readonly ONBOARDING_LANGUAGE_SETTING = "onboarding-language-setting";
     
 }
 
@@ -187,4 +187,6 @@ export class InteractSubtype {
     public static readonly REPORTS_SORTBY_ACCURACY_CLICKED = "sortby-accuracy-clicked";
     public static readonly QUESTION_CLICKED = "question-clicked";
     public static readonly INITIAL_CONFIG = "initial-config";
+    public static readonly FILTER_CONFIG = "filter-config";
+    public static readonly APPLY_FILTER_CLICKED = "apply-filter-clicked";
 }
