@@ -30,7 +30,7 @@ export class FrameworkService {
       this.updatedFrameworkResponseBody.result.framework.identifier === request.frameworkId) {
       successCallback(this.currentCategories);
     } else {
-      request.defaultFrameworkPath = 'data/framework/framework.json';
+      request.filePath = 'data/framework/framework.json';
 
       try {
         let that = this;

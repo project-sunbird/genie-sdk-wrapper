@@ -1,6 +1,7 @@
 export class ChannelDetailsRequest {
     channelId: string;
     refreshChannelDetails?: boolean = false;
+    filePath?: string;
 }
 
 export class Channel {
@@ -22,5 +23,5 @@ export class FrameworkDetailsRequest {
     frameworkId?: string;
     refreshFrameworkDetails?: boolean = false;
     defaultFrameworkDetails: boolean = false;
-    defaultFrameworkPath?: string;
+    filePath?: string;
 }
