@@ -25,6 +25,7 @@ export class ReportDetail {
     qtitle: string;
     maxScore: number;
     hierarchyData: string;
+    total_ts: number;
 }
 
 export class ReportDetailPerUser {
