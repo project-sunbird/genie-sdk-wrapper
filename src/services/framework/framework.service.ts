@@ -123,73 +123,86 @@ export class FrameworkService {
     this.updatedFrameworkResponseBody.result.framework.categories = allCategories;
   }
 
-  async getCategoryData(request: CategoryRequest,
-    successCallback: (response: string) => void,
-    errorCallback: (error: string) => void) {
+  async getCategoryData(request: CategoryRequest): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      if (this.updatedFrameworkResponseBody.result == undefined
+        || request.frameworkId !== this.updatedFrameworkResponseBody.result.framework.identifier) {
+        let fr = new FrameworkDetailsRequest();
+        if (request.frameworkId !== undefined && request.frameworkId !== "") {
+          fr.frameworkId = request.frameworkId;
+        } else {
+          fr.defaultFrameworkDetails = true;
+        }
 
-    if (this.updatedFrameworkResponseBody.result == undefined
-      || request.frameworkId !== this.updatedFrameworkResponseBody.result.framework.identifier) {
-      let fr = new FrameworkDetailsRequest();
-      if (request.frameworkId !== undefined
-        && request.frameworkId !== "") {
-        fr.frameworkId = request.frameworkId;
+        this.getFrameworkDetails(fr)
+          .then(res => {
+            // console.log('getCategoryData:res ' + res);
+            return this.getCategory(request);
+          })
+          .then(category => {
+            resolve(category);
+          })
+          .catch(error => {
+            console.log('getCategoryData:error ' + error);
+            reject(error);
+          });
       } else {
-        fr.defaultFrameworkDetails = true;
+        this.getCategory(request)
+          .then(category => {
+            resolve(category);
+          })
+          .catch(error => {
+            console.log('getCategoryData:error ' + error);
+            reject(error);
+          });
       }
-
-      this.getFrameworkDetails(fr)
-        .then(res => {
-          console.log('getCategoryData:res ' + res);
-          this.getCategory(request, successCallback, errorCallback);
-        })
-        .catch(error => {
-          console.log('getCategoryData:error ' + error);
-          errorCallback(error);
-        });
-    } else {
-      this.getCategory(request, successCallback, errorCallback);
-    }
+    });
   }
 
-  private getCategory(request: CategoryRequest,
-    successCallback: (response: string) => void,
-    errorCallback: (error: string) => void) {
-    if (request.prevCategory && request.selectedCode) {
-      let filteredCategory = this.currentCategories.filter(c => {
-        return c.code === request.prevCategory;
-      });
-      let selectedTerm = (<any>filteredCategory[0]).terms.filter(t => {
-        let check = function (element) {
-          return element === t.code;
-        }
-        return request.selectedCode!.some(check);
-      });
-
-      let check2 = function (element) {
-        return element.associations !== undefined;
-      }
-      let associationsPresentForEach = selectedTerm.some(check2);
-      if (associationsPresentForEach) {
-        let map = new Map();
-        selectedTerm.forEach(term => {
-          term.associations.forEach(a => {
-            map.set(a.code, a);
-          });
+  private getCategory(request: CategoryRequest): Promise<string> {
+    return new Promise((resolve, reject) => {
+      let isTrue: boolean = true;
+      if (request.prevCategory && request.selectedCode) {
+        let filteredCategory = this.currentCategories.filter(c => {
+          return c.code === request.prevCategory;
         });
-        console.log('values', Array.from(map.values()));
-        successCallback(JSON.stringify(Array.from(map.values())));
-        return;
+        let selectedTerm = (<any>filteredCategory[0]).terms.filter(t => {
+          let check = function (element) {
+            return element === t.code;
+          }
+          return request.selectedCode!.some(check);
+        });
+
+        let check2 = function (element) {
+          return element.associations !== undefined;
+        }
+        let associationsPresentForEach = selectedTerm.some(check2);
+        if (associationsPresentForEach) {
+          isTrue = false;
+          let map = new Map();
+          selectedTerm.forEach(term => {
+            term.associations.forEach(a => {
+              map.set(a.code, a);
+            });
+          });
+          console.log('values', Array.from(map.values()));
+          resolve(this.getTranslatedCategories(Array.from(map.values()), request.selectedLanguage));
+        }
       }
-    }
 
-    let nextCategories = this.currentCategories.filter(c => {
-      return request.currentCategory === c.code;
+      if (isTrue) {
+        let nextCategories = this.currentCategories.filter(c => {
+          return request.currentCategory === c.code;
+        });
+
+        if (nextCategories !== undefined && nextCategories.length > 0) {
+          console.log('next categories', nextCategories);
+          resolve(this.getTranslatedCategories(nextCategories[0], request.selectedLanguage));
+        } else {
+          reject('No category found for ' + request.currentCategory);
+        }
+      }
     });
-
-    if (nextCategories !== undefined && nextCategories.length > 0) {
-      console.log('next categories', nextCategories);
-      successCallback(this.getTranslatedCategories(nextCategories[0], request.selectedLanguage));
-    }
   }
 
   getTranslatedCategories(categories, selectedLanguage: string) {
