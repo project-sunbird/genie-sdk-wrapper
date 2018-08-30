@@ -8,8 +8,14 @@ export class SharedPreferences {
 
     }
 
-    getString(key: string, successCallback: (val: string) => void): void {
-        this.factory.getSharedPreference().getString(key, successCallback);
+    async getString(key: string) {
+        return new Promise<string>((resolve, reject) => {
+            this.factory.getSharedPreference().getString(key, (success) => {
+                resolve(success);
+            }, (error) => {
+                reject(error);
+            });
+        });
     }
 
     putString(key: string, value: string): void {

@@ -1,5 +1,10 @@
 import { Injectable } from "@angular/core";
-import { Http, Headers, RequestOptions, RequestMethod } from "@angular/http";
+import {
+    Http,
+    Headers,
+    RequestOptions,
+    RequestMethod
+} from "@angular/http";
 import { Platform } from "ionic-angular";
 import { AuthService } from "./auth.service";
 import { BuildParamService } from "../utils/buildparam.service"
@@ -23,20 +28,19 @@ export class OAuthService {
         private buildParamService: BuildParamService,
         private http: Http) {
 
-        this.buildParamService.getBuildConfigParam("BASE_URL", (response: any) => {
-            this.base_url = response;
-            this.redirect_url = response + "/oauth2callback";
-            this.auth_url = response + "/auth/realms/sunbird/protocol/openid-connect/auth?redirect_uri=" +
-                this.redirect_url + "&response_type=code&scope=offline_access&client_id=${CID}";
-            this.auth_url = this.auth_url.replace("${CID}", this.platform.is("android") ? "android" : "ios");
-            this.logout_url = response + "/auth/realms/sunbird/protocol/openid-connect/logout?redirect_uri=" +
-                this.redirect_url;
-
-            return response;
-        }, (error) => {
-            return "";
-        });
-
+        this.buildParamService.getBuildConfigParam('BASE_URL')
+            .then(response => {
+                this.base_url = response;
+                this.redirect_url = response + "/oauth2callback";
+                this.auth_url = response + "/auth/realms/sunbird/protocol/openid-connect/auth?redirect_uri=" +
+                    this.redirect_url + "&response_type=code&scope=offline_access&client_id=${CID}";
+                this.auth_url = this.auth_url.replace("${CID}", this.platform.is("android") ? "android" : "ios");
+                this.logout_url = response + "/auth/realms/sunbird/protocol/openid-connect/logout?redirect_uri=" +
+                    this.redirect_url;
+            })
+            .catch(error => {
+                console.log('OAuthService -> getBuildConfigParam:BASE_URL ' + error);
+            });
     }
 
     doOAuthStepOne(): Promise<any> {
@@ -114,7 +118,6 @@ export class OAuthService {
             }, (error) => {
 
             });
-
         });
     }
 
@@ -166,6 +169,5 @@ export class OAuthService {
             });
         })
     }
-
 
 }

@@ -1,6 +1,14 @@
 import { Injectable } from "@angular/core";
 import { ServiceProvider } from "../factory";
-import { FrameworkDetailsRequest, CategoryRequest, ChannelDetailsRequest } from "./bean";
+import {
+  FrameworkDetailsRequest,
+  CategoryRequest,
+  ChannelDetailsRequest,
+  Channel
+} from "./bean";
+import { GenieResponse } from "../service.bean";
+import { SharedPreferences } from "../utils/preferences.service";
+import { BuildParamService } from "../utils/buildparam.service";
 
 @Injectable()
 export class FrameworkService {
@@ -8,45 +16,77 @@ export class FrameworkService {
   currentCategories: Array<any> = [];
   updatedFrameworkResponseBody: any = {};
 
-  constructor(private factory: ServiceProvider) {
+  constructor(
+    private factory: ServiceProvider,
+    private preference: SharedPreferences,
+    private buildParamService: BuildParamService
+  ) {
 
   }
 
-  getChannelDetails(request: ChannelDetailsRequest,
-    successCallback: (response: string) => void,
-    errorCallback: (error: string) => void) {
-    try {
-      this.factory.getFrameworkService().getChannelDetails(JSON.stringify(request), successCallback, errorCallback);
-    } catch (error) {
-      console.log(error);
+  getChannelDetails(request: ChannelDetailsRequest) {
+    // Bundled channel path
+    request.filePath = 'data/channel/channel-' + request.channelId + '.json';
+
+    return new Promise<GenieResponse<Channel>>((resolve, reject) => {
+      this.factory.getFrameworkService().getChannelDetails(JSON.stringify(request), (success) => {
+        console.log('getChannelDetails:success ' + success);
+        resolve(JSON.parse(success));
+      }, (error) => {
+        console.log('getChannelDetails:error ' + error);
+        reject(JSON.parse(error));
+      });
+    });
+  }
+
+  private async getChannelId() {
+    let channelId = await this.preference.getString('channelId');
+
+    if (channelId === undefined || channelId === null || channelId === '') {
+      channelId = await this.buildParamService.getBuildConfigParam('CHANNEL_ID');
     }
+
+    return channelId;
   }
 
-  getFrameworkDetails(request: FrameworkDetailsRequest,
-    successCallback: (response: any) => void,
-    errorCallback: (error: string) => void) {
-
+  async getFrameworkDetails(request: FrameworkDetailsRequest) {
     if (this.updatedFrameworkResponseBody.result !== undefined &&
       this.updatedFrameworkResponseBody.result.framework.identifier === request.frameworkId) {
-      successCallback(this.currentCategories);
+      return Promise.resolve(this.currentCategories);
     } else {
-      request.filePath = 'data/framework/framework.json';
-
-      try {
-        let that = this;
-        let success = function (response: string) {
-          that.prepareFrameworkData(response);
-          successCallback(that.currentCategories);
-          that.factory.getFrameworkService().persistFrameworkDetails(JSON.stringify(that.updatedFrameworkResponseBody));
+      if (request.defaultFrameworkDetails) {//for default framework details
+        let channelDetailsRequest = new ChannelDetailsRequest();
+        let defaultChannelId = await this.preference.getString('channelId');
+        if (defaultChannelId === undefined || defaultChannelId === null || defaultChannelId === '') {
+          defaultChannelId = await this.buildParamService.getBuildConfigParam('CHANNEL_ID');
         }
-        this.factory.getFrameworkService().getFrameworkDetails(JSON.stringify(request), success, errorCallback);
-      } catch (error) {
-        console.log(error);
+        channelDetailsRequest.channelId = defaultChannelId;
+        let channelDetailsResponse = await this.getChannelDetails(channelDetailsRequest);
+        if (channelDetailsResponse.status && channelDetailsResponse.result
+          && channelDetailsResponse.result.defaultFramework) {
+          request.frameworkId = channelDetailsResponse.result.defaultFramework;
+        }
       }
+      request.filePath = 'data/framework/framework-' + request.frameworkId + '.json';
+
+      return new Promise((resolve, reject) => {
+        this.factory.getFrameworkService().getFrameworkDetails(JSON.stringify(request),
+          data => {
+            this.prepareFrameworkData(data);
+            this.factory.getFrameworkService().persistFrameworkDetails(
+              JSON.stringify(this.updatedFrameworkResponseBody)
+            );
+            resolve(this.currentCategories);
+          },
+          error => {
+            reject(error);
+          }
+        );
+      });
     }
   }
 
-  prepareFrameworkData(frameworkStr: string): void {
+  prepareFrameworkData(frameworkStr: string) {
     let responseBody = JSON.parse(frameworkStr);
     let allCategories: Array<any> = responseBody.result.framework.categories;
 
@@ -81,10 +121,9 @@ export class FrameworkService {
     this.currentCategories = allCategories;
     this.updatedFrameworkResponseBody = responseBody;
     this.updatedFrameworkResponseBody.result.framework.categories = allCategories;
-
   }
 
-  getCategoryData(request: CategoryRequest,
+  async getCategoryData(request: CategoryRequest,
     successCallback: (response: string) => void,
     errorCallback: (error: string) => void) {
 
@@ -97,12 +136,16 @@ export class FrameworkService {
       } else {
         fr.defaultFrameworkDetails = true;
       }
-      this.getFrameworkDetails(fr, r => {
-        this.getCategory(request, successCallback, errorCallback);
-      }, e => {
-        //ignore as of now
-        errorCallback(e);
-      })
+
+      this.getFrameworkDetails(fr)
+        .then(res => {
+          console.log('getCategoryData:res ' + res);
+          this.getCategory(request, successCallback, errorCallback);
+        })
+        .catch(error => {
+          console.log('getCategoryData:error ' + error);
+          errorCallback(error);
+        });
     } else {
       this.getCategory(request, successCallback, errorCallback);
     }
