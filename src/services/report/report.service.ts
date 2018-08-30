@@ -65,7 +65,7 @@ export class ReportService {
             }
             reportPerUser.reportDetailsList.push(detail);
             reportPerUser.totalScore += detail.score;
-            reportPerUser.totalTime += detail.timespent;
+            reportPerUser.totalTime = detail.total_ts;
             reportPerUser.maxTotalScore += detail.maxScore;
             map.set(detail.uid, reportPerUser);
         })
