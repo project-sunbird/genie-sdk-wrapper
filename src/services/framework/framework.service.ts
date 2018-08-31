@@ -56,12 +56,10 @@ export class FrameworkService {
     } else {
       if (request.defaultFrameworkDetails) {//for default framework details
         let channelDetailsRequest = new ChannelDetailsRequest();
-        let defaultChannelId = await this.preference.getString('channelId');
-        if (defaultChannelId === undefined || defaultChannelId === null || defaultChannelId === '') {
-          defaultChannelId = await this.buildParamService.getBuildConfigParam('CHANNEL_ID');
-        }
-        channelDetailsRequest.channelId = defaultChannelId;
+        channelDetailsRequest.channelId = await this.getChannelId();
+
         let channelDetailsResponse = await this.getChannelDetails(channelDetailsRequest);
+
         if (channelDetailsResponse.status && channelDetailsResponse.result
           && channelDetailsResponse.result.defaultFramework) {
           request.frameworkId = channelDetailsResponse.result.defaultFramework;
@@ -86,7 +84,7 @@ export class FrameworkService {
     }
   }
 
-  prepareFrameworkData(frameworkStr: string) {
+  private prepareFrameworkData(frameworkStr: string) {
     let responseBody = JSON.parse(frameworkStr);
     let allCategories: Array<any> = responseBody.result.framework.categories;
 
@@ -127,16 +125,16 @@ export class FrameworkService {
     return new Promise<string>((resolve, reject) => {
       if (this.updatedFrameworkResponseBody.result == undefined
         || request.frameworkId !== this.updatedFrameworkResponseBody.result.framework.identifier) {
-        let fr = new FrameworkDetailsRequest();
+
+        let frameworkDetailRequest = new FrameworkDetailsRequest();
         if (request.frameworkId !== undefined && request.frameworkId !== "") {
-          fr.frameworkId = request.frameworkId;
+          frameworkDetailRequest.frameworkId = request.frameworkId;
         } else {
-          fr.defaultFrameworkDetails = true;
+          frameworkDetailRequest.defaultFrameworkDetails = true;
         }
 
-        this.getFrameworkDetails(fr)
+        this.getFrameworkDetails(frameworkDetailRequest)
           .then(res => {
-            // console.log('getCategoryData:res ' + res);
             return this.getCategory(request);
           })
           .then(category => {
@@ -205,7 +203,7 @@ export class FrameworkService {
     });
   }
 
-  getTranslatedCategories(categories, selectedLanguage: string) {
+  private getTranslatedCategories(categories, selectedLanguage: string) {
     categories.terms.forEach((element, index) => {
       if (Boolean(categories.terms[index].translations)) {
         if (!categories.terms[index].hasOwnProperty('default')) {
