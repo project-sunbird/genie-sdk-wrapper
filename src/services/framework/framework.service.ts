@@ -13,8 +13,8 @@ import { BuildParamService } from "../utils/buildparam.service";
 @Injectable()
 export class FrameworkService {
 
-  currentCategories: Array<any> = [];
   updatedFrameworkResponseBody: any = {};
+  currentFrameworkCategories: Array<any> = [];
 
   constructor(
     private factory: ServiceProvider,
@@ -52,7 +52,7 @@ export class FrameworkService {
   async getFrameworkDetails(request: FrameworkDetailsRequest) {
     if (this.updatedFrameworkResponseBody.result !== undefined &&
       this.updatedFrameworkResponseBody.result.framework.identifier === request.frameworkId) {
-      return Promise.resolve(this.currentCategories);
+      return Promise.resolve(this.currentFrameworkCategories);
     } else {
       if (request.defaultFrameworkDetails) {//for default framework details
         let channelDetailsRequest = new ChannelDetailsRequest();
@@ -69,12 +69,12 @@ export class FrameworkService {
 
       return new Promise((resolve, reject) => {
         this.factory.getFrameworkService().getFrameworkDetails(JSON.stringify(request),
-          data => {
-            this.prepareFrameworkData(data);
+          frameworkResponse => {
+            this.prepareFrameworkData(frameworkResponse);
             this.factory.getFrameworkService().persistFrameworkDetails(
               JSON.stringify(this.updatedFrameworkResponseBody)
             );
-            resolve(this.currentCategories);
+            resolve(this.currentFrameworkCategories);
           },
           error => {
             reject(error);
@@ -84,8 +84,8 @@ export class FrameworkService {
     }
   }
 
-  private prepareFrameworkData(frameworkStr: string) {
-    let responseBody = JSON.parse(frameworkStr);
+  private prepareFrameworkData(frameworkResponse: string) {
+    let responseBody = JSON.parse(frameworkResponse);
     let allCategories: Array<any> = responseBody.result.framework.categories;
 
     allCategories = allCategories.map((c, index) => {
@@ -116,7 +116,7 @@ export class FrameworkService {
       }
     });
 
-    this.currentCategories = allCategories;
+    this.currentFrameworkCategories = allCategories;
     this.updatedFrameworkResponseBody = responseBody;
     this.updatedFrameworkResponseBody.result.framework.categories = allCategories;
   }
@@ -159,14 +159,20 @@ export class FrameworkService {
 
   private getCategory(request: CategoryRequest): Promise<string> {
     return new Promise((resolve, reject) => {
-      let isTrue: boolean = true;
+      let isAssociationsAvailable: boolean = false;
+
+      // If any previous category is selected then retun the associations else return the terms.
       if (request.prevCategory && request.selectedCode) {
-        let filteredCategory = this.currentCategories.filter(c => {
+
+        // Find out the previous category from current framework categories.
+        let filteredCategory = this.currentFrameworkCategories.filter(c => {
           return c.code === request.prevCategory;
         });
-        let selectedTerm = (<any>filteredCategory[0]).terms.filter(t => {
+
+        // Find out all the selected terms in previous category.
+        let selectedTerm = (<any>filteredCategory[0]).terms.filter(term => {
           let check = function (element) {
-            return element === t.code;
+            return element === term.code;
           }
           return request.selectedCode!.some(check);
         });
@@ -176,7 +182,7 @@ export class FrameworkService {
         }
         let associationsPresentForEach = selectedTerm.some(check2);
         if (associationsPresentForEach) {
-          isTrue = false;
+          isAssociationsAvailable = true;
           let map = new Map();
           selectedTerm.forEach(term => {
             term.associations.forEach(a => {
@@ -188,8 +194,9 @@ export class FrameworkService {
         }
       }
 
-      if (isTrue) {
-        let nextCategories = this.currentCategories.filter(c => {
+      // If no associations are available.
+      if (!isAssociationsAvailable) {
+        let nextCategories = this.currentFrameworkCategories.filter(c => {
           return request.currentCategory === c.code;
         });
 
