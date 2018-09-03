@@ -161,6 +161,10 @@ export class FrameworkService {
     return new Promise((resolve, reject) => {
       let isAssociationsAvailable: boolean = false;
 
+      let currentCategory = this.copy(this.currentFrameworkCategories.filter(c => {
+        return request.currentCategory === c.code;
+      }));
+
       // If any previous category is selected then retun the associations else return the terms.
       if (request.prevCategory && request.selectedCode) {
 
@@ -189,22 +193,24 @@ export class FrameworkService {
               map.set(a.code, a);
             });
           });
-          console.log('values', Array.from(map.values()));
-          // resolve(this.getTranslatedCategories(Array.from(map.values()), request.selectedLanguage));
-          // List of terms
-          resolve(JSON.stringify(Array.from(map.values())));
+
+          if (currentCategory !== undefined && currentCategory.length > 0) {
+            // List of terms
+            console.log('values', Array.from(map.values()));
+            currentCategory[0].terms = Array.from(map.values());
+            console.log('current categories', currentCategory);
+            resolve(this.getTranslatedCategory(currentCategory[0], request.selectedLanguage));
+          } else {
+            isAssociationsAvailable = false;
+          }
         }
       }
 
       // If no associations are available.
       if (!isAssociationsAvailable) {
-        let nextCategories = this.currentFrameworkCategories.filter(c => {
-          return request.currentCategory === c.code;
-        });
-
-        if (nextCategories !== undefined && nextCategories.length > 0) {
-          console.log('next categories', nextCategories);
-          resolve(this.getTranslatedCategories(nextCategories[0], request.selectedLanguage));
+        if (currentCategory !== undefined && currentCategory.length > 0) {
+          console.log('current categories', currentCategory);
+          resolve(this.getTranslatedCategory(currentCategory[0], request.selectedLanguage));
         } else {
           reject('No category found for ' + request.currentCategory);
         }
@@ -212,25 +218,17 @@ export class FrameworkService {
     });
   }
 
-  private getTranslatedCategories(categories, selectedLanguage: string) {
-    categories.terms.forEach((element, index) => {
-      if (Boolean(categories.terms[index].translations)) {
-        if (!categories.terms[index].hasOwnProperty('default')) {
-          categories.terms[index].default = categories.terms[index].name;
-        }
+  private getTranslatedCategory(category, selectedLanguage: string) {
+    if (Boolean(category.translations)) {
+      category.name = this.getTranslatedValue(category.translations, selectedLanguage, category.name);
+    }
 
-        let currentTranslation = JSON.parse(categories.terms[index].translations);
-        if (currentTranslation.hasOwnProperty(selectedLanguage)) {
-
-          categories.terms[index].name = currentTranslation[selectedLanguage];
-        } else {
-          categories.terms[index].name = categories.terms[index].default;
-        }
-        // categories.terms[index].name = this.getTranslatedValue(categories.terms[index].translations, selectedLanguage, categories.terms[index].default);
+    category.terms.forEach((element, index) => {
+      if (Boolean(category.terms[index].translations)) {
+        category.terms[index].name = this.getTranslatedValue(category.terms[index].translations, selectedLanguage, category.terms[index].name);
       }
     });
-    return JSON.stringify(categories.terms);
-    // return JSON.stringify(categories);
+    return JSON.stringify(category);
   }
 
   private getTranslatedValue(translations, selectedLanguage: string, defaultVaue: string) {
@@ -240,6 +238,21 @@ export class FrameworkService {
     } else {
       return defaultVaue;
     }
+  }
+
+  // Deep copy
+  private copy(aObject) {
+    if (!aObject) {
+      return aObject;
+    }
+
+    var bObject, v, k;
+    bObject = Array.isArray(aObject) ? [] : {};
+    for (k in aObject) {
+      v = aObject[k];
+      bObject[k] = (typeof v === "object") ? this.copy(v) : v;
+    }
+    return bObject;
   }
 
 }
