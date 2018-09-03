@@ -190,7 +190,9 @@ export class FrameworkService {
             });
           });
           console.log('values', Array.from(map.values()));
-          resolve(this.getTranslatedCategories(Array.from(map.values()), request.selectedLanguage));
+          // resolve(this.getTranslatedCategories(Array.from(map.values()), request.selectedLanguage));
+          // List of terms
+          resolve(JSON.stringify(Array.from(map.values())));
         }
       }
 
@@ -216,6 +218,7 @@ export class FrameworkService {
         if (!categories.terms[index].hasOwnProperty('default')) {
           categories.terms[index].default = categories.terms[index].name;
         }
+
         let currentTranslation = JSON.parse(categories.terms[index].translations);
         if (currentTranslation.hasOwnProperty(selectedLanguage)) {
 
@@ -223,8 +226,20 @@ export class FrameworkService {
         } else {
           categories.terms[index].name = categories.terms[index].default;
         }
+        // categories.terms[index].name = this.getTranslatedValue(categories.terms[index].translations, selectedLanguage, categories.terms[index].default);
       }
     });
     return JSON.stringify(categories.terms);
+    // return JSON.stringify(categories);
   }
+
+  private getTranslatedValue(translations, selectedLanguage: string, defaultVaue: string) {
+    let availableTranslation = JSON.parse(translations);
+    if (availableTranslation.hasOwnProperty(selectedLanguage)) {
+      return availableTranslation[selectedLanguage];
+    } else {
+      return defaultVaue;
+    }
+  }
+
 }
