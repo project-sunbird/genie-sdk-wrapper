@@ -24,7 +24,21 @@ export class UpdateContentStateRequest {
 }
 
 export class CourseBatchesRequest {
-    courseIds: string[];
+    courseId: string;
+    status?: string;
+    enrollmentType?: string;
+    sortBy?: string;
+}
+
+export enum CourseBatchStatus {
+    NOT_STARTED = "0",
+    IN_PROGRESS = "1",
+    COMPLETED = "2"
+}
+
+export enum CourseEnrollmentType {
+    OPEN = "open",
+    INVITE_ONLY = "invite-only"
 }
 
 export class BatchDetailsRequest {
