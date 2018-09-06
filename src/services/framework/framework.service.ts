@@ -228,6 +228,17 @@ export class FrameworkService {
         category.terms[index].name = this.getTranslatedValue(category.terms[index].translations, selectedLanguage, category.terms[index].name);
       }
     });
+
+    category.terms.sort((c1, c2) => {
+      if (c1.index < c2.index) {
+        return -1;
+      } else if (c1.index > c2.index) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
     return JSON.stringify(category);
   }
 
