@@ -40,7 +40,7 @@ export class FrameworkService {
   }
 
   private async getChannelId() {
-    let channelId = await this.preference.getString('channelId');
+    let channelId = await this.preference.getStringWithoutPrefix('channelId');
 
     if (channelId === undefined || channelId === null || channelId === '') {
       channelId = await this.buildParamService.getBuildConfigParam('CHANNEL_ID');

@@ -18,6 +18,16 @@ export class SharedPreferences {
         });
     }
 
+    async getStringWithoutPrefix(key: string) {
+        return new Promise<string>((resolve, reject) => {
+            this.factory.getSharedPreference().getStringWithoutPrefix(key, (success) => {
+                resolve(success);
+            }, (error) => {
+                reject(error);
+            });
+        });
+    }
+
     putString(key: string, value: string): void {
         this.factory.getSharedPreference().putString(key, value);
     }
