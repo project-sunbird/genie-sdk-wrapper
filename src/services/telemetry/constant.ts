@@ -74,6 +74,7 @@ export class PageId {
     public static readonly REPORTS_USER_ASSESMENT_DETAILS = "user-assesment-details";
     public static readonly REPORTS_GROUP_ASSESMENT_DETAILS = "group-assesment-details";
     public static readonly ONBOARDING_LANGUAGE_SETTING = "onboarding-language-setting";
+    public static readonly VIEW_MORE = "view-more";
     
 }
 
