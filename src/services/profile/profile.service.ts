@@ -1,5 +1,12 @@
 import { Injectable } from "@angular/core";
-import { Profile, ContentAccess, ProfileRequest, ProfileImportRequest, ProfileExportRequest } from "./bean";
+import {
+    Profile,
+    ContentAccess,
+    ProfileRequest,
+    ProfileImportRequest,
+    ProfileExportRequest,
+    GetProfileRequest
+} from "./bean";
 import { ServiceProvider } from "../factory";
 
 @Injectable()
@@ -111,6 +118,10 @@ export class ProfileService {
      */
     exportProfile(request: ProfileExportRequest, onSuccess, onError) {
         this.factory.getProfileService().exportProfile(request, onSuccess, onError);
+    }
+
+    getProfile(request: GetProfileRequest, onSuccess, onError) {
+        this.factory.getProfileService().getProfile(request, onSuccess, onError);
     }
 
 }

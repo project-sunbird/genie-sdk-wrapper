@@ -56,6 +56,13 @@ export class ProfileRequest {
     groupId?: string;
 }
 
+export class GetProfileRequest {
+    local?: boolean;
+    server?: boolean;
+    latestCreatedProfile?: boolean;
+    uid?: string;
+}
+
 export class ProfileImportRequest {
     sourceFilePath: string;
 }
