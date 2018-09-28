@@ -75,6 +75,7 @@ export class PageId {
     public static readonly REPORTS_GROUP_ASSESMENT_DETAILS = "group-assesment-details";
     public static readonly ONBOARDING_LANGUAGE_SETTING = "onboarding-language-setting";
     public static readonly VIEW_MORE = "view-more";
+    public static readonly DIAL_CODE_SCAN_RESULT = "dial-code-scan-result";
     
 }
 
@@ -191,6 +192,10 @@ export class InteractSubtype {
     public static readonly FILTER_CONFIG = "filter-config";
     public static readonly APPLY_FILTER_CLICKED = "apply-filter-clicked";
     public static readonly PROFILE_ATTRIBUTE_CHANGED = "profile_attribute_changed";
+    public static readonly SAVE_CLICKED = "save-clicked";
+    public static readonly FINISH_CLICKED = "finish-clicked";
+    public static readonly DEVICE_BACK_CLICKED = "device-back-clicked";
+    public static readonly NAV_BACK_CLICKED = "nav-back-clicked";
 }
 export class ErrorCode {
     public static readonly ERR_DOWNLOAD_FAILED = "ERR_DOWNLOAD_FAILED";
