@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Impression, Start, Audit, End, ExData, Feedback, Interact, Interrupt, Log, Search, Share, SyncStat, TelemetryStat } from './bean';
+import { Impression, Start, Audit, End, ExData, Feedback, Interact, Interrupt, Log, Search, Share, SyncStat, TelemetryStat, Error } from './bean';
 import { ServiceProvider } from "../factory";
 import { GenieResponse } from "../service.bean";
 
