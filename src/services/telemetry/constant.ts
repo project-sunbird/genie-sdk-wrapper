@@ -76,6 +76,7 @@ export class PageId {
     public static readonly ONBOARDING_LANGUAGE_SETTING = "onboarding-language-setting";
     public static readonly VIEW_MORE = "view-more";
     public static readonly DIAL_CODE_SCAN_RESULT = "dial-code-scan-result";
+    public static readonly ONBOARDING_PROFILE_PREFERENCES = "onboarding-profile-preferences";
     
 }
 
@@ -196,6 +197,7 @@ export class InteractSubtype {
     public static readonly FINISH_CLICKED = "finish-clicked";
     public static readonly DEVICE_BACK_CLICKED = "device-back-clicked";
     public static readonly NAV_BACK_CLICKED = "nav-back-clicked";
+    public static readonly SKIP_CLICKED = "skip-clicked";
 }
 export class ErrorCode {
     public static readonly ERR_DOWNLOAD_FAILED = "ERR_DOWNLOAD_FAILED";
