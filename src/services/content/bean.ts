@@ -1,4 +1,4 @@
-import { CorrelationData } from "../telemetry/bean";
+import { CorrelationData } from '../telemetry/bean';
 
 export class ContentDetailRequest {
   contentId: string;
@@ -34,8 +34,8 @@ export class ContentSearchFilter {
 }
 
 export enum SearchType {
-  SEARCH = "search",
-  FILTER = "filter",
+  SEARCH = 'search',
+  FILTER = 'filter',
 }
 
 export class ContentSearchCriteria {
@@ -85,8 +85,8 @@ export class ContentSortCriteria {
 }
 
 export enum SortOrder {
-  ASC = "asc",
-  DESC = "desc",
+  ASC = 'ASC',
+  DESC = 'DESC',
 }
 
 export class ContentFilterCriteria {
