@@ -61,7 +61,7 @@ export class ContentSearchCriteria {
   language?: Array<string>;
   facetFilters?: Array<ContentSearchFilter>;
   impliedFilters?: Array<ContentSearchFilter>;
-  sortCriteria?: Array<ContentSearchFilter>;
+  sortCriteria?: Array<ContentSortCriteria>;
   // 1 - indicates search, 2 - filter
   searchType?: SearchType;
   offlineSearch?: boolean;
