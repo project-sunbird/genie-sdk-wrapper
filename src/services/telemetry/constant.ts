@@ -77,7 +77,7 @@ export class PageId {
     public static readonly VIEW_MORE = "view-more";
     public static readonly DIAL_CODE_SCAN_RESULT = "dial-code-scan-result";
     public static readonly ONBOARDING_PROFILE_PREFERENCES = "onboarding-profile-preferences";
-    
+
 }
 
 export class LogType {
@@ -153,7 +153,7 @@ export class InteractSubtype {
     public static readonly SHARE_APP_SUCCESS = "share-app-success";
     public static readonly LANGUAGE_SETTINGS_SUCCESS = "language-settings-success";
     public static readonly MANUALSYNC_INITIATED = "manualsync-initiated";
-    public static readonly MANUALSYNC_SUCCESS = "manualsync-success"; 
+    public static readonly MANUALSYNC_SUCCESS = "manualsync-success";
     public static readonly RATING_CLICKED = "rating-clicked";
     public static readonly RATING_SUBMITTED = "rating-submitted";
     public static readonly CREATE_USER_CLICKED = "create-user-clicked";
@@ -199,6 +199,8 @@ export class InteractSubtype {
     public static readonly NAV_BACK_CLICKED = "nav-back-clicked";
     public static readonly SKIP_CLICKED = "skip-clicked";
     public static readonly LANGUAGE_SELECTED = "language-selected";
+    public static readonly KEBAB_MENU_CLICKED = "kebab-menu-clicked";
+    public static readonly DELETE_CLICKED = "delete-clicked";
 }
 export class ErrorCode {
     public static readonly ERR_DOWNLOAD_FAILED = "ERR_DOWNLOAD_FAILED";
