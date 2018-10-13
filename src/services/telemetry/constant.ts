@@ -76,7 +76,10 @@ export class PageId {
     public static readonly ONBOARDING_LANGUAGE_SETTING = "onboarding-language-setting";
     public static readonly VIEW_MORE = "view-more";
     public static readonly DIAL_CODE_SCAN_RESULT = "dial-code-scan-result";
-    public static readonly ONBOARDING_PROFILE_PREFERENCES = "onboarding-profile-preferences";
+    public static readonly ONBOARDING_PROFILE_PREFERENCES = "profile-settings";
+    public static readonly ONBOARDING_QR_SHOWCASE = "onboarding-qr-showcase";
+    public static readonly SEARCH = "search";
+    public static readonly DOWNLOAD_SPINE = "download-spine";
 
 }
 
@@ -201,6 +204,10 @@ export class InteractSubtype {
     public static readonly LANGUAGE_SELECTED = "language-selected";
     public static readonly KEBAB_MENU_CLICKED = "kebab-menu-clicked";
     public static readonly DELETE_CLICKED = "delete-clicked";
+    public static readonly DIAL_SEARCH_RESULT_FOUND = "dial-code-search-result-found";
+    public static readonly LOADING_SPINE = "loading-spine";
+    public static readonly DOWNLOAD_ALL_CLICKED = "download-all-clicked";
+    public static readonly CANCEL_CLICKED = "cancel-clicked";
 }
 export class ErrorCode {
     public static readonly ERR_DOWNLOAD_FAILED = "ERR_DOWNLOAD_FAILED";
