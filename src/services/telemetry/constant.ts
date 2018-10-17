@@ -208,6 +208,7 @@ export class InteractSubtype {
     public static readonly LOADING_SPINE = "loading-spine";
     public static readonly DOWNLOAD_ALL_CLICKED = "download-all-clicked";
     public static readonly CANCEL_CLICKED = "cancel-clicked";
+    public static readonly PULL_TO_REFRESH = "pull-to-refresh";
 }
 export class ErrorCode {
     public static readonly ERR_DOWNLOAD_FAILED = "ERR_DOWNLOAD_FAILED";
