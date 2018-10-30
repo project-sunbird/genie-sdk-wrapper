@@ -9,7 +9,7 @@ export class PageAssembleFilter {
     contentType?: Array<string>;
     ageGroup?: Array<string>;
     ownership?: Array<string>;
-    status?: Array<string>;
+    dialcodes?: string;
 }
 
 
