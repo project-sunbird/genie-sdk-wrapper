@@ -11,14 +11,14 @@ export class CourseService {
 
     }
 
-    getEnrolledCourses(requestObject: EnrolledCoursesRequest,
-        successCallback: (response: String) => void,
-        errorCallback: (error: String) => void) {
-        try {
-            this.factory.getCourseService().getEnrolledCourses(JSON.stringify(requestObject), successCallback, errorCallback);
-        } catch (error) {
-            console.log(error);
-        }
+    getEnrolledCourses(requestObject: EnrolledCoursesRequest) {
+        return new Promise((resolve, reject) => {
+            this.factory.getCourseService().getEnrolledCourses(JSON.stringify(requestObject), (success) => {
+                resolve(success);
+            }, (error) => {
+                reject(error);
+            });
+        });
     }
 
     enrollCourse(requestObject: EnrollCourseRequest,
