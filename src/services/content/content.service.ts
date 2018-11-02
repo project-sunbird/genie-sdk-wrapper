@@ -5,6 +5,8 @@ import {
   ContentExportRequest, DownloadAction, FlagContentRequest, ContentFeedback, ContentCache, SummarizerContentFilterCriteria
 } from "./bean";
 import { ServiceProvider } from "../factory";
+import { resolve } from "path";
+import { reject } from "q";
 
 @Injectable()
 export class ContentService {
@@ -14,14 +16,15 @@ export class ContentService {
   constructor(private factory: ServiceProvider) {
   }
 
-  getContentDetail(request: ContentDetailRequest,
-    successCallback: (response: string) => void,
-    errorCallback: (error: string) => void) {
-    try {
-      this.factory.getContentService().getContentDetail(JSON.stringify(request), successCallback, errorCallback);
-    } catch (error) {
-      console.log(error);
-    }
+  getContentDetail(request: ContentDetailRequest)
+  {
+    return new Promise((resolve,reject) => {
+      this.factory.getContentService().getContentDetail(JSON.stringify(request), (success) => {
+        resolve(success);
+      }, (error) => {
+        reject(error);
+      });
+    })
   }
 
   importContent(request: ContentImportRequest,
