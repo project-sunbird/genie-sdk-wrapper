@@ -27,14 +27,15 @@ export class ContentService {
     })
   }
 
-  importContent(request: ContentImportRequest,
-    successCallback: (response: string) => void,
-    errorCallback: (error: string) => void) {
-    try {
-      this.factory.getContentService().importContent(JSON.stringify(request), successCallback, errorCallback);
-    } catch (error) {
-      console.log(error);
-    }
+  importContent(request: ContentImportRequest)
+  {
+    return new Promise((resolve,reject) => {
+      this.factory.getContentService().importContent(JSON.stringify(request), (success) => {
+        resolve(success);
+      },(error) => {
+        reject(error);
+      });
+    })
   }
 
   searchContent(request: ContentSearchCriteria,
