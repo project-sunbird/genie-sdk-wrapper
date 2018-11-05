@@ -41,14 +41,15 @@ export class ContentService {
   searchContent(request: ContentSearchCriteria,
     isFilterApplied: boolean,
     isDialCodeSearch: boolean ,
-    isGuestUser: boolean,
-    successCallback: (response: string) => void,
-    errorCallback: (error: string) => void) {
-    try {
-      this.factory.getContentService().searchContent(JSON.stringify(request), isFilterApplied, isDialCodeSearch , isGuestUser, successCallback, errorCallback);
-    } catch (error) {
-      console.log(error);
-    }
+    isGuestUser: boolean)
+    {
+    return new Promise((resolve,reject) => {
+      this.factory.getContentService().searchContent(JSON.stringify(request), isFilterApplied, isDialCodeSearch , isGuestUser, (success) => {
+        resolve(success);
+      }, (error) => {
+        reject(error);
+      });
+    })
   }
 
   getContentMap(): Map<string, any> {
@@ -170,14 +171,15 @@ export class ContentService {
     }
   }
 
-  getSearchCriteriaFromRequest(request: string,
-    successCallback: (response: string) => void,
-    errorCallback: (response: string) => void) {
-    try {
-      this.factory.getContentService().getSearchCriteriaFromRequest(request, successCallback, errorCallback);
-    } catch (error) {
-      console.log(error);
-    }
+  getSearchCriteriaFromRequest(request: string)
+  {
+    return new Promise((resolve,reject) => {
+      this.factory.getContentService().getSearchCriteriaFromRequest(request, (success) => {
+        resolve(success);
+      },(error) => {
+        reject(error);
+      })
+    });
   }
 
   getLocalContents(request: SummarizerContentFilterCriteria) {
