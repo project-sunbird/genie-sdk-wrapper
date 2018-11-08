@@ -44,3 +44,11 @@ export enum CourseEnrollmentType {
 export class BatchDetailsRequest {
     batchId: string;
 }
+
+export class GetContentStateRequest{
+    userId: string;
+    courseIds: string[];
+    contentIds?: string[];
+    batchId?: string;
+    returnRefreshedContentStates?: boolean
+}
