@@ -7,6 +7,7 @@ import {
 import { ServiceProvider } from "../factory";
 import { resolve } from "path";
 import { reject } from "q";
+import { EROFS } from "constants";
 
 @Injectable()
 export class ContentService {
@@ -82,94 +83,104 @@ export class ContentService {
       });
   }
 
-  getChildContents(request: ChildContentRequest,
-    successCallback: (response: string) => void,
-    errorCallback: (response: string) => void) {
-    try {
-      this.factory.getContentService().getChildContents(JSON.stringify(request), successCallback, errorCallback);
-    } catch (error) {
-      console.log(error);
-    }
+  getChildContents(request: ChildContentRequest)
+  {
+    return new Promise((resolve,reject) => {
+      this.factory.getContentService().getChildContents(JSON.stringify(request), (success) => {
+        resolve(success);
+      },(error) => {
+        reject(error);
+      });
+    });
   }
 
-  deleteContent(request: ContentDeleteRequest,
-    successCallback: (response: string) => void,
-    errorCallback: (response: string) => void) {
-    try {
-      this.factory.getContentService().deleteContent(JSON.stringify(request), successCallback, errorCallback);
-    } catch (error) {
-      console.log(error);
-    }
+  deleteContent(request: ContentDeleteRequest)
+  {
+    return new Promise((resolve,reject) => {
+      this.factory.getContentService().deleteContent(JSON.stringify(request), (success) => {
+        resolve(success);
+      }, (error) => {
+        reject(error);
+      });
+    })
   }
 
-  flagContent(request: FlagContentRequest,
-    successCallback: (response: string) => void,
-    errorCallback: (response: string) => void) {
-    try {
-      this.factory.getContentService().flagContent(JSON.stringify(request), successCallback, errorCallback);
-    } catch (error) {
-      console.log(error);
-    }
+  flagContent(request: FlagContentRequest)
+  {
+    return new Promise((resolve,reject) => {
+      this.factory.getContentService().flagContent(JSON.stringify(request), (success) => {
+        resolve(success);
+      }, (error) => {
+        reject(error);
+      });
+    })
   }
 
-  sendFeedback(request: ContentFeedback,
-    successCallback: (response: string) => void,
-    errorCallback: (response: string) => void) {
-    try {
-      this.factory.getContentService().sendFeedback(JSON.stringify(request), successCallback, errorCallback);
-    } catch (error) {
-      console.log(error);
-    }
+  sendFeedback(request: ContentFeedback)
+  {
+    return new Promise((resolve,reject) => {
+      this.factory.getContentService().sendFeedback(JSON.stringify(request), (success) => {
+         resolve(success);
+      }, (error) => {
+        reject(error);
+      });
+    })
   }
 
-  getImportStatus(request: Array<string>,
-    successCallback: (response: string) => void,
-    errorCallback: (response: string) => void) {
-    try {
-      this.factory.getContentService().getImportStatus(JSON.stringify(request), successCallback, errorCallback);
-    } catch (error) {
-      console.log(error);
-    }
+  getImportStatus(request: Array<string>)
+  {
+    return new Promise((resolve,reject) => {
+      this.factory.getContentService().getImportStatus(JSON.stringify(request), (success) => {
+        resolve(success);
+      }, (error) => {
+        reject(error);
+      });
+    })
   }
 
-  cancelDownload(request: string,
-    successCallback: (response: string) => void,
-    errorCallback: (response: string) => void) {
-    try {
-      this.factory.getContentService().cancelDownload(JSON.stringify(request), successCallback, errorCallback);
-    } catch (error) {
-      console.log(error);
-    }
+  cancelDownload(request: string)
+  {
+    return new Promise((resolve,reject) => {
+      this.factory.getContentService().cancelDownload(JSON.stringify(request), (success) => {
+        resolve(success);
+      }, (error) => {
+        reject(error);
+      });
+    })
   }
 
-  exportContent(request: ContentExportRequest,
-    successCallback: (response: string) => void,
-    errorCallback: (response: string) => void) {
-    try {
-      this.factory.getContentService().exportContent(JSON.stringify(request), successCallback, errorCallback);
-    } catch (error) {
-      console.log(error);
-    }
+  exportContent(request: ContentExportRequest)
+  {
+    return new Promise((resolve,reject) => {
+      this.factory.getContentService().exportContent(JSON.stringify(request), (success) => {
+        resolve(success);
+      }, (error) => {
+        reject(error);
+      });
+    })
   }
 
-  setDownloadAction(request: DownloadAction,
-    successCallback: (response: string) => void,
-    errorCallback: (response: string) => void) {
-    try {
-      this.factory.getContentService().setDownloadAction(JSON.stringify(request), successCallback, errorCallback);
-    } catch (error) {
-      console.log(error);
-    }
+  setDownloadAction(request: DownloadAction)
+  {
+    return new Promise((resolve,reject) => {
+      this.factory.getContentService().setDownloadAction(JSON.stringify(request), (success) => {
+        resolve(success);
+      }, (error) => {
+        reject(error);
+      });
+    })
   }
-
-  getDownloadState(successCallback: (response: string) => void,
-    errorCallback: (response: string) => void) {
-    try {
-      this.factory.getContentService().getDownloadState(successCallback, errorCallback);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+    
+  getDownloadState(successCallback)
+  {
+    return new Promise((resolve,reject) => {
+      this.factory.getContentService().getDownloadState((success) => {
+        resolve(success);
+      }, (error) => {
+        reject(error);
+      });
+    })
+  } 
 
   getSearchCriteriaFromRequest(request: string)
   {

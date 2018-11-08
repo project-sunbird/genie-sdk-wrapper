@@ -8,6 +8,10 @@ import {
     GetProfileRequest
 } from "./bean";
 import { ServiceProvider } from "../factory";
+import { reject } from "q";
+import { resolve } from "url";
+import { resolveCname } from "dns";
+import { error } from "util";
 
 @Injectable()
 export class ProfileService {
@@ -21,8 +25,14 @@ export class ProfileService {
      * @param onSuccess 
      * @param onError 
      */
-    createProfile(request: Profile, onSuccess, onError) {
-        this.factory.getProfileService().createProfile(JSON.stringify(request), onSuccess, onError);
+    createProfile(request: Profile) {
+        return new Promise((resolve, reject) => {
+            this.factory.getProfileService().createProfile(JSON.stringify(request), (success) => {
+                resolve(success);
+            }), (error) => {
+                reject(error);
+            }
+        })
     }
 
     /**
@@ -31,12 +41,24 @@ export class ProfileService {
      * @param onSuccess 
      * @param onError 
      */
-    updateProfile(request: Profile, onSuccess, onError) {
-        this.factory.getProfileService().updateProfile(JSON.stringify(request), onSuccess, onError);
+    updateProfile(request: Profile) {
+        return new Promise((resolve, reject) => {
+            this.factory.getProfileService().updateProfile(JSON.stringify(request), (success) => {
+                resolve(success);
+            }), (error) => {
+                reject(error);
+            }
+        })
     }
 
-    setCurrentUser(request: string, onSuccess, onError) {
-        this.factory.getProfileService().setCurrentUser(request, onSuccess, onError);
+    setCurrentUser(request: string) {
+        return new Promise((resolve, reject) => {
+            this.factory.getProfileService().setCurrentUser(request, (success) => {
+                resolve(success);
+            }, (error) => {
+                reject(error);
+            });
+        })
     }
 
     /**
@@ -44,12 +66,24 @@ export class ProfileService {
      * @param onSuccess 
      * @param onError 
      */
-    getCurrentUser(onSuccess, onError) {
-        this.factory.getProfileService().getCurrentUser(onSuccess, onError);
+    getCurrentUser() {
+        return new Promise((resolve, reject) => {
+            this.factory.getProfileService().getCurrentUser((success) => {
+                resolve(success);
+            }), (error) => {
+                reject(error);
+            };
+        })
     }
 
-    setCurrentProfile(isGuestMode: boolean, request: Profile, onSuccess, onError) {
-        this.factory.getProfileService().setCurrentProfile(isGuestMode, JSON.stringify(request), onSuccess, onError);
+    setCurrentProfile(isGuestMode: boolean, request: Profile) {
+        return new Promise((resolve, reject) => {
+            this.factory.getProfileService().setCurrentProfile(isGuestMode, JSON.stringify(request), (success) => {
+                resolve(success);
+            }, (error) => {
+                reject(error);
+            });
+        })
     }
 
     /**
@@ -66,12 +100,24 @@ export class ProfileService {
      * @param onSuccess 
      * @param onError
      */
-    setAnonymousUser(onSuccess, onError) {
-        this.factory.getProfileService().setAnonymousUser(onSuccess, onError);
+    setAnonymousUser() {
+        return new Promise((resolve, reject) => {
+            this.factory.getProfileService().setAnonymousUser((success) => {
+                resolve(success);
+            }, (error) => {
+                reject(error);
+            });
+        })
     }
 
-    addContentAccess(cotentAccess: ContentAccess, onSuccess, onError) {
-        this.factory.getProfileService().addContentAccess(JSON.stringify(cotentAccess), onSuccess, onError);
+    addContentAccess(cotentAccess: ContentAccess){
+        return new Promise((resolve,reject) => {
+            this.factory.getProfileService().addContentAccess(JSON.stringify(cotentAccess), (success) => {
+                resolve(success);
+            }, (error) => {
+                reject(error);
+            });
+        })
     }
 
     /**
@@ -96,9 +142,15 @@ export class ProfileService {
      * @param onSuccess 
      * @param onError 
      */
-    deleteUser(request: string, onSuccess, onError) {
-        this.factory.getProfileService().deleteUser(request, onSuccess, onError);
-    }
+    deleteUser(request: string){
+         return new Promise((resolve,reject) => {
+            this.factory.getProfileService().deleteUser(request, (success) => {
+                resolve(success);
+            }, (error) => {
+                reject(error);
+            });
+        })
+    } 
 
     /**
      * This api is used to import profile/group
@@ -106,8 +158,15 @@ export class ProfileService {
      * @param onSuccess 
      * @param onError 
      */
-    importProfile(request: ProfileImportRequest, onSuccess, onError) {
-        this.factory.getProfileService().importProfile(request, onSuccess, onError);
+    importProfile(request: ProfileImportRequest)
+    {
+        return new Promise((resolve,reject) => {
+            this.factory.getProfileService().importProfile(request, (success) => {
+               resolve(success);
+            }, (error) => {
+               reject(error);
+            });
+        })
     }
 
     /**
@@ -116,12 +175,25 @@ export class ProfileService {
      * @param onSuccess 
      * @param onError 
      */
-    exportProfile(request: ProfileExportRequest, onSuccess, onError) {
-        this.factory.getProfileService().exportProfile(request, onSuccess, onError);
-    }
+    exportProfile(request: ProfileExportRequest)
+    {
+        return new Promise((resolve,reject) => {
+            this.factory.getProfileService().exportProfile(request, (success) => {
+              resolve(success);
+            }, (error) => {
+              reject(error);
+            });
+        })
+    } 
 
-    getProfile(request: GetProfileRequest, onSuccess, onError) {
-        this.factory.getProfileService().getProfile(request, onSuccess, onError);
-    }
+    getProfile(request: GetProfileRequest){
+        return new Promise((resolve,reject) => {
+            this.factory.getProfileService().getProfile(request, (success) => {
+             resolve(success);
+            }, (error) => {
+              reject(error);
+            }); 
+        })
+    } 
 
 }
