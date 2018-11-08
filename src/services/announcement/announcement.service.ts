@@ -13,8 +13,14 @@ export class AnnouncementService {
 
     }
 
-    getAnnouncementDetails(request: AnnouncementDetailsRequest, onSuccess, onError) {
-        this.factory.getAnnouncementService().getAnnouncementDetails(JSON.stringify(request), onSuccess, onError);
+    getAnnouncementDetails(request: AnnouncementDetailsRequest){
+        return new Promise((resolve,reject) => {
+            this.factory.getAnnouncementService().getAnnouncementDetails(JSON.stringify(request), (success) => {
+                resolve(success);
+            }),(error) => {
+                reject(error);
+            }
+        })
     }
 
     getAnnouncementList(request: AnnouncementListRequest, onSuccess, onError) {
