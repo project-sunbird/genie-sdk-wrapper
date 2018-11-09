@@ -80,6 +80,8 @@ export class PageId {
     public static readonly ONBOARDING_QR_SHOWCASE = "onboarding-qr-showcase";
     public static readonly SEARCH = "search";
     public static readonly DOWNLOAD_SPINE = "download-spine";
+    public static readonly DIAL_NOT_LINKED = "dial-not-linked";
+    public static readonly DIAL_LINKED_NO_CONTENT = "dial-linked-but-no-content";
 
 }
 
@@ -213,6 +215,9 @@ export class InteractSubtype {
     public static readonly VIEW_MORE_CLICKED = "view-more-clicked";
     public static readonly READ_MORE_CLICKED = "read-more-clicked";
     public static readonly READ_LESS_CLICKED = "read-less-clicked";
+    public static readonly DOWNLOAD_PLAY_CLICKED = "download-play-clicked";
+    public static readonly PLAY_CLICKED = "play-clicked";
+    public static readonly EXTRA_INFO = "extra-info";
 }
 export class ErrorCode {
     public static readonly ERR_DOWNLOAD_FAILED = "ERR_DOWNLOAD_FAILED";
