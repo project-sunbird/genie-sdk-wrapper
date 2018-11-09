@@ -65,6 +65,8 @@ export class ContentSearchCriteria {
   // 1 - indicates search, 2 - filter
   searchType?: SearchType;
   offlineSearch?: boolean;
+  framework?:string;
+  languageCode?:string;
 }
 
 export class ContentImport {
