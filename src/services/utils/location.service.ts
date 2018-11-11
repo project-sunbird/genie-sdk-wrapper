@@ -8,13 +8,15 @@ export class LocationInfoService {
     constructor(private factory: ServiceProvider) {
 
     }
-
-    getLocation(successCallback: (response: string) => void,
-        errorCallback: (error: string) => void) {
-        try {
-          this.factory.getLocationService().getLocation(successCallback, errorCallback);
-        } catch (error) {
-          console.log(error);
-        }
+    
+    getLocation()
+    {
+      return new Promise((resolve,reject) => {
+        this.factory.getLocationService().getLocation((success) => {
+          resolve(success);
+        }, (error) => {
+          reject(error);
+        });
+      })
     }
 }

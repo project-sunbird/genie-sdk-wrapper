@@ -10,11 +10,23 @@ export class PermissionResponse {
 @Injectable()
 export class PermissionService {
 
-	hasPermission(permission: Array<String>, successCallback: (response) => void, errorCallback: (error) => void) {
- 		(<any>window).GenieSDK.permission.hasPermission(JSON.stringify(permission), successCallback, errorCallback);
+    hasPermission(permission: Array<String>) {
+		return new Promise((resolve,reject) => {
+			(<any>window).GenieSDK.permission.hasPermission(JSON.stringify(permission), (success) => {
+              resolve(success);
+			}, (error) => {
+              reject(error);
+			});
+		})
 	}
-
-	requestPermission(permission: Array<String>, successCallback: (response) => void, errorCallback: (error) => void) {
-		(<any>window).GenieSDK.permission.requestPermission(JSON.stringify(permission), successCallback, errorCallback);
+	requestPermission(permission: Array<String>)
+	{
+		return new Promise((resolve,reject) => {
+			(<any>window).GenieSDK.permission.requestPermission(JSON.stringify(permission), (success) => {
+                resolve(success)
+			}, (error) => {
+				reject(error);
+			});
+		})
 	}
 }
