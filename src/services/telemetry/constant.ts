@@ -213,6 +213,7 @@ export class InteractSubtype {
     public static readonly DOWNLOAD_PLAY_CLICKED = "download-play-clicked";
     public static readonly PLAY_CLICKED = "play-clicked";
     public static readonly EXTRA_INFO = "extra-info";
+    public static readonly PROFILE_ATTRIBUTE_POPULATION = "profile-attribute-population";
 }
 export class ErrorCode {
     public static readonly ERR_DOWNLOAD_FAILED = "ERR_DOWNLOAD_FAILED";
