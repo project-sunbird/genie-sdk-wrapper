@@ -72,33 +72,36 @@ export class ReportService {
         return map;
     }
 
-    getReportsByUser(requestObject: SummaryRequest,
-        successCallback: (response: String) => void,
-        errorCallback: (error: String) => void) {
-        try {
-            this.factory.getReportService().getReportsByUser(JSON.stringify(requestObject), successCallback, errorCallback);
-        } catch (error) {
-            console.log(error);
-        }
+    getReportsByUser(requestObject: SummaryRequest)
+    {
+        return new Promise((resolve,reject) => {
+            this.factory.getReportService().getReportsByUser(JSON.stringify(requestObject), (success) => {
+                resolve(success);
+            }, (error) => {
+                reject(error);
+            });
+        })
     }
 
-    getReportsByQuestion(requestObject: SummaryRequest,
-        successCallback: (response: String) => void,
-        errorCallback: (error: String) => void) {
-        try {
-            this.factory.getReportService().getReportsByQuestion(JSON.stringify(requestObject), successCallback, errorCallback);
-        } catch (error) {
-            console.log(error);
-        }
+    getReportsByQuestion(requestObject: SummaryRequest)
+    {
+        return new Promise((resolve,reject) => {
+            this.factory.getReportService().getReportsByQuestion(JSON.stringify(requestObject), (success) => {
+                resolve(success);
+            }, (error) => {
+                reject(error);
+            });
+        })
     }
-
-    getDetailsPerQuestion(requestObject: SummaryRequest,
-        successCallback: (response: String) => void,
-        errorCallback: (error: String) => void) {
-        try {
-            this.factory.getReportService().getDetailsPerQuestion(JSON.stringify(requestObject), successCallback, errorCallback);
-        } catch (error) {
-            console.log(error);
-        }
+    
+    getDetailsPerQuestion(requestObject: SummaryRequest)
+    {
+        return new Promise((resolve,reject) => {
+            this.factory.getReportService().getDetailsPerQuestion(JSON.stringify(requestObject), (success) => {
+                resolve(success);
+            }, (error) => {
+                reject(error);
+            });
+        })
     }
 }

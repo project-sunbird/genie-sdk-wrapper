@@ -110,22 +110,27 @@ export class TelemetryService {
     }
   }
 
-  sync(successCallback: (response: GenieResponse<SyncStat>) => void,
-    errorCallback: (error: GenieResponse<SyncStat>) => void) {
-    try {
-      this.factory.getTelemteryService().sync(successCallback, errorCallback);
-    } catch (error) {
-      console.log(error);
-    }
+  sync()
+  {
+    return new Promise((resolve,reject) => {
+      this.factory.getTelemteryService().sync((success) => {
+        resolve(success);
+      }, (error) => {
+        reject(error);
+      });
+    })
   }
 
-  getTelemetryStat(successCallback: (response: GenieResponse<TelemetryStat>) => void,
-  errorCallback: (error: GenieResponse<TelemetryStat>) => void) {
-  try {
-    this.factory.getTelemteryService().getTelemetryStat(successCallback, errorCallback);
-  } catch (error) {
-    console.log(error);
+
+  getTelemetryStat()
+  {
+    return new Promise((resolve,reject) => {
+      this.factory.getTelemteryService().getTelemetryStat((success) => {
+        resolve(success);
+      }, (error) => {
+        reject(error);
+      });
+    })
   }
-}
 
 }
