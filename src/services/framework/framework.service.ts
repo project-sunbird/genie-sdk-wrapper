@@ -15,6 +15,7 @@ export class FrameworkService {
 
   updatedFrameworkResponseBody: any = {};
   currentFrameworkCategories: Array<any> = [];
+  currentFrameworkId: string = '';
 
   constructor(
     private factory: ServiceProvider,
@@ -84,6 +85,10 @@ export class FrameworkService {
     }
   }
 
+  getCurrentFrameworkId(): string {
+    return this.currentFrameworkId;
+  }
+
   private prepareFrameworkData(frameworkResponse: string) {
     let responseBody = JSON.parse(frameworkResponse);
     let allCategories: Array<any> = responseBody.result.framework.categories;
@@ -119,6 +124,7 @@ export class FrameworkService {
     this.currentFrameworkCategories = allCategories;
     this.updatedFrameworkResponseBody = responseBody;
     this.updatedFrameworkResponseBody.result.framework.categories = allCategories;
+    this.currentFrameworkId = this.updatedFrameworkResponseBody.result.framework.identifier;
   }
 
   async getCategoryData(request: CategoryRequest): Promise<string> {
