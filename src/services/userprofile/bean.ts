@@ -55,6 +55,7 @@ export class UpdateUserInfoRequest {
     education?: Array<UserEducation>;
     jobProfile?: Array<UserJobProfile>;
     address?: Array<UserAddress>;
+    framework?: { [index: string]: any };
 }
 
 export class UserWebPages {
