@@ -43,7 +43,7 @@ export class OAuthService {
             });
     }
 
-    doOAuthStepOne(): Promise<any> {
+    doOAuthStepOne(isRTL = false): Promise<any> {
         let that = this;
         return new Promise(function (resolve, reject) {
 
@@ -64,6 +64,12 @@ export class OAuthService {
                     }
                 }
             });
+            if (isRTL) {
+                browserRef.addEventListener('loadstop', (event) => {
+                    browserRef.executeScript({ code: "document.body.style.direction = 'rtl'" });
+                });
+            }
+
             browserRef.addEventListener("exit", closeCallback);
         });
     }
@@ -100,7 +106,7 @@ export class OAuthService {
                                 resolve();
                             }, error => {
 
-                                // SB-3496 Fix : We need to recosider how to handle the error  
+                                // SB-3496 Fix : We need to recosider how to handle the error
                                 //ignore response or error
                                 that.updateLoginTime(accessToken, userToken);
 
