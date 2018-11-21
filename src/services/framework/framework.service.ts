@@ -20,7 +20,7 @@ export class FrameworkService {
   constructor(
     private factory: ServiceProvider,
     private preference: SharedPreferences,
-    private buildParamService: BuildParamService
+    private buildParamService: BuildParamService,
   ) {
 
   }
@@ -85,8 +85,11 @@ export class FrameworkService {
     }
   }
 
-  getCurrentFrameworkId(): string {
-    return this.currentFrameworkId;
+  getCurrentFrameworkId() {
+    this.preference.getString("current_framework_id")
+    .then(value => {
+       return value;
+    });
   }
 
   private prepareFrameworkData(frameworkResponse: string) {
@@ -125,6 +128,7 @@ export class FrameworkService {
     this.updatedFrameworkResponseBody = responseBody;
     this.updatedFrameworkResponseBody.result.framework.categories = allCategories;
     this.currentFrameworkId = this.updatedFrameworkResponseBody.result.framework.identifier;
+    this.preference.putString('current_framework_id' ,this.currentFrameworkId);
   }
 
   async getCategoryData(request: CategoryRequest): Promise<string> {
