@@ -1,7 +1,5 @@
 import { Injectable } from "@angular/core";
 import { ServiceProvider } from "../factory";
-import { resolve } from "dns";
-
 
 @Injectable()
 export class DeviceInfoService {
@@ -21,13 +19,23 @@ export class DeviceInfoService {
       })
     }
 
-    // getDeviceID(successCallback: (response: string) => void,
-    //     errorCallback: (error: string) => void) {
-    //     try {
-    //       this.factory.getDeviceService().getDeviceID(successCallback, errorCallback);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    // }
+    getDeviceAPILevel(){
+      return new Promise((resolve,reject) => {
+        this.factory.getDeviceService().getDeviceAPILevel((success) => {
+          resolve(success);
+        }, (error) => {
+          reject(error);
+        })
+      });
+      }
 
+      checkAppAvailability(packageName: string){
+        return new Promise((resolve,reject) =>{
+          this.factory.getDeviceService().checkAppAvailability(packageName,(success) => {
+            resolve(success);
+          }, (error) => {
+            reject(error);
+          })
+        });
+      }
 }
