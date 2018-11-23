@@ -1,8 +1,5 @@
 import { Injectable } from "@angular/core";
 import { ServiceProvider } from "../factory";
-import { resolve } from "dns";
-import { reject } from "q";
-
 
 @Injectable()
 export class DeviceInfoService {
@@ -41,14 +38,4 @@ export class DeviceInfoService {
           })
         });
       }
-    
-    // getDeviceID(successCallback: (response: string) => void,
-    //     errorCallback: (error: string) => void) {
-    //     try {
-    //       this.factory.getDeviceService().getDeviceID(successCallback, errorCallback);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    // }
-
 }
