@@ -26,6 +26,7 @@ export class FilterValue {
   name: string;
   count: number;
   apply: boolean;
+  translations: string;
 }
 
 export class ContentSearchFilter {
