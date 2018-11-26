@@ -66,8 +66,8 @@ export class ContentSearchCriteria {
   // 1 - indicates search, 2 - filter
   searchType?: SearchType;
   offlineSearch?: boolean;
-  framework?:string;
-  languageCode?:string;
+  framework?: string;
+  languageCode?: string;
 }
 
 export class ContentImport {
@@ -83,7 +83,7 @@ export class ContentImportRequest {
 }
 
 export class ContentSortCriteria {
-  sortAttribute: String;
+  sortAttribute: string;
   sortOrder: SortOrder;
 }
 
@@ -93,24 +93,24 @@ export enum SortOrder {
 }
 
 export class ContentFilterCriteria {
-  uid?: String;
-  contentTypes?: String[];
-  audience?: String[];
-  pragma?: String[];
-  attachFeedback?: Boolean;
-  attachContentAccess?: Boolean;
+  uid?: string;
+  contentTypes?: string[];
+  audience?: string[];
+  pragma?: string[];
+  attachFeedback?: boolean;
+  attachContentAccess?: boolean;
   sortCriteria?: Array<ContentSortCriteria>;
 }
 
 export class HierarchyInfo {
-  identifier: String;
-  contentType: String;
+  identifier: string;
+  contentType: string;
 }
 
 export class ChildContentRequest {
-  contentId: String;
+  contentId: string;
   hierarchyInfo?: Array<HierarchyInfo>;
-  level?: Number;
+  level?: number;
 }
 
 export class ContentDeleteRequest {
@@ -118,8 +118,8 @@ export class ContentDeleteRequest {
 }
 
 export class ContentDelete {
-  contentId: String;
-  isChildContent: Boolean
+  contentId: string;
+  isChildContent: boolean
 }
 
 export class FlagContentRequest {
@@ -138,8 +138,8 @@ export class ContentFeedback {
 }
 
 export class ContentExportRequest {
-  contentIds?: Array<String>;
-  destinationFolder: String;
+  contentIds?: Array<string>;
+  destinationFolder: string;
 }
 
 export enum DownloadAction {
@@ -154,9 +154,22 @@ export class ContentCache {
 }
 
 export class SummarizerContentFilterCriteria {
-  uids?: String[];
-  contentTypes?: String[]
-  attachFeedback?: Boolean;
-  attachContentAccess?: Boolean;
+  uids?: string[];
+  contentTypes?: string[]
+  attachFeedback?: boolean;
+  attachContentAccess?: boolean;
   sortCriteria?: Array<ContentSortCriteria>;
+}
+
+export class ContentMarkerRequest {
+  contentId: string;
+  uid: string;
+  data: string;
+  marker: number;
+}
+
+export enum MarkerType {
+  NOTHING = 0,
+  PREVIEWED = 1,
+  BOOKMARKED = 2
 }
