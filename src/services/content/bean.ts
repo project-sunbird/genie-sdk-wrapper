@@ -166,6 +166,7 @@ export class ContentMarkerRequest {
   uid: string;
   data: string;
   marker: number;
+  isMarked?: boolean;
 }
 
 export enum MarkerType {
