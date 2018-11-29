@@ -10,14 +10,13 @@ export class PageAssembleService {
 
   }
 
-  getPageAssemble(criteria: PageAssembleCriteria)
-  {
+  getPageAssemble(criteria: PageAssembleCriteria) {
     return new Promise((resolve,reject) => {
       this.factory.getPageAssembleService().getPageAssemble(JSON.stringify(criteria), (success) => {
           resolve(success);
-        }), (error) => {
+        }, (error) => {
           reject(error);
-        };
+        });
     });
   }
 
