@@ -165,6 +165,7 @@ export class ContentMarkerRequest {
   contentId: string;
   uid: string;
   data: string;
+  extraInfoMap?: { [index: string]: any };
   marker: number;
   isMarked?: boolean;
 }
