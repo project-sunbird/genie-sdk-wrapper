@@ -38,4 +38,15 @@ export class DeviceInfoService {
           })
         });
       }
+
+      getDownloadDirectoryPath()
+      {
+        return new Promise((resolve,reject) => {
+          this.factory.getDeviceService().getDownloadDirectoryPath((success) => {
+            resolve(success);
+          }, (error) => {
+            reject(error);
+          });
+        })
+      }
 }
