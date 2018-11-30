@@ -67,6 +67,7 @@ export class ReportService {
             reportPerUser.totalScore += detail.score;
             reportPerUser.totalTime = detail.total_ts;
             reportPerUser.maxTotalScore += detail.maxScore;
+            reportPerUser.totalScore = parseFloat(reportPerUser.totalScore.toFixed(2));
             map.set(detail.uid, reportPerUser);
         })
         return map;
