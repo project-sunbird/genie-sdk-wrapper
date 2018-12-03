@@ -100,6 +100,7 @@ export class ContentFilterCriteria {
   attachFeedback?: boolean;
   attachContentAccess?: boolean;
   sortCriteria?: Array<ContentSortCriteria>;
+  recentlyViewed?: boolean;
 }
 
 export class HierarchyInfo {

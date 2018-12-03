@@ -22,20 +22,25 @@ export class OAuthService {
 
     base_url: string;
 
-    constructor(private platform: Platform,
+    constructor(
+        private platform: Platform,
         private authService: AuthService,
         private userProfileService: UserProfileService,
         private buildParamService: BuildParamService,
         private http: Http) {
 
         this.buildParamService.getBuildConfigParam('BASE_URL')
-            .then(response => {
-                this.base_url = response;
-                this.redirect_url = response + "/oauth2callback";
-                this.auth_url = response + "/auth/realms/sunbird/protocol/openid-connect/auth?redirect_uri=" +
+            .then(baseUrl => {
+                this.base_url = baseUrl;
+
+                this.redirect_url = baseUrl + "/oauth2callback";
+
+                this.auth_url = baseUrl + "/auth/realms/sunbird/protocol/openid-connect/auth?redirect_uri=" +
                     this.redirect_url + "&response_type=code&scope=offline_access&client_id=${CID}";
+
                 this.auth_url = this.auth_url.replace("${CID}", this.platform.is("android") ? "android" : "ios");
-                this.logout_url = response + "/auth/realms/sunbird/protocol/openid-connect/logout?redirect_uri=" +
+
+                this.logout_url = baseUrl + "/auth/realms/sunbird/protocol/openid-connect/logout?redirect_uri=" +
                     this.redirect_url;
             })
             .catch(error => {
@@ -75,7 +80,6 @@ export class OAuthService {
     }
 
     doOAuthStepTwo(token: string): Promise<any> {
-
         let that = this;
 
         return new Promise(function (resolve, reject) {
@@ -117,12 +121,11 @@ export class OAuthService {
                             reject();
                         });
 
-
                 } catch (error) {
                     reject(error);
                 }
             }, (error) => {
-
+                reject(error);
             });
         });
     }
