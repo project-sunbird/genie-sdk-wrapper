@@ -5,6 +5,7 @@ export class ContentDetailRequest {
   attachFeedback?: boolean = false;
   attachContentAccess?: boolean = false;
   refreshContentDetails?: boolean = false;
+  attachContentMarker?: boolean = false;
 }
 
 export class ContentListingCriteria {
