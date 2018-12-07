@@ -101,6 +101,7 @@ export class ContentFilterCriteria {
   attachContentAccess?: boolean;
   sortCriteria?: Array<ContentSortCriteria>;
   recentlyViewed?: boolean;
+  downloadedOnly?: boolean;
 }
 
 export class HierarchyInfo {
