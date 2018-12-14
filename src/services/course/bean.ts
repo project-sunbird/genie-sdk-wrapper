@@ -11,6 +11,12 @@ export class EnrollCourseRequest {
     batchId: string;
 }
 
+export class UnenrollCourseRequest {
+    userId: string;
+    courseId: string;
+    batchId: string;
+}
+
 export class UpdateContentStateRequest {
     userId: string;
     courseId: string;
@@ -45,7 +51,7 @@ export class BatchDetailsRequest {
     batchId: string;
 }
 
-export class GetContentStateRequest{
+export class GetContentStateRequest {
     userId: string;
     courseIds: string[];
     contentIds?: string[];
