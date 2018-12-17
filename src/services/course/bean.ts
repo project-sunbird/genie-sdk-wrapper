@@ -11,7 +11,7 @@ export class EnrollCourseRequest {
     batchId: string;
 }
 
-export class UnenrollCourseRequest {
+export class UnenrolCourseRequest {
     userId: string;
     courseId: string;
     batchId: string;

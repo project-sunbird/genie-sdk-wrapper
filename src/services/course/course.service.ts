@@ -6,7 +6,7 @@ import {
     CourseBatchesRequest,
     BatchDetailsRequest,
     GetContentStateRequest,
-    UnenrollCourseRequest
+    UnenrolCourseRequest
 } from "./bean"
 import { ServiceProvider } from "../factory";
 
@@ -41,9 +41,9 @@ export class CourseService {
         });
     }
 
-    unenrollCourse(requestObject: UnenrollCourseRequest) {
+    unenrolCourse(requestObject: UnenrolCourseRequest) {
         return new Promise((resolve, reject) => {
-            this.factory.getCourseService().unenrollCourse(JSON.stringify(requestObject),
+            this.factory.getCourseService().unenrolCourse(JSON.stringify(requestObject),
                 (success) => {
                     resolve(success);
                 },
