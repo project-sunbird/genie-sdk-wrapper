@@ -1,8 +1,14 @@
 import { Injectable } from "@angular/core";
-
 import {
-    UserProfileDetailsRequest, UserProfileSkillsRequest, TenantInfoRequest,
-    UserSearchCriteria, EndorseOrAddSkillRequest, ProfileVisibilityRequest, UploadFileRequest, UpdateUserInfoRequest
+    UserProfileDetailsRequest,
+    UserProfileSkillsRequest,
+    TenantInfoRequest,
+    UserSearchCriteria,
+    EndorseOrAddSkillRequest,
+    ProfileVisibilityRequest,
+    UploadFileRequest,
+    UpdateUserInfoRequest,
+    AcceptTermsAndConditionsRequest
 } from "./bean"
 
 @Injectable()
@@ -38,6 +44,10 @@ export class UserProfileService {
 
     updateUserInfo(request: UpdateUserInfoRequest, onSuccess, onError) {
         (<any>window).GenieSDK.userProfile.updateUserInfo(JSON.stringify(request), onSuccess, onError);
+    }
+
+    acceptTermsAndConditions(request: AcceptTermsAndConditionsRequest, onSuccess, onError) {
+        (<any>window).GenieSDK.userProfile.acceptTermsAndConditions(JSON.stringify(request), onSuccess, onError);
     }
 
 }
