@@ -103,6 +103,7 @@ export class ContentFilterCriteria {
   sortCriteria?: Array<ContentSortCriteria>;
   recentlyViewed?: boolean;
   downloadedOnly?: boolean;
+  limit?: number;
 }
 
 export class HierarchyInfo {
