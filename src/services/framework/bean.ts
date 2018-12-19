@@ -1,7 +1,19 @@
 export class ChannelDetailsRequest {
     channelId: string;
     refreshChannelDetails?: boolean = false;
+    filePath?: string;  
+}
+export class SuggestedFrameworkRequest {
+    channelId: string;
+    refreshChannelDetails?: boolean = false;
     filePath?: string;
+    isDefaultFrameWork?: boolean = false;
+}
+
+export class FrameworkDetail {
+    identifier: string;
+    code: string;
+    name: string;
 }
 
 export class Channel {
@@ -11,6 +23,7 @@ export class Channel {
     channel: string;
     name: string;
     defaultFramework: string;
+    suggested_frameworks:Array<FrameworkDetail>;
 }
 export class CategoryRequest {
     frameworkId?: string;
@@ -25,3 +38,4 @@ export class FrameworkDetailsRequest {
     defaultFrameworkDetails: boolean = false;
     filePath?: string;
 }
+
