@@ -94,60 +94,62 @@ export class FrameworkService {
       refreshChannelDetails: request.refreshChannelDetails,
       filePath: request.filePath
     }
-    this.getChannelDetails(channelRequest)
-      .then(data => {
-        if (Boolean(request.isDefaultFrameWork)) {
-          const frameworkRequest: FrameworkDetailsRequest = {
-            frameworkId: data.result.defaultFramework,
-            defaultFrameworkDetails: true
-          }
-          let frameworkDetailsResponse = this.getFrameworkDetails(frameworkRequest);
-          const responseBody = [{
-            "id": "api.framework.read",
-            "ver": "1.0",
-            "ts": "2018-12-18T04:30:39.583Z",
-            "params": {
-              "resmsgid": "ac4436f0-027d-11e9-b682-777886588cca",
-              "msgid": "ac07ca30-027d-11e9-b97f-ffdea6c7aad6",
-              "status": "successful",
-              "err": null,
-              "errmsg": null
-            },
-            "responseCode": "OK",
-            "result": {
-              "framework": {
-                "identifier": "mh_k-12_15",
-                "code": "mh_k-12_15",
-                "name": "Maharashtra k-12",
-                "description": "Maharashtra k-12",
-              }
+
+    return new Promise((resolve, reject) => {
+      this.getChannelDetails(channelRequest)
+        .then(data => {
+          if (Boolean(request.isDefaultFrameWork)) {
+            const frameworkRequest: FrameworkDetailsRequest = {
+              frameworkId: data.result.defaultFramework,
+              defaultFrameworkDetails: true
             }
-          }];
-          // const List: Array<any> = responseBody.map((res) =>{
-          //    res.result.framework.identifier,
-          //    res.result.framework.name
-          //   });
-          let frameworkList: Array<any> = [];
-          responseBody.forEach(res => {
-            frameworkList.push({ identifier: res.result.framework.identifier, name: res.result.framework.name });
-          });
-          console.log('identifier is', frameworkList);
+            let frameworkDetailsResponse = this.getFrameworkDetails(frameworkRequest);
+            const responseBody = [{
+              "id": "api.framework.read",
+              "ver": "1.0",
+              "ts": "2018-12-18T04:30:39.583Z",
+              "params": {
+                "resmsgid": "ac4436f0-027d-11e9-b682-777886588cca",
+                "msgid": "ac07ca30-027d-11e9-b97f-ffdea6c7aad6",
+                "status": "successful",
+                "err": null,
+                "errmsg": null
+              },
+              "responseCode": "OK",
+              "result": {
+                "framework": {
+                  "identifier": "mh_k-12_15",
+                  "code": "mh_k-12_15",
+                  "name": "Maharashtra k-12",
+                  "description": "Maharashtra k-12",
+                }
+              }
+            }];
+            // const List: Array<any> = responseBody.map((res) =>{
+            //    res.result.framework.identifier,
+            //    res.result.framework.name
+            //   });
+            let frameworkList: Array<any> = [];
+            responseBody.forEach(res => {
+              frameworkList.push({ identifier: res.result.framework.identifier, name: res.result.framework.name });
+            });
+            console.log('identifier is', frameworkList);
 
-        } else {
-          if (data.result.suggested_frameworks) {
-            let suggestedList: Array<FrameworkDetail> = data.result.suggested_frameworks;
-            // data.result.suggested_frameworks.forEach(res =>{
-            //   suggestedList.push({identifier:res.suggested_frameworks.identifier, name: res.suggested_frameworks.name});
-            // });
-            console.log('suggest', suggestedList);
           } else {
-            console.log('no suggested framework');
+            let suggestedList: Array<FrameworkDetail> = [];
+            if (data.result.frameworks) {
+              suggestedList = data.result.frameworks;
+
+              console.log('suggest', suggestedList);
+
+              resolve(suggestedList);
+            } else {
+              console.log('no suggested framework');
+              resolve(suggestedList);
+            }
           }
-
-        }
-
-        // console.log("data is:", data);
-      });
+        });
+    });
   }
 
   getCurrentFrameworkId() {

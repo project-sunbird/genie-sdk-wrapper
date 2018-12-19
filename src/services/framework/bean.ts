@@ -12,7 +12,7 @@ export class SuggestedFrameworkRequest {
 
 export class FrameworkDetail {
     identifier: string;
-    code: string;
+    index: number;
     name: string;
 }
 
@@ -23,7 +23,7 @@ export class Channel {
     channel: string;
     name: string;
     defaultFramework: string;
-    suggested_frameworks:Array<FrameworkDetail>;
+    frameworks:Array<FrameworkDetail>;
 }
 export class CategoryRequest {
     frameworkId?: string;
