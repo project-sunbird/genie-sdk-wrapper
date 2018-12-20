@@ -5,8 +5,7 @@ import {
   CategoryRequest,
   ChannelDetailsRequest,
   Channel,
-  FrameworkDetail,
-  SuggestedFrameworkRequest
+  FrameworkDetail
 } from "./bean";
 import { GenieResponse } from "../service.bean";
 import { SharedPreferences } from "../utils/preferences.service";
@@ -55,7 +54,7 @@ export class FrameworkService {
   async getFrameworkDetails(request: FrameworkDetailsRequest) {
     if (this.updatedFrameworkResponseBody.result !== undefined &&
       this.updatedFrameworkResponseBody.result.framework.identifier === request.frameworkId) {
-      return Promise.resolve(this.currentFrameworkCategories);
+      return Promise.resolve(this.updatedFrameworkResponseBody);
     } else {
       if (request.defaultFrameworkDetails) {//for default framework details
         let channelDetailsRequest = new ChannelDetailsRequest();
@@ -74,10 +73,12 @@ export class FrameworkService {
         this.factory.getFrameworkService().getFrameworkDetails(JSON.stringify(request),
           frameworkResponse => {
             this.prepareFrameworkData(frameworkResponse);
+
+            // Persist framework in DB
             this.factory.getFrameworkService().persistFrameworkDetails(
               JSON.stringify(this.updatedFrameworkResponseBody)
             );
-            resolve(this.currentFrameworkCategories);
+            resolve(this.updatedFrameworkResponseBody);
           },
           error => {
             reject(error);
@@ -87,69 +88,54 @@ export class FrameworkService {
     }
   }
 
-  async getSuggestedFrameworkList(request: SuggestedFrameworkRequest) {
-    var dataList = new Map();
+  async getSuggestedFrameworkList() {
+    // TODO: set rootOrgId/hashTagId in channelID
+    // const channelId = await this.getChannelId();
+    // const custodianRootOrgId = ""; // TODO:
+
     const channelRequest: ChannelDetailsRequest = {
       channelId: await this.getChannelId(),
-      refreshChannelDetails: request.refreshChannelDetails,
-      filePath: request.filePath
     }
 
-    return new Promise((resolve, reject) => {
-      this.getChannelDetails(channelRequest)
-        .then(data => {
-          if (Boolean(request.isDefaultFrameWork)) {
-            const frameworkRequest: FrameworkDetailsRequest = {
-              frameworkId: data.result.defaultFramework,
-              defaultFrameworkDetails: true
-            }
-            let frameworkDetailsResponse = this.getFrameworkDetails(frameworkRequest);
-            const responseBody = [{
-              "id": "api.framework.read",
-              "ver": "1.0",
-              "ts": "2018-12-18T04:30:39.583Z",
-              "params": {
-                "resmsgid": "ac4436f0-027d-11e9-b682-777886588cca",
-                "msgid": "ac07ca30-027d-11e9-b97f-ffdea6c7aad6",
-                "status": "successful",
-                "err": null,
-                "errmsg": null
-              },
-              "responseCode": "OK",
-              "result": {
-                "framework": {
-                  "identifier": "mh_k-12_15",
-                  "code": "mh_k-12_15",
-                  "name": "Maharashtra k-12",
-                  "description": "Maharashtra k-12",
-                }
-              }
-            }];
-            // const List: Array<any> = responseBody.map((res) =>{
-            //    res.result.framework.identifier,
-            //    res.result.framework.name
-            //   });
-            let frameworkList: Array<any> = [];
-            responseBody.forEach(res => {
-              frameworkList.push({ identifier: res.result.framework.identifier, name: res.result.framework.name });
-            });
-            console.log('identifier is', frameworkList);
+    let suggestedList: Array<FrameworkDetail> = [];
 
-          } else {
-            let suggestedList: Array<FrameworkDetail> = [];
-            if (data.result.frameworks) {
-              suggestedList = data.result.frameworks;
+    try {
+      const channelResponse = await this.getChannelDetails(channelRequest);
 
-              console.log('suggest', suggestedList);
+      if (channelResponse.result.frameworks) {
+        suggestedList = channelResponse.result.frameworks;
+      } else {
+        console.log('default framework');
+        let frameworkDetailRequest = new FrameworkDetailsRequest();
+        frameworkDetailRequest.defaultFrameworkDetails = true;
+        const frameworkResponse = await this.getFrameworkDetails(frameworkDetailRequest);
 
-              resolve(suggestedList);
-            } else {
-              console.log('no suggested framework');
-              resolve(suggestedList);
-            }
-          }
-        });
-    });
+        const frameworkDetail: FrameworkDetail = {
+          identifier: frameworkResponse.result.framework.identifier,
+          name: frameworkResponse.result.framework.name,
+          index: 0
+        }
+
+        suggestedList.push(frameworkDetail);
+      }
+
+      // Sort the list by index
+      suggestedList.sort((f1, f2) => {
+        if (f1.index < f2.index) {
+          return -1;
+        } else if (f1.index > f2.index) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+
+      console.log('suggest', suggestedList);
+      return suggestedList;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 
   getCurrentFrameworkId() {
@@ -196,6 +182,23 @@ export class FrameworkService {
     this.updatedFrameworkResponseBody.result.framework.categories = allCategories;
     this.currentFrameworkId = this.updatedFrameworkResponseBody.result.framework.identifier;
     this.preference.putString('current_framework_id', this.currentFrameworkId);
+  }
+
+  async getAllCategories(request: FrameworkDetailsRequest) {
+    if (this.updatedFrameworkResponseBody.result !== undefined &&
+      this.updatedFrameworkResponseBody.result.framework.identifier === request.frameworkId) {
+      return Promise.resolve(this.currentFrameworkCategories);
+    } else {
+      return new Promise((resolve, reject) => {
+        this.getFrameworkDetails(request)
+          .then(response => {
+            resolve(this.currentFrameworkCategories);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    }
   }
 
   async getCategoryData(request: CategoryRequest): Promise<string> {

@@ -1,13 +1,6 @@
 export class ChannelDetailsRequest {
     channelId: string;
-    refreshChannelDetails?: boolean = false;
     filePath?: string;  
-}
-export class SuggestedFrameworkRequest {
-    channelId: string;
-    refreshChannelDetails?: boolean = false;
-    filePath?: string;
-    isDefaultFrameWork?: boolean = false;
 }
 
 export class FrameworkDetail {
