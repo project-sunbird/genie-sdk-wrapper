@@ -35,18 +35,20 @@ export class OAuthService {
         private buildParamService: BuildParamService,
         private http: Http) {
 
-        this.buildParamService.getBuildConfigParam('BASE_URL')
+        this.buildParamService.getBuildConfigParam('OAUTH_REDIRECT_URL')
+            .then(url => {
+                this.redirect_url = url;
+                return this.buildParamService.getBuildConfigParam('BASE_URL');
+            })
             .then(baseUrl => {
+
                 this.base_url = baseUrl;
+                this.redirect_url = this.base_url+"/oauth2callback"
                 this.auth_url = baseUrl + "/auth/realms/sunbird/protocol/openid-connect/auth?redirect_uri=" +
                     this.redirect_url + "&response_type=code&scope=offline_access&client_id=${CID}&version=1";
                 this.auth_url = this.auth_url.replace("${CID}", this.platform.is("android") ? "android" : "ios");
                 this.logout_url = baseUrl + "/auth/realms/sunbird/protocol/openid-connect/logout?redirect_uri=" +
                     this.redirect_url;
-                return this.buildParamService.getBuildConfigParam('OAUTH_REDIRECT_URL');
-            })
-            .then(url => {
-                this.redirect_url = url;
             })
             .catch(error => {
             });
@@ -64,36 +66,36 @@ export class OAuthService {
     doOAuthStepOne(isRTL = false): Promise<any> {
 
         return new Promise((resolve, reject) => {
-            customtabs.isAvailable(() => {
-                //customtabs available
-                customtabs.launch(this.auth_url!!, callbackUrl => {
-                    this.onOAuthCallback(callbackUrl, resolve, reject);
-                }, error => {
-                    reject(error);
-                })
-            }, error => {
-                //do with in app browser
-                let closeCallback = event => {
-                    reject("The Sunbird sign in flow was canceled");
-                };
+            // customtabs.isAvailable(() => {
+            //     //customtabs available
+            //     customtabs.launch(this.auth_url!!, callbackUrl => {
+            //         this.onOAuthCallback(callbackUrl, resolve, reject);
+            //     }, error => {
+            //         reject(error);
+            //     })
+            // }, error => {
+            //do with in app browser
+            let closeCallback = event => {
+                reject("The Sunbird sign in flow was canceled");
+            };
 
-                let browserRef = (<any>window).cordova.InAppBrowser.open(this.auth_url, "_blank", "zoom=no");
-                browserRef.addEventListener("loadstart", (event) => {
-                    if ((event.url).indexOf(this.redirect_url) === 0) {
-                        browserRef.removeEventListener("exit", closeCallback);
-                        browserRef.close();
-                        this.onOAuthCallback(event.url, resolve, reject);
-                    }
-                });
-                if (isRTL) {
-                    browserRef.addEventListener('loadstop', (event) => {
-                        browserRef.executeScript({ code: "document.body.style.direction = 'rtl'" });
-                    });
+            let browserRef = (<any>window).cordova.SunbirdInAppBrowser.open(this.auth_url, "_blank", "zoom=no");
+            browserRef.addEventListener("loadstart", (event) => {
+                if ((event.url).indexOf(this.redirect_url) === 0) {
+                    browserRef.removeEventListener("exit", closeCallback);
+                    browserRef.close();
+                    this.onOAuthCallback(event.url, resolve, reject);
                 }
-
-                browserRef.addEventListener("exit", closeCallback);
             });
+            if (isRTL) {
+                browserRef.addEventListener('loadstop', (event) => {
+                    browserRef.executeScript({ code: "document.body.style.direction = 'rtl'" });
+                });
+            }
+
+            browserRef.addEventListener("exit", closeCallback);
         });
+        // });
     }
 
     doOAuthStepTwo(token: string): Promise<any> {
