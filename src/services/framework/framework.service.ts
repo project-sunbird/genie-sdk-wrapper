@@ -7,7 +7,7 @@ import {
   Channel,
   FrameworkDetail,
   SystemSettingRequest,
-  SystemSetting
+  SuggestedFrameworkRequest
 } from "./bean";
 import { GenieResponse } from "../service.bean";
 import { SharedPreferences } from "../utils/preferences.service";
@@ -113,11 +113,10 @@ export class FrameworkService {
     }
   }
 
-  async getSuggestedFrameworkList() {
+  async getSuggestedFrameworkList(suggestedFrameworkRequest: SuggestedFrameworkRequest) {
     let suggestedList: Array<FrameworkDetail> = [];
 
     // TODO: set rootOrgId/hashTagId in channelID
-    const channelId = await this.getChannelId();
     const systemSettingRequest: SystemSettingRequest = {
       id: this.SYSTEM_SETING_CUSTODIAN_ORG_ID
     };
@@ -126,6 +125,13 @@ export class FrameworkService {
       custodianRootOrgId = await this.getSystemSettingValue(systemSettingRequest);
     } catch {
       custodianRootOrgId = undefined;
+    }
+
+    let channelId;
+    if (suggestedFrameworkRequest.isGuestUser && custodianRootOrgId) {
+      channelId = custodianRootOrgId;
+    } else {
+      channelId = await this.getChannelId();
     }
 
     const channelRequest: ChannelDetailsRequest = {

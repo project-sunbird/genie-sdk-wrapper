@@ -9,6 +9,10 @@ export class SystemSetting {
     value: string;
 }
 
+export class SuggestedFrameworkRequest {
+    isGuestUser?: boolean = false;
+}
+
 export class ChannelDetailsRequest {
     channelId: string;
     filePath?: string;
