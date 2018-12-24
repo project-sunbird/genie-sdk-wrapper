@@ -5,7 +5,9 @@ import {
   CategoryRequest,
   ChannelDetailsRequest,
   Channel,
-  FrameworkDetail
+  FrameworkDetail,
+  SystemSettingRequest,
+  SystemSetting
 } from "./bean";
 import { GenieResponse } from "../service.bean";
 import { SharedPreferences } from "../utils/preferences.service";
@@ -17,6 +19,7 @@ export class FrameworkService {
   updatedFrameworkResponseBody: any = {};
   currentFrameworkCategories: Array<any> = [];
   currentFrameworkId: string = '';
+  SYSTEM_SETING_CUSTODIAN_ORG_ID = 'custodianOrgId';
 
   constructor(
     private factory: ServiceProvider,
@@ -24,6 +27,28 @@ export class FrameworkService {
     private buildParamService: BuildParamService,
   ) {
 
+  }
+
+  getSystemSettingValue(request: SystemSettingRequest) {
+    // Bundled system setting path
+    request.filePath = 'data/system/system-setting-' + request.id + '.json';
+
+    return new Promise((resolve, reject) => {
+      this.factory.getFrameworkService().getSystemSetting(JSON.stringify(request), (response) => {
+        console.log('getSystemSetting:success ' + response);
+
+        let systemSettingResponse = JSON.parse(response);
+        if (systemSettingResponse && systemSettingResponse.result
+          && systemSettingResponse.result.response) {
+          resolve(systemSettingResponse.result.response.value);
+        } else {
+          reject();
+        }
+      }, (error) => {
+        console.log('getSystemSetting:error ' + error);
+        reject(JSON.parse(error));
+      });
+    });
   }
 
   getChannelDetails(request: ChannelDetailsRequest) {
@@ -89,20 +114,28 @@ export class FrameworkService {
   }
 
   async getSuggestedFrameworkList() {
-    // TODO: set rootOrgId/hashTagId in channelID
-    // const channelId = await this.getChannelId();
-    // const custodianRootOrgId = ""; // TODO:
+    let suggestedList: Array<FrameworkDetail> = [];
 
-    const channelRequest: ChannelDetailsRequest = {
-      channelId: await this.getChannelId(),
+    // TODO: set rootOrgId/hashTagId in channelID
+    const channelId = await this.getChannelId();
+    const systemSettingRequest: SystemSettingRequest = {
+      id: this.SYSTEM_SETING_CUSTODIAN_ORG_ID
+    };
+    let custodianRootOrgId;
+    try {
+      custodianRootOrgId = await this.getSystemSettingValue(systemSettingRequest);
+    } catch {
+      custodianRootOrgId = undefined;
     }
 
-    let suggestedList: Array<FrameworkDetail> = [];
+    const channelRequest: ChannelDetailsRequest = {
+      channelId: channelId
+    }
 
     try {
       const channelResponse = await this.getChannelDetails(channelRequest);
 
-      if (channelResponse.result.frameworks) {
+      if (channelId === custodianRootOrgId && channelResponse.result.frameworks) {
         suggestedList = channelResponse.result.frameworks;
       } else {
         console.log('default framework');
