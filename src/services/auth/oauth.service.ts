@@ -110,13 +110,14 @@ export class OAuthService {
 
     getQueryParam(query: string, param: string): string {
         let paramsArray = query.split("&");
+        let paramValue;
         paramsArray.forEach((item) => {
             let pair = item.split("=");
             if (pair[0] == param) {
-                return pair[1];
+                paramValue = pair[1];
             }
         });
-        return '';
+        return paramValue;
     }
 
     doOAuthStepTwo(token: string): Promise<any> {
