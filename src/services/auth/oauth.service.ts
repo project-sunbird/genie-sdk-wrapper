@@ -14,6 +14,7 @@ import { UserProfileDetailsRequest } from "../userprofile/bean";
 declare var customtabs: {
     isAvailable: (success: () => void, error: (error: string) => void) => void;
     launch: (url: string, success: (callbackUrl: string) => void, error: (error: string) => void) => void;
+    launchInBrowser: (url: string, success: (callbackUrl: string) => void, error: (error: string) => void) => void;
     close: (success: () => void, error: (error: string) => void) => void;
 };
 
@@ -43,7 +44,7 @@ export class OAuthService {
             .then(baseUrl => {
 
                 this.base_url = baseUrl;
-                this.redirect_url = this.base_url + "/oauth2callback"
+                // this.redirect_url = this.base_url + "/oauth2callback"
                 this.auth_url = baseUrl + "/auth/realms/sunbird/protocol/openid-connect/auth?redirect_uri=" +
                     this.redirect_url + "&response_type=code&scope=offline_access&client_id=${CID}&version=1";
                 this.auth_url = this.auth_url.replace("${CID}", this.platform.is("android") ? "android" : "ios");
@@ -73,34 +74,20 @@ export class OAuthService {
     doOAuthStepOne(isRTL = false): Promise<any> {
 
         return new Promise((resolve, reject) => {
-            // customtabs.isAvailable(() => {
-            //     //customtabs available
-            //     customtabs.launch(this.auth_url!!, callbackUrl => {
-            //         this.onOAuthCallback(callbackUrl, resolve, reject);
-            //     }, error => {
-            //         reject(error);
-            //     })
-            // }, error => {
-            //do with in app browser
-            let closeCallback = event => {
-                reject("The Sunbird sign in flow was canceled");
-            };
-
-            let browserRef = (<any>window).cordova.SunbirdInAppBrowser.open(this.auth_url, "_blank", "zoom=no");
-            browserRef.addEventListener("loadstart", (event) => {
-                if ((event.url).indexOf(this.redirect_url) === 0) {
-                    browserRef.removeEventListener("exit", closeCallback);
-                    browserRef.close();
-                    this.onOAuthCallback(event.url, resolve, reject);
-                }
-            });
-            if (isRTL) {
-                browserRef.addEventListener('loadstop', (event) => {
-                    browserRef.executeScript({ code: "document.body.style.direction = 'rtl'" });
+            customtabs.isAvailable(() => {
+                //customtabs available
+                customtabs.launch(this.auth_url!!, callbackUrl => {
+                    this.onOAuthCallback(callbackUrl, resolve, reject);
+                }, error => {
+                    reject(error);
                 });
-            }
-
-            browserRef.addEventListener("exit", closeCallback);
+            }, error => {
+                customtabs.launchInBrowser(this.auth_url!!, callbackUrl => {
+                    this.onOAuthCallback(callbackUrl, resolve, reject);
+                }, error => {
+                    reject(error);
+                });
+            });
         });
     }
 
