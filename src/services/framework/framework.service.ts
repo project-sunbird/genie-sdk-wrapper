@@ -114,7 +114,7 @@ export class FrameworkService {
   }
 
   async getSuggestedFrameworkList(suggestedFrameworkRequest: SuggestedFrameworkRequest) {
-    let suggestedList: Array<FrameworkDetail> = [];
+    let supportedFrameworkList: Array<FrameworkDetail> = [];
 
     // TODO: set rootOrgId/hashTagId in channelID
     const systemSettingRequest: SystemSettingRequest = {
@@ -142,7 +142,7 @@ export class FrameworkService {
       const channelResponse = await this.getChannelDetails(channelRequest);
 
       if (channelId === custodianRootOrgId && channelResponse.result.frameworks) {
-        suggestedList = channelResponse.result.frameworks;
+        supportedFrameworkList = channelResponse.result.frameworks;
       } else {
         console.log('default framework');
         let frameworkDetailRequest = new FrameworkDetailsRequest();
@@ -155,22 +155,13 @@ export class FrameworkService {
           index: 0
         }
 
-        suggestedList.push(frameworkDetail);
+        supportedFrameworkList.push(frameworkDetail);
       }
 
-      // Sort the list by index
-      suggestedList.sort((f1, f2) => {
-        if (f1.index < f2.index) {
-          return -1;
-        } else if (f1.index > f2.index) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
-
-      console.log('suggest', suggestedList);
-      return suggestedList;
+      supportedFrameworkList = this.getTranslatedSuggestedFramework(supportedFrameworkList, suggestedFrameworkRequest.selectedLanguage);
+      supportedFrameworkList = this.sortByIndex(supportedFrameworkList);
+      console.log('suggest', supportedFrameworkList);
+      return supportedFrameworkList;
     } catch (error) {
       console.log(error);
       throw error;
@@ -337,6 +328,16 @@ export class FrameworkService {
     });
   }
 
+  private getTranslatedSuggestedFramework(supportedFrameworkList, selectedLanguage: string) {
+    supportedFrameworkList.forEach((element, index) => {
+      if (Boolean(supportedFrameworkList[index].translations)) {
+        supportedFrameworkList[index].name = this.getTranslatedValue(supportedFrameworkList[index].translations, selectedLanguage, supportedFrameworkList[index].name);
+      }
+    });
+
+    return supportedFrameworkList;
+  }
+
   private getTranslatedCategory(category, selectedLanguage: string) {
     if (Boolean(category.translations)) {
       category.name = this.getTranslatedValue(category.translations, selectedLanguage, category.name);
@@ -348,15 +349,7 @@ export class FrameworkService {
       }
     });
 
-    category.terms.sort((c1, c2) => {
-      if (c1.index < c2.index) {
-        return -1;
-      } else if (c1.index > c2.index) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
+    category.terms = this.sortByIndex(category.terms);
 
     return JSON.stringify(category);
   }
@@ -368,6 +361,18 @@ export class FrameworkService {
     } else {
       return defaultVaue;
     }
+  }
+
+  private sortByIndex(list) {
+    return list.sort((c1, c2) => {
+      if (c1.index < c2.index) {
+        return -1;
+      } else if (c1.index > c2.index) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
   }
 
   // Deep copy

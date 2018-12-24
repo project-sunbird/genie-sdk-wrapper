@@ -11,6 +11,7 @@ export class SystemSetting {
 
 export class SuggestedFrameworkRequest {
     isGuestUser?: boolean = false;
+    selectedLanguage: string;
 }
 
 export class ChannelDetailsRequest {
