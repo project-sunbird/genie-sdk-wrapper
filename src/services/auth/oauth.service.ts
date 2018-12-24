@@ -108,11 +108,11 @@ export class OAuthService {
         return (token.indexOf('access_token') != -1 && token.indexOf('refresh_token') != -1);
     }
 
-    getQueryParam(query: string): string {
+    getQueryParam(query: string, param: string): string {
         let paramsArray = query.split("&");
         paramsArray.forEach((item) => {
             let pair = item.split("=");
-            if (pair[0] == query) {
+            if (pair[0] == param) {
                 return pair[1];
             }
         });
@@ -123,7 +123,7 @@ export class OAuthService {
         let that = this;
         return new Promise(function (resolve, reject) {
             if (that.isGoogleSignup(token)) {
-                that.createInAppSession(that.getQueryParam('refresh_token'), that.getQueryParam('access_token'),resolve,reject);
+                that.createInAppSession(that.getQueryParam(token, 'refresh_token'), that.getQueryParam(token, 'access_token'), resolve, reject);
             }
             else {
                 that.authService.createSession(token, (response) => {
@@ -131,7 +131,7 @@ export class OAuthService {
                         let dataJson = JSON.parse(response);
                         let refreshToken = dataJson["refresh_token"];
                         let accessToken: string = dataJson["access_token"];
-                        that.createInAppSession(refreshToken, accessToken,resolve,reject);
+                        that.createInAppSession(refreshToken, accessToken, resolve, reject);
                     } catch (error) {
                         reject(error);
                     }
@@ -146,32 +146,32 @@ export class OAuthService {
     createInAppSession(refreshToken: string, accessToken: string, resolve, reject) {
         let that = this;
         // return new Promise((resolve, reject) => {
-            let value = accessToken.substring(accessToken.indexOf('.') + 1, accessToken.lastIndexOf('.'));
-            (<any>window).GenieSDK.
-                genieSdkUtil.decode(value, 8, decoded => {
-                    let json = JSON.parse(decoded);
-                    let userToken = json["sub"];
+        let value = accessToken.substring(accessToken.indexOf('.') + 1, accessToken.lastIndexOf('.'));
+        (<any>window).GenieSDK.
+            genieSdkUtil.decode(value, 8, decoded => {
+                let json = JSON.parse(decoded);
+                let userToken = json["sub"];
 
-                    that.authService.startSession(accessToken, refreshToken, userToken);
+                that.authService.startSession(accessToken, refreshToken, userToken);
 
-                    let userProfileRequest: UserProfileDetailsRequest = {
-                        userId: userToken,
-                        requiredFields: ['completeness', 'missingFields', 'lastLoginTime', 'topics']
-                    }
+                let userProfileRequest: UserProfileDetailsRequest = {
+                    userId: userToken,
+                    requiredFields: ['completeness', 'missingFields', 'lastLoginTime', 'topics']
+                }
 
-                    that.userProfileService.getUserProfileDetails(userProfileRequest, success => {
-                        //ignore response or error
-                        that.updateLoginTime(accessToken, userToken);
+                that.userProfileService.getUserProfileDetails(userProfileRequest, success => {
+                    //ignore response or error
+                    that.updateLoginTime(accessToken, userToken);
 
-                        resolve();
-                    }, error => {
-                        that.updateLoginTime(accessToken, userToken);
-                        resolve();
-                    });
-
+                    resolve();
                 }, error => {
-                    reject();
+                    that.updateLoginTime(accessToken, userToken);
+                    resolve();
                 });
+
+            }, error => {
+                reject();
+            });
         // });
     }
 
