@@ -72,7 +72,6 @@ export class OAuthService {
     }
 
     doOAuthStepOne(isRTL = false): Promise<any> {
-
         return new Promise((resolve, reject) => {
             customtabs.isAvailable(() => {
                 //customtabs available
@@ -112,8 +111,7 @@ export class OAuthService {
         return new Promise(function (resolve, reject) {
             if (that.isGoogleSignup(token)) {
                 that.createInAppSession(that.getQueryParam(token, 'refresh_token'), that.getQueryParam(token, 'access_token'), resolve, reject);
-            }
-            else {
+            } else {
                 that.authService.createSession(token, (response) => {
                     try {
                         let dataJson = JSON.parse(response);
@@ -127,7 +125,6 @@ export class OAuthService {
                     reject(error);
                 });
             }
-
         });
     }
 
@@ -198,23 +195,20 @@ export class OAuthService {
     }
 
     doLogOut(): Promise<any> {
-
         return new Promise((resolve, reject) => {
             customtabs.isAvailable(() => {
                 customtabs.launch(this.logout_url!!, success => {
+                    this.authService.endSession();
                     resolve();
                 }, error => {
-                    reject();
+                    reject(error);
                 });
             }, error => {
-                let browserRef = (<any>window).cordova.InAppBrowser.open(this.logout_url);
-                browserRef.addEventListener("loadstart", (event) => {
-                    if ((event.url).indexOf(this.redirect_url) === 0) {
-                        browserRef.removeEventListener("exit", (event) => { });
-                        browserRef.close();
-                        this.authService.endSession();
-                        resolve();
-                    }
+                customtabs.launchInBrowser(this.logout_url!!, callbackUrl => {
+                    this.authService.endSession();
+                    resolve();
+                }, error => {
+                    reject(error);
                 });
             });
         });
