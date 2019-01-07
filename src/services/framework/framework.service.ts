@@ -19,7 +19,7 @@ export class FrameworkService {
   updatedFrameworkResponseBody: any = {};
   currentFrameworkCategories: Array<any> = [];
   currentFrameworkId: string = '';
-  SYSTEM_SETING_CUSTODIAN_ORG_ID = 'custodianOrgId';
+  SYSTEM_SETING_CUSTODIAN_ORG_ID = 'custodianRootOrgId';
 
   constructor(
     private factory: ServiceProvider,
@@ -38,9 +38,8 @@ export class FrameworkService {
         console.log('getSystemSetting:success ' + response);
 
         let systemSettingResponse = JSON.parse(response);
-        if (systemSettingResponse && systemSettingResponse.result
-          && systemSettingResponse.result.response) {
-          resolve(systemSettingResponse.result.response.value);
+        if (systemSettingResponse && systemSettingResponse.result) {
+          resolve(systemSettingResponse.result.value);
         } else {
           reject();
         }
