@@ -20,7 +20,7 @@ export class FrameworkService {
   updatedFrameworkResponseBody: any = {};
   currentFrameworkCategories: Array<any> = [];
   currentFrameworkId: string = '';
-  SYSTEM_SETING_CUSTODIAN_ORG_ID = 'custodianRootOrgId';
+  SYSTEM_SETING_CUSTODIAN_ORG_ID = 'custodianOrgId';
 
   constructor(
     private factory: ServiceProvider,
