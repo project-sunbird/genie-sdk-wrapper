@@ -49,3 +49,7 @@ export class FrameworkDetailsRequest {
     defaultFrameworkDetails: boolean = false;
     filePath?: string;
 }
+
+export class OrganizationSearchCriteria {
+    isRootOrg: boolean = true;
+}

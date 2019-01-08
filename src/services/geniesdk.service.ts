@@ -12,6 +12,10 @@ export class GenieSDKServiceProvider extends ServiceProvider {
         return (<any>window).GenieSDK.profile;
     }
 
+    getUserProfileService(): any {
+        return (<any>window).GenieSDK.userProfile;
+    }
+
     getCourseService(): any {
         return (<any>window).GenieSDK.course;
     }
@@ -59,7 +63,7 @@ export class GenieSDKServiceProvider extends ServiceProvider {
     getReportService(): any {
         return (<any>window).GenieSDK.report;
     }
-    
+
     getDialCodeService(): any {
         return (<any>window).GenieSDK.dialcode;
     }

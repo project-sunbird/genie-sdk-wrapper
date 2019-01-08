@@ -7,7 +7,8 @@ import {
   Channel,
   FrameworkDetail,
   SystemSettingRequest,
-  SuggestedFrameworkRequest
+  SuggestedFrameworkRequest,
+  OrganizationSearchCriteria
 } from "./bean";
 import { GenieResponse } from "../service.bean";
 import { SharedPreferences } from "../utils/preferences.service";
@@ -29,24 +30,40 @@ export class FrameworkService {
 
   }
 
+  getRootOrganizations() {
+    let request = new OrganizationSearchCriteria();
+
+    return new Promise((resolve, reject) => {
+      this.factory.getFrameworkService().searchOrganization(JSON.stringify(request),
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        });
+    });
+  }
+
   getSystemSettingValue(request: SystemSettingRequest) {
     // Bundled system setting path
     request.filePath = 'data/system/system-setting-' + request.id + '.json';
 
     return new Promise((resolve, reject) => {
-      this.factory.getFrameworkService().getSystemSetting(JSON.stringify(request), (response) => {
-        console.log('getSystemSetting:success ' + response);
+      this.factory.getFrameworkService().getSystemSetting(JSON.stringify(request),
+        (response) => {
+          console.log('getSystemSetting:success ' + response);
 
-        let systemSettingResponse = JSON.parse(response);
-        if (systemSettingResponse && systemSettingResponse.result) {
-          resolve(systemSettingResponse.result.value);
-        } else {
-          reject();
-        }
-      }, (error) => {
-        console.log('getSystemSetting:error ' + error);
-        reject(JSON.parse(error));
-      });
+          let systemSettingResponse = JSON.parse(response);
+          if (systemSettingResponse && systemSettingResponse.result) {
+            resolve(systemSettingResponse.result.value);
+          } else {
+            reject();
+          }
+        },
+        (error) => {
+          console.log('getSystemSetting:error ' + error);
+          reject(JSON.parse(error));
+        });
     });
   }
 
