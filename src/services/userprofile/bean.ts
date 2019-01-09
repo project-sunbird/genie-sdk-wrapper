@@ -123,6 +123,6 @@ export class LocationSearchCriteria {
     type?: string;
     parentId?: string;
     code?: string;
-    offset: number;
-    limit: number;
+    offset?: number;
+    limit?: number;
 }
