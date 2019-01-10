@@ -288,7 +288,9 @@ export class FrameworkService {
       let isAssociationsAvailable: boolean = false;
 
       let currentCategory = this.copy(this.currentFrameworkCategories.filter(c => {
+        console.log('request current category' , request.currentCategory);
         return request.currentCategory === c.code;
+        
       }));
 
       // If any previous category is selected then retun the associations else return the terms.
@@ -306,8 +308,7 @@ export class FrameworkService {
           }
           return request.selectedCode!.some(check);
         });
-
-        let check2 = function (element) {
+        let check2 = function (element) { 
           return element.associations !== undefined;
         }
         let associationsPresentForEach = selectedTerm.some(check2);
@@ -316,7 +317,12 @@ export class FrameworkService {
           let map = new Map();
           selectedTerm.forEach(term => {
             term.associations.forEach(a => {
-              map.set(a.code, a);
+              currentCategory[0].terms.filter(currentCategoryTerm =>{
+                  if( a.code ===  currentCategoryTerm.code){
+                    a.index = currentCategoryTerm.index;
+                  }
+              });
+                map.set(a.code, a);              
             });
           });
 
