@@ -101,3 +101,28 @@ export class UserAddress {
 export class AcceptTermsAndConditionsRequest {
     version: string;
 }
+
+export class UserExistRequest {
+    key: string;
+    type: string;
+}
+
+export class GenerateOTPRequest {
+    key: string;
+    type: string;
+}
+
+export class VerifyOTPRequest {
+    key: string;
+    type: string;
+    otp: string;
+}
+
+export class LocationSearchCriteria {
+    query?: string;
+    type?: string;
+    parentId?: string;
+    code?: string;
+    offset?: number;
+    limit?: number;
+}
