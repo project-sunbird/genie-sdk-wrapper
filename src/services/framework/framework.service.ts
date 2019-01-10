@@ -21,6 +21,7 @@ export class FrameworkService {
   currentFrameworkCategories: Array<any> = [];
   currentFrameworkId: string = '';
   SYSTEM_SETING_CUSTODIAN_ORG_ID = 'custodianOrgId';
+  SYSTEM_SETING_COURSE_FRAMEWORK_ID = 'courseFrameworkId';
 
   constructor(
     private factory: ServiceProvider,
@@ -65,6 +66,20 @@ export class FrameworkService {
           reject(JSON.parse(error));
         });
     });
+  }
+
+  getCourseFrameworkId() {
+    const systemSettingRequest: SystemSettingRequest = {
+      id: this.SYSTEM_SETING_COURSE_FRAMEWORK_ID
+    };
+
+    this.getSystemSettingValue(systemSettingRequest)
+      .then(courseFrameworkId => {
+        return courseFrameworkId;
+      })
+      .catch(error => {
+        throw error;
+      });
   }
 
   getChannelDetails(request: ChannelDetailsRequest) {
@@ -214,6 +229,7 @@ export class FrameworkService {
             category: t.category,
             status: t.status,
             translations: t.translations,
+            children: t.children,
             associations: t.associations ? t.associations.filter(a => {
               return (index >= allCategories.length - 1)
                 || (a.category === allCategories[index + 1].code);
@@ -288,9 +304,8 @@ export class FrameworkService {
       let isAssociationsAvailable: boolean = false;
 
       let currentCategory = this.copy(this.currentFrameworkCategories.filter(c => {
-        console.log('request current category' , request.currentCategory);
         return request.currentCategory === c.code;
-        
+
       }));
 
       // If any previous category is selected then retun the associations else return the terms.
@@ -308,7 +323,8 @@ export class FrameworkService {
           }
           return request.selectedCode!.some(check);
         });
-        let check2 = function (element) { 
+
+        let check2 = function (element) {
           return element.associations !== undefined;
         }
         let associationsPresentForEach = selectedTerm.some(check2);
@@ -317,12 +333,12 @@ export class FrameworkService {
           let map = new Map();
           selectedTerm.forEach(term => {
             term.associations.forEach(a => {
-              currentCategory[0].terms.filter(currentCategoryTerm =>{
-                  if( a.code ===  currentCategoryTerm.code){
-                    a.index = currentCategoryTerm.index;
-                  }
+              currentCategory[0].terms.filter(currentCategoryTerm => {
+                if (a.code === currentCategoryTerm.code) {
+                  a.index = currentCategoryTerm.index;
+                }
               });
-                map.set(a.code, a);              
+              map.set(a.code, a);
             });
           });
 

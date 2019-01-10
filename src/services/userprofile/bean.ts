@@ -43,7 +43,6 @@ export class UpdateUserInfoRequest {
     firstName?: string;
     lastName?: string;
     language?: Array<string>;
-    phone?: string;
     profileSummary?: string;
     subject?: Array<string>;
     gender?: string;
