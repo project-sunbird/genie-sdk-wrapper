@@ -57,6 +57,10 @@ export class UpdateUserInfoRequest {
     address?: Array<UserAddress>;
     framework?: { [index: string]: any };
     locationCodes?: Array<string>;
+    email?: string;
+    emailVerified?: boolean;
+    phone?: string;
+    phoneVerified?: boolean;
 }
 
 export class UserWebPages {
