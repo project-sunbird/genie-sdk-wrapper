@@ -97,3 +97,7 @@ export class UserAddress {
     isDeleted?: Boolean;
     id?: string;
 }
+
+export class AcceptTermsAndConditionsRequest {
+    version: string;
+}

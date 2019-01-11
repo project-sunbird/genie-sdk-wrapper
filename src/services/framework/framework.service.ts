@@ -4,7 +4,10 @@ import {
   FrameworkDetailsRequest,
   CategoryRequest,
   ChannelDetailsRequest,
-  Channel
+  Channel,
+  FrameworkDetail,
+  SystemSettingRequest,
+  SuggestedFrameworkRequest
 } from "./bean";
 import { GenieResponse } from "../service.bean";
 import { SharedPreferences } from "../utils/preferences.service";
@@ -16,6 +19,7 @@ export class FrameworkService {
   updatedFrameworkResponseBody: any = {};
   currentFrameworkCategories: Array<any> = [];
   currentFrameworkId: string = '';
+  SYSTEM_SETING_CUSTODIAN_ORG_ID = 'custodianOrgId';
 
   constructor(
     private factory: ServiceProvider,
@@ -23,6 +27,27 @@ export class FrameworkService {
     private buildParamService: BuildParamService,
   ) {
 
+  }
+
+  getSystemSettingValue(request: SystemSettingRequest) {
+    // Bundled system setting path
+    request.filePath = 'data/system/system-setting-' + request.id + '.json';
+
+    return new Promise((resolve, reject) => {
+      this.factory.getFrameworkService().getSystemSetting(JSON.stringify(request), (response) => {
+        console.log('getSystemSetting:success ' + response);
+
+        let systemSettingResponse = JSON.parse(response);
+        if (systemSettingResponse && systemSettingResponse.result) {
+          resolve(systemSettingResponse.result.value);
+        } else {
+          reject();
+        }
+      }, (error) => {
+        console.log('getSystemSetting:error ' + error);
+        reject(JSON.parse(error));
+      });
+    });
   }
 
   getChannelDetails(request: ChannelDetailsRequest) {
@@ -53,7 +78,7 @@ export class FrameworkService {
   async getFrameworkDetails(request: FrameworkDetailsRequest) {
     if (this.updatedFrameworkResponseBody.result !== undefined &&
       this.updatedFrameworkResponseBody.result.framework.identifier === request.frameworkId) {
-      return Promise.resolve(this.currentFrameworkCategories);
+      return Promise.resolve(this.updatedFrameworkResponseBody);
     } else {
       if (request.defaultFrameworkDetails) {//for default framework details
         let channelDetailsRequest = new ChannelDetailsRequest();
@@ -72,10 +97,12 @@ export class FrameworkService {
         this.factory.getFrameworkService().getFrameworkDetails(JSON.stringify(request),
           frameworkResponse => {
             this.prepareFrameworkData(frameworkResponse);
+
+            // Persist framework in DB
             this.factory.getFrameworkService().persistFrameworkDetails(
               JSON.stringify(this.updatedFrameworkResponseBody)
             );
-            resolve(this.currentFrameworkCategories);
+            resolve(this.updatedFrameworkResponseBody);
           },
           error => {
             reject(error);
@@ -85,11 +112,66 @@ export class FrameworkService {
     }
   }
 
+  async getSuggestedFrameworkList(suggestedFrameworkRequest: SuggestedFrameworkRequest) {
+    let supportedFrameworkList: Array<FrameworkDetail> = [];
+
+    // TODO: set rootOrgId/hashTagId in channelID
+    const systemSettingRequest: SystemSettingRequest = {
+      id: this.SYSTEM_SETING_CUSTODIAN_ORG_ID
+    };
+    let custodianRootOrgId;
+    try {
+      custodianRootOrgId = await this.getSystemSettingValue(systemSettingRequest);
+    } catch {
+      custodianRootOrgId = undefined;
+    }
+
+    let channelId;
+    if (suggestedFrameworkRequest.isGuestUser && custodianRootOrgId) {
+      channelId = custodianRootOrgId;
+    } else {
+      channelId = await this.getChannelId();
+    }
+
+    const channelRequest: ChannelDetailsRequest = {
+      channelId: channelId
+    }
+
+    try {
+      const channelResponse = await this.getChannelDetails(channelRequest);
+
+      if (channelId === custodianRootOrgId && channelResponse.result.frameworks) {
+        supportedFrameworkList = channelResponse.result.frameworks;
+      } else {
+        console.log('default framework');
+        let frameworkDetailRequest = new FrameworkDetailsRequest();
+        frameworkDetailRequest.defaultFrameworkDetails = true;
+        const frameworkResponse = await this.getFrameworkDetails(frameworkDetailRequest);
+
+        const frameworkDetail: FrameworkDetail = {
+          identifier: frameworkResponse.result.framework.identifier,
+          name: frameworkResponse.result.framework.name,
+          index: 0
+        }
+
+        supportedFrameworkList.push(frameworkDetail);
+      }
+
+      supportedFrameworkList = this.getTranslatedSuggestedFramework(supportedFrameworkList, suggestedFrameworkRequest.selectedLanguage);
+      supportedFrameworkList = this.sortByIndex(supportedFrameworkList);
+      console.log('suggest', supportedFrameworkList);
+      return supportedFrameworkList;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   getCurrentFrameworkId() {
     this.preference.getString("current_framework_id")
-    .then(value => {
-       return value;
-    });
+      .then(value => {
+        return value;
+      });
   }
 
   private prepareFrameworkData(frameworkResponse: string) {
@@ -128,7 +210,24 @@ export class FrameworkService {
     this.updatedFrameworkResponseBody = responseBody;
     this.updatedFrameworkResponseBody.result.framework.categories = allCategories;
     this.currentFrameworkId = this.updatedFrameworkResponseBody.result.framework.identifier;
-    this.preference.putString('current_framework_id' ,this.currentFrameworkId);
+    this.preference.putString('current_framework_id', this.currentFrameworkId);
+  }
+
+  async getAllCategories(request: FrameworkDetailsRequest) {
+    if (this.updatedFrameworkResponseBody.result !== undefined &&
+      this.updatedFrameworkResponseBody.result.framework.identifier === request.frameworkId) {
+      return Promise.resolve(this.currentFrameworkCategories);
+    } else {
+      return new Promise((resolve, reject) => {
+        this.getFrameworkDetails(request)
+          .then(response => {
+            resolve(this.currentFrameworkCategories);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    }
   }
 
   async getCategoryData(request: CategoryRequest): Promise<string> {
@@ -228,6 +327,16 @@ export class FrameworkService {
     });
   }
 
+  private getTranslatedSuggestedFramework(supportedFrameworkList, selectedLanguage: string) {
+    supportedFrameworkList.forEach((element, index) => {
+      if (Boolean(supportedFrameworkList[index].translations)) {
+        supportedFrameworkList[index].name = this.getTranslatedValue(supportedFrameworkList[index].translations, selectedLanguage, supportedFrameworkList[index].name);
+      }
+    });
+
+    return supportedFrameworkList;
+  }
+
   private getTranslatedCategory(category, selectedLanguage: string) {
     if (Boolean(category.translations)) {
       category.name = this.getTranslatedValue(category.translations, selectedLanguage, category.name);
@@ -239,15 +348,7 @@ export class FrameworkService {
       }
     });
 
-    category.terms.sort((c1, c2) => {
-      if (c1.index < c2.index) {
-        return -1;
-      } else if (c1.index > c2.index) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
+    category.terms = this.sortByIndex(category.terms);
 
     return JSON.stringify(category);
   }
@@ -259,6 +360,18 @@ export class FrameworkService {
     } else {
       return defaultVaue;
     }
+  }
+
+  private sortByIndex(list) {
+    return list.sort((c1, c2) => {
+      if (c1.index < c2.index) {
+        return -1;
+      } else if (c1.index > c2.index) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
   }
 
   // Deep copy

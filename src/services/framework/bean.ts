@@ -1,7 +1,28 @@
+export class SystemSettingRequest {
+    id: string;
+    filePath?: string;
+}
+
+export class SystemSetting {
+    id: string;
+    field: string;
+    value: string;
+}
+
+export class SuggestedFrameworkRequest {
+    isGuestUser?: boolean = false;
+    selectedLanguage: string;
+}
+
 export class ChannelDetailsRequest {
     channelId: string;
-    refreshChannelDetails?: boolean = false;
     filePath?: string;
+}
+
+export class FrameworkDetail {
+    identifier: string;
+    index: number;
+    name: string;
 }
 
 export class Channel {
@@ -11,7 +32,9 @@ export class Channel {
     channel: string;
     name: string;
     defaultFramework: string;
+    frameworks: Array<FrameworkDetail>;
 }
+
 export class CategoryRequest {
     frameworkId?: string;
     currentCategory?: string;
@@ -19,6 +42,7 @@ export class CategoryRequest {
     selectedCode?: Array<string>;
     selectedLanguage: string;
 }
+
 export class FrameworkDetailsRequest {
     frameworkId?: string;
     refreshFrameworkDetails?: boolean = false;

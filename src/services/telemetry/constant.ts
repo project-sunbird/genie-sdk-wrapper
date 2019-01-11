@@ -82,6 +82,8 @@ export class PageId {
     public static readonly DOWNLOAD_SPINE = "download-spine";
     public static readonly DIAL_NOT_LINKED = "dial-not-linked";
     public static readonly DIAL_LINKED_NO_CONTENT = "dial-linked-but-no-content";
+    public static readonly TERMS_N_CONDITIONS = "terms-n-conditions";
+    public static readonly TERMS_N_CONDITIONS_STATIC_PAGE= "terms-n-conditions-static-page";
 
 }
 
@@ -219,6 +221,7 @@ export class InteractSubtype {
     public static readonly PLAY_CLICKED = "play-clicked";
     public static readonly EXTRA_INFO = "extra-info";
     public static readonly PROFILE_ATTRIBUTE_POPULATION = "profile-attribute-population";
+    public static readonly ACCEPTANCE_CHECKBOX_CLICKED = "acceptance_checkbox_clicked";
 }
 export class ErrorCode {
     public static readonly ERR_DOWNLOAD_FAILED = "ERR_DOWNLOAD_FAILED";
