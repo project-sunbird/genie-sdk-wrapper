@@ -12,6 +12,7 @@ export class SystemSetting {
 export class SuggestedFrameworkRequest {
     isGuestUser?: boolean = false;
     selectedLanguage: string;
+    categories: Array<string>;
 }
 
 export class ChannelDetailsRequest {
@@ -41,10 +42,12 @@ export class CategoryRequest {
     prevCategory?: string;
     selectedCode?: Array<string>;
     selectedLanguage: string;
+    categories: Array<string>;
 }
 
 export class FrameworkDetailsRequest {
     frameworkId?: string;
+    categories: Array<string>;
     refreshFrameworkDetails?: boolean = false;
     defaultFrameworkDetails: boolean = false;
     filePath?: string;

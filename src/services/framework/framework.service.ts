@@ -176,8 +176,10 @@ export class FrameworkService {
         supportedFrameworkList = channelResponse.result.frameworks;
       } else {
         console.log('default framework');
-        let frameworkDetailRequest = new FrameworkDetailsRequest();
-        frameworkDetailRequest.defaultFrameworkDetails = true;
+        const frameworkDetailRequest: FrameworkDetailsRequest = {
+          defaultFrameworkDetails: true,
+          categories: suggestedFrameworkRequest.categories
+        }
         const frameworkResponse = await this.getFrameworkDetails(frameworkDetailRequest);
 
         const frameworkDetail: FrameworkDetail = {
@@ -268,7 +270,10 @@ export class FrameworkService {
       if (this.updatedFrameworkResponseBody.result == undefined
         || request.frameworkId !== this.updatedFrameworkResponseBody.result.framework.identifier) {
 
-        let frameworkDetailRequest = new FrameworkDetailsRequest();
+        const frameworkDetailRequest: FrameworkDetailsRequest = {
+          defaultFrameworkDetails: true,
+          categories: request.categories
+        }
         if (request.frameworkId !== undefined && request.frameworkId !== "") {
           frameworkDetailRequest.frameworkId = request.frameworkId;
         } else {
