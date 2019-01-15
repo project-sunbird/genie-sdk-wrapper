@@ -53,6 +53,8 @@ export class ContentSearchCriteria {
   createdBy?: Array<string>;
   audience?: Array<string>;
   channel?: Array<string>;
+  topic?: Array<string>;
+  purpose?: Array<string>;
   pragma?: Array<string>;
   exclPragma?: Array<string>;
   contentStatusArray?: Array<string>;
