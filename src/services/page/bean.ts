@@ -1,5 +1,4 @@
 export class PageAssembleFilter {
-    organization?:Array<string>;
     topic?: Array<string>;
     purpose?: Array<string>;
     channel?: Array<string>;
