@@ -271,7 +271,7 @@ export class FrameworkService {
         || request.frameworkId !== this.updatedFrameworkResponseBody.result.framework.identifier) {
 
         const frameworkDetailRequest: FrameworkDetailsRequest = {
-          defaultFrameworkDetails: true,
+          defaultFrameworkDetails: false,
           categories: request.categories
         }
         if (request.frameworkId !== undefined && request.frameworkId !== "") {
