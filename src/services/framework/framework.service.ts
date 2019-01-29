@@ -68,18 +68,13 @@ export class FrameworkService {
     });
   }
 
-  getCourseFrameworkId() {
+  async getCourseFrameworkId() {
     const systemSettingRequest: SystemSettingRequest = {
       id: this.SYSTEM_SETING_COURSE_FRAMEWORK_ID
     };
 
-    return this.getSystemSettingValue(systemSettingRequest)
-      .then(courseFrameworkId => {
-        return courseFrameworkId;
-      })
-      .catch(error => {
-        throw error;
-      });
+    let courseFrameworkId = await this.getSystemSettingValue(systemSettingRequest);
+    return courseFrameworkId;
   }
 
   getChannelDetails(request: ChannelDetailsRequest) {
