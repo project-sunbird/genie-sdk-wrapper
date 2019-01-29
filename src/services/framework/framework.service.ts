@@ -73,7 +73,7 @@ export class FrameworkService {
       id: this.SYSTEM_SETING_COURSE_FRAMEWORK_ID
     };
 
-    this.getSystemSettingValue(systemSettingRequest)
+    return this.getSystemSettingValue(systemSettingRequest)
       .then(courseFrameworkId => {
         return courseFrameworkId;
       })
