@@ -89,7 +89,9 @@ export class OAuthService {
                 let clientId = (((event.url).split("?")[1]).split("="))[1];
 
                 if ((event.url).indexOf("/sso/sign-in/error") !== -1) {
-                    this.doOAuthStepOne();
+                    inAppBrowserRef.removeEventListener("exit", closeCallBack);
+                    inAppBrowserRef.close();
+                    reject('error_login');
                 } else if ((event.url).indexOf("/sso/sign-in/success") !== -1) {
                     this.invokeCreateSessionApi(inAppBrowserRef, closeCallBack, clientId, resolve, reject);
                 }
@@ -263,5 +265,4 @@ export class OAuthService {
             });
         });
     }
-
 }
