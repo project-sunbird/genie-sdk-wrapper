@@ -46,7 +46,7 @@ export class OAuthService {
                 this.base_url = baseUrl;
                 // this.redirect_url = this.base_url + "/oauth2callback"
                 this.auth_url = baseUrl + "/auth/realms/sunbird/protocol/openid-connect/auth?redirect_uri=" +
-                    this.redirect_url + "&response_type=code&scope=offline_access&client_id=${CID}&version=1";
+                    this.redirect_url + "&response_type=code&scope=offline_access&client_id=${CID}&version=2";
                 this.auth_url = this.auth_url.replace("${CID}", this.platform.is("android") ? "android" : "ios");
                 this.logout_url = baseUrl + "/auth/realms/sunbird/protocol/openid-connect/logout?redirect_uri=" +
                     this.redirect_url;
@@ -57,18 +57,61 @@ export class OAuthService {
 
     private onOAuthCallback(url: string, resolve, reject) {
         let responseParameters;
-        if (this.isGoogleSignup(url)) {
-            responseParameters = ((url).split("?")[1]);
-        }
-        else {
-            responseParameters = (((url).split("?")[1]).split("="))[1];
+        let stateUrl;
+        if (this.isStateLogin(url)) {
+            stateUrl = (((url).split("?")[1]).split("="))[1];
+            this.openInAppBrowser(stateUrl, resolve, reject);
+        } else {
+            if (this.isGoogleSignup(url)) {
+                responseParameters = ((url).split("?")[1]);
+            }
+            else {
+                responseParameters = (((url).split("?")[1]).split("="))[1];
+            }
+            if (responseParameters !== undefined) {
+                resolve(responseParameters);
+            } else {
+                reject("Problem authenticating with Sunbird");
+            }
         }
 
-        if (responseParameters !== undefined) {
-            resolve(responseParameters);
-        } else {
-            reject("Problem authenticating with Sunbird");
-        }
+
+    }
+
+    openInAppBrowser(stateUrl: string, resolve, reject) {
+        let closeCallBack = function (event) {
+            reject('State login flow was canceled');
+        };
+
+        let inAppBrowserRef = (<any>window).cordova.InAppBrowser.open(stateUrl, "_blank", "zoom=no");
+        inAppBrowserRef.addEventListener("loadstart", (event) => {
+            if (event.url) {
+                let clientId = (((event.url).split("?")[1]).split("="))[1];
+
+                if ((event.url).indexOf("/sso/sign-in/error") !== -1) {
+                    this.doOAuthStepOne();
+                } else if ((event.url).indexOf("/sso/sign-in/success") !== -1) {
+                    this.invokeCreateSessionApi(inAppBrowserRef, closeCallBack, clientId, resolve, reject);
+                }
+            }
+
+        });
+    }
+
+    invokeCreateSessionApi(inAppBrowserRef, closeCallBack, id, resolve, reject) {
+        this.http.get(this.base_url + `/v1/sso/create/session?id=${id}`)
+            .toPromise()
+            .then(response => {
+                let stateResponse = response.json();
+                inAppBrowserRef.removeEventListener("exit", closeCallBack);
+                inAppBrowserRef.close();
+                if (stateResponse) {
+                    resolve(stateResponse);
+                } else {
+                    this.doOAuthStepOne();
+                }
+
+            })
     }
 
     doOAuthStepOne(isRTL = false): Promise<any> {
@@ -94,6 +137,10 @@ export class OAuthService {
         return (token.indexOf('access_token') != -1 && token.indexOf('refresh_token') != -1);
     }
 
+    isStateLogin(token: string): boolean {
+        return (token.indexOf('ssoUrl') != -1);
+    }
+
     getQueryParam(query: string, param: string): string {
         let paramsArray = query.split("&");
         let paramValue;
@@ -106,11 +153,14 @@ export class OAuthService {
         return paramValue;
     }
 
-    doOAuthStepTwo(token: string): Promise<any> {
+    doOAuthStepTwo(token): Promise<any> {
+
         let that = this;
         return new Promise(function (resolve, reject) {
-            if (that.isGoogleSignup(token)) {
+            if (that.isGoogleSignup(token.toString())) {
                 that.createInAppSession(that.getQueryParam(token, 'refresh_token'), that.getQueryParam(token, 'access_token'), resolve, reject);
+            } else if (token.hasOwnProperty('access_token') && token.hasOwnProperty('refresh_token')) {
+                that.createInAppSession(token.refresh_token, token.access_token, resolve, reject);
             } else {
                 that.authService.createSession(token, (response) => {
                     try {
