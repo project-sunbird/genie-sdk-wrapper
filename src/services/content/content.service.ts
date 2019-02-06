@@ -58,6 +58,29 @@ export class ContentService {
     })
   }
 
+  async getGroupByPage(request: ContentSearchCriteria, guestUser:boolean){
+  
+   let responseData:any = await this.searchContent(request,false,false,guestUser)
+      responseData = JSON.parse(responseData);
+      const arr = responseData.result.filterCriteria.facetFilters[0].values;
+      const allContent = responseData.result.contentDataList;
+      // forming response same as PageService.getPageAssemble format
+      for (let i = 0; i  < arr.length; i++) {
+          const contents = allContent.filter((content) => {
+            return content.subject.toLowerCase().trim() === arr[i].name.toLowerCase().trim();
+          });
+          delete arr[i].apply;
+          arr[i].contents = contents;
+          arr[i].name = arr[i].name.charAt(0).toUpperCase() + arr[i].name.slice(1);
+      }
+      responseData.result.filterCriteria.facetFilters[0].values = arr;
+      const finalRes = {
+          name: 'Resource',
+          sections : JSON.stringify(arr)
+      };
+      return finalRes;
+  };
+
   getContentMap(): Map<string, any> {
     return this.contentMap;
   }
