@@ -59,7 +59,6 @@ export class ContentService {
   }
 
   async getGroupByPage(request: ContentSearchCriteria, guestUser:boolean){
-  
    let responseData:any = await this.searchContent(request,false,false,guestUser)
       responseData = JSON.parse(responseData);
       const arr = responseData.result.filterCriteria.facetFilters[0].values;
@@ -72,6 +71,8 @@ export class ContentService {
           delete arr[i].apply;
           arr[i].contents = contents;
           arr[i].name = arr[i].name.charAt(0).toUpperCase() + arr[i].name.slice(1);
+          // TODO : need to handle localization
+          arr[i].display = {name:{en:arr[i].name}}
       }
       responseData.result.filterCriteria.facetFilters[0].values = arr;
       const finalRes = {
@@ -79,6 +80,7 @@ export class ContentService {
           sections : JSON.stringify(arr)
       };
       return finalRes;
+
   };
 
   getContentMap(): Map<string, any> {
