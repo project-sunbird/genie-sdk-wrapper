@@ -84,6 +84,7 @@ export class PageId {
     public static readonly DIAL_LINKED_NO_CONTENT = "dial-linked-but-no-content";
     public static readonly TERMS_N_CONDITIONS = "terms-n-conditions";
     public static readonly TERMS_N_CONDITIONS_STATIC_PAGE= "terms-n-conditions-static-page";
+    public static readonly FILTER_PAGE = "filter-page";
 
 }
 
@@ -222,6 +223,10 @@ export class InteractSubtype {
     public static readonly EXTRA_INFO = "extra-info";
     public static readonly PROFILE_ATTRIBUTE_POPULATION = "profile-attribute-population";
     public static readonly ACCEPTANCE_CHECKBOX_CLICKED = "acceptance_checkbox_clicked";
+    public static readonly FILTER_DROPDOWN_EXPANDED = "filter-dropdown-expanded";
+    public static readonly PLAY_ONLINE = "play-online";
+    public static readonly DOWNLOAD_INITIATE = "download-initiate";
+
 }
 export class ErrorCode {
     public static readonly ERR_DOWNLOAD_FAILED = "ERR_DOWNLOAD_FAILED";
