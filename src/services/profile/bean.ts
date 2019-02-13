@@ -68,7 +68,7 @@ export class ProfileImportRequest {
 }
 
 export class ProfileExportRequest {
-    userIds?: Array<string>
-    groupIds?: Array<string>
+    userIds?: Array<string>;
+    groupIds?: Array<string>;
     destinationFolder: string;
 }

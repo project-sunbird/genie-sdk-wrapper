@@ -10,6 +10,10 @@ export class ServiceProvider {
 
     }
 
+    getUserProfileService(): any {
+
+    }
+
     getCourseService(): any {
 
     }
@@ -43,29 +47,29 @@ export class ServiceProvider {
     }
 
     getSharedPreference(): any {
-        
+
     }
 
     getShareService(): any {
-        
+
     }
 
     getBuildParamService(): any {
-        
+
     }
 
     getFormService(): any {
-        
+
     }
 
     getReportService(): any {
     }
-    
+
     getDialCodeService(): any {
-        
+
     }
 
     getGroupService(): any {
-        
+
     }
 }

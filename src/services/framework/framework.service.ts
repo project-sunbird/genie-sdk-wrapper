@@ -7,7 +7,8 @@ import {
   Channel,
   FrameworkDetail,
   SystemSettingRequest,
-  SuggestedFrameworkRequest
+  SuggestedFrameworkRequest,
+  OrganizationSearchCriteria
 } from "./bean";
 import { GenieResponse } from "../service.bean";
 import { SharedPreferences } from "../utils/preferences.service";
@@ -20,6 +21,7 @@ export class FrameworkService {
   currentFrameworkCategories: Array<any> = [];
   currentFrameworkId: string = '';
   SYSTEM_SETING_CUSTODIAN_ORG_ID = 'custodianOrgId';
+  SYSTEM_SETING_COURSE_FRAMEWORK_ID = 'courseFrameworkId';
 
   constructor(
     private factory: ServiceProvider,
@@ -29,25 +31,50 @@ export class FrameworkService {
 
   }
 
+  getRootOrganizations() {
+    let request = new OrganizationSearchCriteria();
+
+    return new Promise((resolve, reject) => {
+      this.factory.getFrameworkService().searchOrganization(JSON.stringify(request),
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        });
+    });
+  }
+
   getSystemSettingValue(request: SystemSettingRequest) {
     // Bundled system setting path
     request.filePath = 'data/system/system-setting-' + request.id + '.json';
 
     return new Promise((resolve, reject) => {
-      this.factory.getFrameworkService().getSystemSetting(JSON.stringify(request), (response) => {
-        console.log('getSystemSetting:success ' + response);
+      this.factory.getFrameworkService().getSystemSetting(JSON.stringify(request),
+        (response) => {
+          console.log('getSystemSetting:success ' + response);
 
-        let systemSettingResponse = JSON.parse(response);
-        if (systemSettingResponse && systemSettingResponse.result) {
-          resolve(systemSettingResponse.result.value);
-        } else {
-          reject();
-        }
-      }, (error) => {
-        console.log('getSystemSetting:error ' + error);
-        reject(JSON.parse(error));
-      });
+          let systemSettingResponse = JSON.parse(response);
+          if (systemSettingResponse && systemSettingResponse.result) {
+            resolve(systemSettingResponse.result.value);
+          } else {
+            reject();
+          }
+        },
+        (error) => {
+          console.log('getSystemSetting:error ' + error);
+          reject(JSON.parse(error));
+        });
     });
+  }
+
+  async getCourseFrameworkId() {
+    const systemSettingRequest: SystemSettingRequest = {
+      id: this.SYSTEM_SETING_COURSE_FRAMEWORK_ID
+    };
+
+    let courseFrameworkId = await this.getSystemSettingValue(systemSettingRequest);
+    return courseFrameworkId;
   }
 
   getChannelDetails(request: ChannelDetailsRequest) {
@@ -144,8 +171,10 @@ export class FrameworkService {
         supportedFrameworkList = channelResponse.result.frameworks;
       } else {
         console.log('default framework');
-        let frameworkDetailRequest = new FrameworkDetailsRequest();
-        frameworkDetailRequest.defaultFrameworkDetails = true;
+        const frameworkDetailRequest: FrameworkDetailsRequest = {
+          defaultFrameworkDetails: true,
+          categories: suggestedFrameworkRequest.categories
+        }
         const frameworkResponse = await this.getFrameworkDetails(frameworkDetailRequest);
 
         const frameworkDetail: FrameworkDetail = {
@@ -197,6 +226,7 @@ export class FrameworkService {
             category: t.category,
             status: t.status,
             translations: t.translations,
+            children: t.children,
             associations: t.associations ? t.associations.filter(a => {
               return (index >= allCategories.length - 1)
                 || (a.category === allCategories[index + 1].code);
@@ -235,7 +265,10 @@ export class FrameworkService {
       if (this.updatedFrameworkResponseBody.result == undefined
         || request.frameworkId !== this.updatedFrameworkResponseBody.result.framework.identifier) {
 
-        let frameworkDetailRequest = new FrameworkDetailsRequest();
+        const frameworkDetailRequest: FrameworkDetailsRequest = {
+          defaultFrameworkDetails: false,
+          categories: request.categories
+        }
         if (request.frameworkId !== undefined && request.frameworkId !== "") {
           frameworkDetailRequest.frameworkId = request.frameworkId;
         } else {
@@ -272,6 +305,7 @@ export class FrameworkService {
 
       let currentCategory = this.copy(this.currentFrameworkCategories.filter(c => {
         return request.currentCategory === c.code;
+
       }));
 
       // If any previous category is selected then retun the associations else return the terms.
@@ -299,6 +333,11 @@ export class FrameworkService {
           let map = new Map();
           selectedTerm.forEach(term => {
             term.associations.forEach(a => {
+              currentCategory[0].terms.filter(currentCategoryTerm => {
+                if (a.code === currentCategoryTerm.code) {
+                  a.index = currentCategoryTerm.index;
+                }
+              });
               map.set(a.code, a);
             });
           });
