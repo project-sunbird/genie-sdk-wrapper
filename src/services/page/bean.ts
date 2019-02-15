@@ -1,4 +1,7 @@
 export class PageAssembleFilter {
+    topic?: Array<string>;
+    purpose?: Array<string>;
+    channel?: Array<string>;
     subject?: Array<string>;
     board?: Array<string>;
     domain?: Array<string>;
@@ -9,7 +12,7 @@ export class PageAssembleFilter {
     contentType?: Array<string>;
     ageGroup?: Array<string>;
     ownership?: Array<string>;
-    status?: Array<string>;
+    dialcodes?: string;
 }
 
 

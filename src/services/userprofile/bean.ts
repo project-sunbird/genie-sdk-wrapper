@@ -43,7 +43,6 @@ export class UpdateUserInfoRequest {
     firstName?: string;
     lastName?: string;
     language?: Array<string>;
-    phone?: string;
     profileSummary?: string;
     subject?: Array<string>;
     gender?: string;
@@ -55,6 +54,12 @@ export class UpdateUserInfoRequest {
     education?: Array<UserEducation>;
     jobProfile?: Array<UserJobProfile>;
     address?: Array<UserAddress>;
+    framework?: { [index: string]: any };
+    locationCodes?: Array<string>;
+    email?: string;
+    emailVerified?: boolean;
+    phone?: string;
+    phoneVerified?: boolean;
 }
 
 export class UserWebPages {
@@ -95,4 +100,33 @@ export class UserAddress {
     zipcode?: string;
     isDeleted?: Boolean;
     id?: string;
+}
+
+export class AcceptTermsAndConditionsRequest {
+    version: string;
+}
+
+export class UserExistRequest {
+    key: string;
+    type: string;
+}
+
+export class GenerateOTPRequest {
+    key: string;
+    type: string;
+}
+
+export class VerifyOTPRequest {
+    key: string;
+    type: string;
+    otp: string;
+}
+
+export class LocationSearchCriteria {
+    query?: string;
+    type?: string;
+    parentId?: string;
+    code?: string;
+    offset?: number;
+    limit?: number;
 }

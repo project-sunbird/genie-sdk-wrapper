@@ -1,8 +1,14 @@
 import { Injectable } from "@angular/core";
-
-import { EnrolledCoursesRequest, EnrollCourseRequest, UpdateContentStateRequest, CourseBatchesRequest, BatchDetailsRequest } from "./bean"
+import {
+    EnrolledCoursesRequest,
+    EnrollCourseRequest,
+    UpdateContentStateRequest,
+    CourseBatchesRequest,
+    BatchDetailsRequest,
+    GetContentStateRequest,
+    UnenrolCourseRequest
+} from "./bean"
 import { ServiceProvider } from "../factory";
-import { GenieResponse } from "../service.bean";
 
 @Injectable()
 export class CourseService {
@@ -11,54 +17,88 @@ export class CourseService {
 
     }
 
-    getEnrolledCourses(requestObject: EnrolledCoursesRequest,
-        successCallback: (response: String) => void,
-        errorCallback: (error: String) => void) {
-        try {
-            this.factory.getCourseService().getEnrolledCourses(JSON.stringify(requestObject), successCallback, errorCallback);
-        } catch (error) {
-            console.log(error);
-        }
+    getEnrolledCourses(requestObject: EnrolledCoursesRequest) {
+        return new Promise((resolve, reject) => {
+            this.factory.getCourseService().getEnrolledCourses(JSON.stringify(requestObject),
+                (success) => {
+                    resolve(success);
+                },
+                (error) => {
+                    reject(error);
+                });
+        });
     }
 
-    enrollCourse(requestObject: EnrollCourseRequest,
-        successCallback: (response: String) => void,
-        errorCallback: (error: String) => void) {
-        try {
-            this.factory.getCourseService().enrollCourse(JSON.stringify(requestObject), successCallback, errorCallback);
-        } catch (error) {
-            console.log(error);
-        }
+    enrollCourse(requestObject: EnrollCourseRequest) {
+        return new Promise((resolve, reject) => {
+            this.factory.getCourseService().enrollCourse(JSON.stringify(requestObject),
+                (success) => {
+                    resolve(success);
+                },
+                (error) => {
+                    reject(error);
+                });
+        });
     }
 
-    updateContentState(requestObject: UpdateContentStateRequest,
-        successCallback: (response: String) => void,
-        errorCallback: (error: String) => void) {
-        try {
-            this.factory.getCourseService().updateContentState(JSON.stringify(requestObject), successCallback, errorCallback);
-        } catch (error) {
-            console.log(error);
-        }
+    unenrolCourse(requestObject: UnenrolCourseRequest) {
+        return new Promise((resolve, reject) => {
+            this.factory.getCourseService().unenrolCourse(JSON.stringify(requestObject),
+                (success) => {
+                    resolve(success);
+                },
+                (error) => {
+                    reject(error);
+                });
+        });
     }
 
-    getCourseBatches(requestObject: CourseBatchesRequest,
-        successCallback: (response: String) => void,
-        errorCallback: (error: String) => void) {
-        try {
-            this.factory.getCourseService().getCourseBatches(JSON.stringify(requestObject), successCallback, errorCallback);
-        } catch (error) {
-            console.log(error);
-        }
+    updateContentState(requestObject: UpdateContentStateRequest) {
+        return new Promise((resolve, reject) => {
+            this.factory.getCourseService().updateContentState(JSON.stringify(requestObject),
+                (success) => {
+                    resolve(success);
+                },
+                (error) => {
+                    reject(error);
+                });
+        });
     }
 
-    getBatchDetails(requestObject: BatchDetailsRequest,
-        successCallback: (response: String) => void,
-        errorCallback: (error: String) => void) {
-        try {
-            this.factory.getCourseService().getBatchDetails(JSON.stringify(requestObject), successCallback, errorCallback);
-        } catch (error) {
-            console.log(error);
-        }
+    getCourseBatches(requestObject: CourseBatchesRequest) {
+        return new Promise((resolve, reject) => {
+            this.factory.getCourseService().getCourseBatches(JSON.stringify(requestObject),
+                (success) => {
+                    resolve(success);
+                },
+                (error) => {
+                    reject(error);
+                });
+        });
+    }
+
+    getBatchDetails(requestObject: BatchDetailsRequest) {
+        return new Promise((resolve, reject) => {
+            this.factory.getCourseService().getBatchDetails(JSON.stringify(requestObject),
+                (success) => {
+                    resolve(success);
+                },
+                (error) => {
+                    reject(error);
+                });
+        });
+    }
+
+    getContentState(requestObject: GetContentStateRequest) {
+        return new Promise((resolve, reject) => {
+            this.factory.getCourseService().getContentState(JSON.stringify(requestObject),
+                (success) => {
+                    resolve(success);
+                },
+                (error) => {
+                    reject(error);
+                });
+        });
     }
 
 }

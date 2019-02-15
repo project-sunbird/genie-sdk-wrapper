@@ -1,10 +1,11 @@
-import { CorrelationData } from "../telemetry/bean";
+import { CorrelationData } from '../telemetry/bean';
 
 export class ContentDetailRequest {
   contentId: string;
   attachFeedback?: boolean = false;
   attachContentAccess?: boolean = false;
   refreshContentDetails?: boolean = false;
+  attachContentMarker?: boolean = false;
 }
 
 export class ContentListingCriteria {
@@ -26,6 +27,7 @@ export class FilterValue {
   name: string;
   count: number;
   apply: boolean;
+  translations: string;
 }
 
 export class ContentSearchFilter {
@@ -34,8 +36,8 @@ export class ContentSearchFilter {
 }
 
 export enum SearchType {
-  SEARCH = "search",
-  FILTER = "filter",
+  SEARCH = 'search',
+  FILTER = 'filter',
 }
 
 export class ContentSearchCriteria {
@@ -51,6 +53,8 @@ export class ContentSearchCriteria {
   createdBy?: Array<string>;
   audience?: Array<string>;
   channel?: Array<string>;
+  topic?: Array<string>;
+  purpose?: Array<string>;
   pragma?: Array<string>;
   exclPragma?: Array<string>;
   contentStatusArray?: Array<string>;
@@ -61,10 +65,12 @@ export class ContentSearchCriteria {
   language?: Array<string>;
   facetFilters?: Array<ContentSearchFilter>;
   impliedFilters?: Array<ContentSearchFilter>;
-  sortCriteria?: Array<ContentSearchFilter>;
+  sortCriteria?: Array<ContentSortCriteria>;
   // 1 - indicates search, 2 - filter
   searchType?: SearchType;
   offlineSearch?: boolean;
+  framework?: string;
+  languageCode?: string;
 }
 
 export class ContentImport {
@@ -80,34 +86,37 @@ export class ContentImportRequest {
 }
 
 export class ContentSortCriteria {
-  sortAttribute: String;
+  sortAttribute: string;
   sortOrder: SortOrder;
 }
 
 export enum SortOrder {
-  ASC = "asc",
-  DESC = "desc",
+  ASC = 'ASC',
+  DESC = 'DESC',
 }
 
 export class ContentFilterCriteria {
-  uid?: String;
-  contentTypes?: String[];
-  audience?: String[];
-  pragma?: String[];
-  attachFeedback?: Boolean;
-  attachContentAccess?: Boolean;
+  uid?: string;
+  contentTypes?: string[];
+  audience?: string[];
+  pragma?: string[];
+  attachFeedback?: boolean;
+  attachContentAccess?: boolean;
   sortCriteria?: Array<ContentSortCriteria>;
+  recentlyViewed?: boolean;
+  downloadedOnly?: boolean;
+  limit?: number;
 }
 
 export class HierarchyInfo {
-  identifier: String;
-  contentType: String;
+  identifier: string;
+  contentType: string;
 }
 
 export class ChildContentRequest {
-  contentId: String;
+  contentId: string;
   hierarchyInfo?: Array<HierarchyInfo>;
-  level?: Number;
+  level?: number;
 }
 
 export class ContentDeleteRequest {
@@ -115,8 +124,8 @@ export class ContentDeleteRequest {
 }
 
 export class ContentDelete {
-  contentId: String;
-  isChildContent: Boolean
+  contentId: string;
+  isChildContent: boolean
 }
 
 export class FlagContentRequest {
@@ -135,8 +144,8 @@ export class ContentFeedback {
 }
 
 export class ContentExportRequest {
-  contentIds?: Array<String>;
-  destinationFolder: String;
+  contentIds?: Array<string>;
+  destinationFolder: string;
 }
 
 export enum DownloadAction {
@@ -151,9 +160,24 @@ export class ContentCache {
 }
 
 export class SummarizerContentFilterCriteria {
-  uids?: String[];
-  contentTypes?: String[]
-  attachFeedback?: Boolean;
-  attachContentAccess?: Boolean;
+  uids?: string[];
+  contentTypes?: string[]
+  attachFeedback?: boolean;
+  attachContentAccess?: boolean;
   sortCriteria?: Array<ContentSortCriteria>;
+}
+
+export class ContentMarkerRequest {
+  contentId: string;
+  uid: string;
+  data: string;
+  extraInfoMap?: { [index: string]: any };
+  marker: number;
+  isMarked?: boolean;
+}
+
+export enum MarkerType {
+  NOTHING = 0,
+  PREVIEWED = 1,
+  BOOKMARKED = 2
 }

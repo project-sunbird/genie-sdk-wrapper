@@ -8,6 +8,7 @@ export class ReportSummary {
     totalTimespent: number;
     hierarchyData: string;
     totalMaxScore: number;
+    totalScore: number;
 }
 
 export class ReportDetail {
@@ -25,6 +26,7 @@ export class ReportDetail {
     qtitle: string;
     maxScore: number;
     hierarchyData: string;
+    total_ts: number;
 }
 
 export class ReportDetailPerUser {

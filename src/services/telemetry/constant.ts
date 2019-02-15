@@ -9,6 +9,7 @@ export class Environment {
     public static readonly LIBRARY = "library";
     public static readonly USER = "user";
     public static readonly SETTINGS = "settings";
+    public static readonly ONBOARDING = "onboarding";
 }
 export class ObjectType {
     public static readonly NOTIFICATION = "notification";
@@ -56,11 +57,12 @@ export class PageId {
     public static readonly SETTINGS_ABOUT_US = "settings-about-us";
     public static readonly ABOUT_APP = "about-app";
     public static readonly USERS_GROUPS = "users-groups";
-    public static readonly CREATE_USER = "create-user";
+    public static readonly CREATE_USER = "create-profile";
     public static readonly CREATE_GROUP = "create-group";
     public static readonly CREATE_GROUP_SYLLABUS_CLASS = "create-group-syllabusclass";
     public static readonly CREATE_GROUP_USER_SELECTION = "create-group-userselection";
     public static readonly GROUP_DETAIL = "group-detail";
+    public static readonly GUEST_PROFILE = "guest-profile";
     public static readonly EDIT_USER = "edit-user";
     public static readonly EDIT_GROUP = "edit-group";
     public static readonly ADD_GROUP_SYLLABUS_CLASS = "add-group-syllabusclass";
@@ -71,7 +73,18 @@ export class PageId {
     public static readonly REPORTS_ASSESMENT_CONTENT_LIST = "assesment-content-list";
     public static readonly REPORTS_USER_ASSESMENT_DETAILS = "user-assesment-details";
     public static readonly REPORTS_GROUP_ASSESMENT_DETAILS = "group-assesment-details";
-    
+    public static readonly ONBOARDING_LANGUAGE_SETTING = "onboarding-language-setting";
+    public static readonly VIEW_MORE = "view-more";
+    public static readonly DIAL_CODE_SCAN_RESULT = "dial-code-scan-result";
+    public static readonly ONBOARDING_PROFILE_PREFERENCES = "profile-settings";
+    public static readonly ONBOARDING_QR_SHOWCASE = "onboarding-qr-showcase";
+    public static readonly SEARCH = "search";
+    public static readonly DOWNLOAD_SPINE = "download-spine";
+    public static readonly DIAL_NOT_LINKED = "dial-not-linked";
+    public static readonly DIAL_LINKED_NO_CONTENT = "dial-linked-but-no-content";
+    public static readonly TERMS_N_CONDITIONS = "terms-n-conditions";
+    public static readonly TERMS_N_CONDITIONS_STATIC_PAGE= "terms-n-conditions-static-page";
+
 }
 
 export class LogType {
@@ -147,7 +160,7 @@ export class InteractSubtype {
     public static readonly SHARE_APP_SUCCESS = "share-app-success";
     public static readonly LANGUAGE_SETTINGS_SUCCESS = "language-settings-success";
     public static readonly MANUALSYNC_INITIATED = "manualsync-initiated";
-    public static readonly MANUALSYNC_SUCCESS = "manualsync-success"; 
+    public static readonly MANUALSYNC_SUCCESS = "manualsync-success";
     public static readonly RATING_CLICKED = "rating-clicked";
     public static readonly RATING_SUBMITTED = "rating-submitted";
     public static readonly CREATE_USER_CLICKED = "create-user-clicked";
@@ -213,6 +226,11 @@ export class InteractSubtype {
     public static readonly PLAY_ONLINE = "play-online";
     public static readonly DOWNLOAD_INITIATE = "download-initiate";
     public static readonly UPDATE_INITIATE = "update-initiate"
+}
+export class ErrorCode {
+    public static readonly ERR_DOWNLOAD_FAILED = "ERR_DOWNLOAD_FAILED";
+}
 
-
+export class ErrorType {
+    public static readonly SYSTEM = "SYSTEM";
 }
