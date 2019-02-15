@@ -222,6 +222,10 @@ export class InteractSubtype {
     public static readonly EXTRA_INFO = "extra-info";
     public static readonly PROFILE_ATTRIBUTE_POPULATION = "profile-attribute-population";
     public static readonly ACCEPTANCE_CHECKBOX_CLICKED = "acceptance_checkbox_clicked";
+    public static readonly FILTER_DROPDOWN_EXPANDED = "filter-dropdown-expanded";
+    public static readonly PLAY_ONLINE = "play-online";
+    public static readonly DOWNLOAD_INITIATE = "download-initiate";
+    public static readonly UPDATE_INITIATE = "update-initiate"
 }
 export class ErrorCode {
     public static readonly ERR_DOWNLOAD_FAILED = "ERR_DOWNLOAD_FAILED";
