@@ -226,7 +226,7 @@ export class InteractSubtype {
     public static readonly FILTER_DROPDOWN_EXPANDED = "filter-dropdown-expanded";
     public static readonly PLAY_ONLINE = "play-online";
     public static readonly DOWNLOAD_INITIATE = "download-initiate";
-
+    public static readonly UPDATE_INITIATE = "update-initiate"
 }
 export class ErrorCode {
     public static readonly ERR_DOWNLOAD_FAILED = "ERR_DOWNLOAD_FAILED";
