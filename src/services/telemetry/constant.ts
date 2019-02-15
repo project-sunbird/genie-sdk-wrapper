@@ -115,6 +115,8 @@ export class ImpressionType {
 export class ImpressionSubtype {
     public static readonly QRCodeScanInitiate = "qr-code-scan-initiate";
     public static readonly RATING_POPUP = "rating-popup";
+    public static readonly QR_CODE_VALID = "qr-code-valid"
+    public static readonly INVALID_QR_CODE = "invalid-qr-code"
 }
 
 export class InteractType {
