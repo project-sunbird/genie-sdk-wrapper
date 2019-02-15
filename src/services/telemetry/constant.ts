@@ -183,6 +183,36 @@ export class InteractSubtype {
     public static readonly REPORTS_SORTBY_MARKS_CLICKED = "sortby-marks-clicked";
     public static readonly REPORTS_SORTBY_ACCURACY_CLICKED = "sortby-accuracy-clicked";
     public static readonly QUESTION_CLICKED = "question-clicked";
+    public static readonly INITIAL_CONFIG = "initial-config";
+    public static readonly FILTER_CONFIG = "filter-config";
+    public static readonly APPLY_FILTER_CLICKED = "apply-filter-clicked";
+    public static readonly PROFILE_ATTRIBUTE_CHANGED = "profile_attribute_changed";
+    public static readonly SAVE_CLICKED = "save-clicked";
+    public static readonly FINISH_CLICKED = "finish-clicked";
+    public static readonly DEVICE_BACK_CLICKED = "device-back-clicked";
+    public static readonly NAV_BACK_CLICKED = "nav-back-clicked";
+    public static readonly SKIP_CLICKED = "skip-clicked";
+    public static readonly LANGUAGE_SELECTED = "language-selected";
+    public static readonly KEBAB_MENU_CLICKED = "kebab-menu-clicked";
+    public static readonly DELETE_CLICKED = "delete-clicked";
+    public static readonly DIAL_SEARCH_RESULT_FOUND = "dial-code-search-result-found";
+    public static readonly LOADING_SPINE = "loading-spine";
+    public static readonly DOWNLOAD_ALL_CLICKED = "download-all-clicked";
+    public static readonly CANCEL_CLICKED = "cancel-clicked";
+    public static readonly PULL_TO_REFRESH = "pull-to-refresh";
+    public static readonly EDIT_CLICKED = "edit-clicked";
+    public static readonly VIEW_MORE_CLICKED = "view-more-clicked";
+    public static readonly READ_MORE_CLICKED = "read-more-clicked";
+    public static readonly READ_LESS_CLICKED = "read-less-clicked";
+    public static readonly DOWNLOAD_PLAY_CLICKED = "download-play-clicked";
+    public static readonly PLAY_CLICKED = "play-clicked";
+    public static readonly EXTRA_INFO = "extra-info";
+    public static readonly PROFILE_ATTRIBUTE_POPULATION = "profile-attribute-population";
+    public static readonly ACCEPTANCE_CHECKBOX_CLICKED = "acceptance_checkbox_clicked";
+    public static readonly FILTER_DROPDOWN_EXPANDED = "filter-dropdown-expanded";
+    public static readonly PLAY_ONLINE = "play-online";
+    public static readonly DOWNLOAD_INITIATE = "download-initiate";
+    public static readonly UPDATE_INITIATE = "update-initiate"
 
 
 }
