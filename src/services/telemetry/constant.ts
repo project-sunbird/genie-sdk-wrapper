@@ -84,6 +84,7 @@ export class PageId {
     public static readonly DIAL_LINKED_NO_CONTENT = "dial-linked-but-no-content";
     public static readonly TERMS_N_CONDITIONS = "terms-n-conditions";
     public static readonly TERMS_N_CONDITIONS_STATIC_PAGE= "terms-n-conditions-static-page";
+    public static readonly FILTER_PAGE = "filter-page";
 
 }
 
