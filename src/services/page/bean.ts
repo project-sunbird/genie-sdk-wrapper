@@ -21,4 +21,5 @@ export class PageAssembleCriteria {
     source?: string;
     mode?: string;
     filters?: PageAssembleFilter;
+    hardRefresh?: boolean;
 }
