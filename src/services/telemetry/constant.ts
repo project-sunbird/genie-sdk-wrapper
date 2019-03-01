@@ -85,6 +85,9 @@ export class PageId {
     public static readonly TERMS_N_CONDITIONS = "terms-n-conditions";
     public static readonly TERMS_N_CONDITIONS_STATIC_PAGE= "terms-n-conditions-static-page";
     public static readonly FILTER_PAGE = "filter-page";
+    public static readonly RESOURCE_PAGE_REQUEST = "page-request-sent";
+    public static readonly RESOURCE_PAGE_LOADED = "page-loaded";
+    public static readonly RESOURCE_PAGE_ERROR = "page-error";
 
 }
 
