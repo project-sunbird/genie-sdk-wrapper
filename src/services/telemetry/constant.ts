@@ -85,9 +85,6 @@ export class PageId {
     public static readonly TERMS_N_CONDITIONS = "terms-n-conditions";
     public static readonly TERMS_N_CONDITIONS_STATIC_PAGE= "terms-n-conditions-static-page";
     public static readonly FILTER_PAGE = "filter-page";
-    public static readonly RESOURCE_PAGE_REQUEST = "page-request-sent";
-    public static readonly RESOURCE_PAGE_LOADED = "page-loaded";
-    public static readonly RESOURCE_PAGE_ERROR = "page-error";
 
 }
 
@@ -234,6 +231,9 @@ export class InteractSubtype {
     public static readonly UPDATE_INITIATE = "update-initiate";
     public static readonly YES_CLICKED = "yes-clicked";
     public static readonly NO_CLICKED = "no-clicked";
+    public static readonly RESOURCE_PAGE_REQUEST = "page-request-sent";
+    public static readonly RESOURCE_PAGE_LOADED = "page-loaded";
+    public static readonly RESOURCE_PAGE_ERROR = "page-error";
 }
 export class ErrorCode {
     public static readonly ERR_DOWNLOAD_FAILED = "ERR_DOWNLOAD_FAILED";
