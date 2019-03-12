@@ -132,6 +132,7 @@ export class InteractSubtype {
     public static readonly BROWSE_AS_GUEST_CLICKED = "browse-as-guest-clicked";
     public static readonly CONTINUE_CLICKED = "continue-clicked";
     public static readonly TAB_CLICKED = "tab-clicked";
+    public static readonly ENROLL_CLICKED = "enroll-clicked";
     public static readonly SECTION_VIEWED = "section-viewed";
     public static readonly CONTENT_CLICKED = "content-clicked";
     public static readonly CANCEL = "cancel";
