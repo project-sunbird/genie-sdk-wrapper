@@ -132,6 +132,7 @@ export class InteractSubtype {
     public static readonly BROWSE_AS_GUEST_CLICKED = "browse-as-guest-clicked";
     public static readonly CONTINUE_CLICKED = "continue-clicked";
     public static readonly TAB_CLICKED = "tab-clicked";
+    public static readonly ENROLL_CLICKED = "enroll-clicked";
     public static readonly SECTION_VIEWED = "section-viewed";
     public static readonly CONTENT_CLICKED = "content-clicked";
     public static readonly CANCEL = "cancel";
@@ -228,7 +229,12 @@ export class InteractSubtype {
     public static readonly FILTER_DROPDOWN_EXPANDED = "filter-dropdown-expanded";
     public static readonly PLAY_ONLINE = "play-online";
     public static readonly DOWNLOAD_INITIATE = "download-initiate";
-    public static readonly UPDATE_INITIATE = "update-initiate"
+    public static readonly UPDATE_INITIATE = "update-initiate";
+    public static readonly YES_CLICKED = "yes-clicked";
+    public static readonly NO_CLICKED = "no-clicked";
+    public static readonly RESOURCE_PAGE_REQUEST = "page-request-sent";
+    public static readonly RESOURCE_PAGE_LOADED = "page-loaded";
+    public static readonly RESOURCE_PAGE_ERROR = "page-error";
 }
 export class ErrorCode {
     public static readonly ERR_DOWNLOAD_FAILED = "ERR_DOWNLOAD_FAILED";

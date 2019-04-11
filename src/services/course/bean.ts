@@ -9,6 +9,7 @@ export class EnrollCourseRequest {
     courseId: string;
     contentId: string;
     batchId: string;
+    batchStatus: Number;
 }
 
 export class UnenrolCourseRequest {
